@@ -11,6 +11,25 @@
 	<key>fileVersion</key>
 	<integer>1</integer>
 	<key>translations</key>
-	<array/>
+	<array>
+		<dict>
+			<key>key</key>
+			<string>Start</string>
+			<key>translations</key>
+			<dict/>
+		</dict>
+		<dict>
+			<key>key</key>
+			<string>Play Again</string>
+			<key>translations</key>
+			<dict/>
+		</dict>
+		<dict>
+			<key>key</key>
+			<string>Play</string>
+			<key>translations</key>
+			<dict/>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F237867196ED3AA006D38BE /* Recap.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F237866196ED3AA006D38BE /* Recap.m */; };
+		6FD6C1C8196DCEEE00961B8F /* Enemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD6C1C7196DCEEE00961B8F /* Enemy.m */; };
+		6FD6C1CE196DCF1D00961B8F /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD6C1CD196DCF1D00961B8F /* Player.m */; };
+		6FD6C1D1196DCF5000961B8F /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD6C1D0196DCF5000961B8F /* Gameplay.m */; };
 		8392007A18EE8E3300B6C429 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392007918EE8E3300B6C429 /* GLKit.framework */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5908188484E7003F4D28 /* iPad-old@2x.png */; };
@@ -56,6 +60,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6F237865196ED3AA006D38BE /* Recap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Recap.h; path = Source/Recap.h; sourceTree = "<group>"; };
+		6F237866196ED3AA006D38BE /* Recap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Recap.m; path = Source/Recap.m; sourceTree = "<group>"; };
+		6FD6C1C6196DCEEE00961B8F /* Enemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Enemy.h; path = Source/Enemy.h; sourceTree = "<group>"; };
+		6FD6C1C7196DCEEE00961B8F /* Enemy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Enemy.m; path = Source/Enemy.m; sourceTree = "<group>"; };
+		6FD6C1CC196DCF1D00961B8F /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Source/Player.h; sourceTree = "<group>"; };
+		6FD6C1CD196DCF1D00961B8F /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = Source/Player.m; sourceTree = "<group>"; };
+		6FD6C1CF196DCF5000961B8F /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gameplay.h; path = Source/Gameplay.h; sourceTree = "<group>"; };
+		6FD6C1D0196DCF5000961B8F /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Gameplay.m; path = Source/Gameplay.m; sourceTree = "<group>"; };
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		B71F5907188484E7003F4D28 /* iPad-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old.png"; path = "Icons/iPad-old.png"; sourceTree = "<group>"; };
 		B71F5908188484E7003F4D28 /* iPad-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old@2x.png"; path = "Icons/iPad-old@2x.png"; sourceTree = "<group>"; };
@@ -127,8 +139,16 @@
 			children = (
 				B737893D1807617C0076A88C /* AppDelegate.h */,
 				B737893E1807617C0076A88C /* AppDelegate.m */,
+				6FD6C1C6196DCEEE00961B8F /* Enemy.h */,
+				6FD6C1C7196DCEEE00961B8F /* Enemy.m */,
+				6FD6C1CF196DCF5000961B8F /* Gameplay.h */,
+				6FD6C1D0196DCF5000961B8F /* Gameplay.m */,
 				B7378992180767190076A88C /* MainScene.h */,
 				B7378993180767190076A88C /* MainScene.m */,
+				6FD6C1CC196DCF1D00961B8F /* Player.h */,
+				6FD6C1CD196DCF1D00961B8F /* Player.m */,
+				6F237865196ED3AA006D38BE /* Recap.h */,
+				6F237866196ED3AA006D38BE /* Recap.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -340,9 +360,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FD6C1D1196DCF5000961B8F /* Gameplay.m in Sources */,
 				B737893F1807617C0076A88C /* AppDelegate.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
+				6F237867196ED3AA006D38BE /* Recap.m in Sources */,
+				6FD6C1C8196DCEEE00961B8F /* Enemy.m in Sources */,
+				6FD6C1CE196DCF1D00961B8F /* Player.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
