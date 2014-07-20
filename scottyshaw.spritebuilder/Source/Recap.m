@@ -10,11 +10,18 @@
 
 @implementation Recap
 
-- (void)returnToGame {
+- (void)startGame {
     CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
     [[CCDirector sharedDirector] presentScene:gameplayScene];
     //CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
     //[[CCDirector sharedDirector] presentScene:firstLevel withTransition:transition];
+}
+
+- (void)returnToMenu {
+    CCScene *menuScene = [CCBReader loadAsScene:@"MainScene"];
+    //    [[CCDirector sharedDirector] presentScene:menuScene];
+    CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
+    [[CCDirector sharedDirector] presentScene:menuScene withTransition:transition];
 }
 
 @end
