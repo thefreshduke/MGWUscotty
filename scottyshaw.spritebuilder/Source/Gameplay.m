@@ -11,6 +11,7 @@
 #import "Recap.h"
 
 @implementation Gameplay {
+    CCNode *_levelNode;
     CCPhysicsNode *_player;
     CCPhysicsNode *_enemy;
     CCPhysicsNode *_physicsWorld;
@@ -22,6 +23,14 @@
 //}
 //
 //// -----------------------------------------------------------------------
+
+//// is called when CCB file has completed loading
+//- (void)didLoadFromCCB {
+//    // tell this scene to accept touches
+//    self.userInteractionEnabled = TRUE;
+//    CCScene *level = [CCBReader loadAsScene:@"Gameplay"];
+//    [_levelNode addChild:level];
+//}
 //
 //- (id)init
 //{
@@ -31,9 +40,9 @@
 //    
 //    // Enable touch handling on scene node
 //    self.userInteractionEnabled = YES;
-//    [[OALSimpleAudio sharedInstance] playBg:@"ResourcePack/Sounds/background-music-aac.caf" loop:YES];
-//    //    [[OALSimpleAudio sharedInstance] playEffect:@"M1-Garand-Reloading.caf"];
-//    //    [[OALSimpleAudio sharedInstance] playEffect:@"Cartman.caf"];
+////    [[OALSimpleAudio sharedInstance] playBg:@"ResourcePack/Sounds/background-music-aac.caf" loop:YES];
+////    [[OALSimpleAudio sharedInstance] playEffect:@"M1-Garand-Reloading.caf"];
+////    [[OALSimpleAudio sharedInstance] playEffect:@"Authoritah.caf"];
 //    
 //    // Create a colored background (Light Grey)
 //    CCNodeColor *background = [CCNodeColor nodeWithColor:[CCColor colorWithRed:0.6f green:0.6f blue:0.6f alpha:1.0f]];
@@ -264,7 +273,7 @@
 //    return YES;
 //}
 //
-////- (void)lose {
+//- (void)lose {
 ////    CCLOG(@"You are dead");
 ////    NSNumber *highScore = [[NSUserDefaults standardUserDefaults] objectForKey:@"highScore"];
 ////    if (self.score > [highScore intValue]) {
@@ -273,14 +282,38 @@
 ////        [[NSUserDefaults standardUserDefaults] setObject:highScore forKey:@"highScore"];
 ////        [[NSUserDefaults standardUserDefaults] synchronize];
 ////    }
-////    RecapScene *gameEndPopover = (RecapScene *)[CCBReader load:@"GameEnd"];
-////    gameEndPopover.positionType = CCPositionTypeNormalized;
-////    gameEndPopover.position = ccp(0.5, 0.5);
-////    gameEndPopover.zOrder = INT_MAX;
+//    Recap *gameEndPopover = (Recap *)[CCBReader load:@"Recap"];
+//    gameEndPopover.positionType = CCPositionTypeNormalized;
+//    gameEndPopover.position = ccp(0.5, 0.5);
+//    gameEndPopover.zOrder = INT_MAX;
 ////    [gameEndPopover setMessage:message score:self.score];
-////    [self addChild:gameEndPopover];
-////}
-//
+//    [self addChild:gameEndPopover];
+//}
+
+//- (void)goToRecap {
+//    CCScene *menuScene = [CCBReader loadAsScene:@"Recap"];
+//    //    [[CCDirector sharedDirector] presentScene:menuScene];
+//    CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
+//    [[CCDirector sharedDirector] presentScene:menuScene withTransition:transition];
+//}
+
+//- (void)lose {
+//    CCLOG(@"You are dead");
+//    NSNumber *highScore = [[NSUserDefaults standardUserDefaults] objectForKey:@"highScore"];
+//    if (self.score > [highScore intValue]) {
+//        // new high score!
+//        highScore = [NSNumber numberWithInt:self.score];
+//        [[NSUserDefaults standardUserDefaults] setObject:highScore forKey:@"highScore"];
+//        [[NSUserDefaults standardUserDefaults] synchronize];
+//    }
+//    RecapScene *gameEndPopover = (RecapScene *)[CCBReader load:@"GameEnd"];
+//    gameEndPopover.positionType = CCPositionTypeNormalized;
+//    gameEndPopover.position = ccp(0.5, 0.5);
+//    gameEndPopover.zOrder = INT_MAX;
+//    [gameEndPopover setMessage:message score:self.score];
+//    [self addChild:gameEndPopover];
+//}
+
 - (void)returnToMenu {
     CCScene *menuScene = [CCBReader loadAsScene:@"MainScene"];
 //    [[CCDirector sharedDirector] presentScene:menuScene];

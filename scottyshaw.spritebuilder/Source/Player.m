@@ -7,9 +7,15 @@
 //
 
 #import "Player.h"
+#import "Gameplay.h"
 
 @implementation Player
 
-
+- (void)didLoadFromCCB
+{
+    self.position = ccp(115, 250);
+//    self.zOrder = DrawingOrderHero;
+    self.physicsBody.collisionType = @"player";
+}
 
 @end
