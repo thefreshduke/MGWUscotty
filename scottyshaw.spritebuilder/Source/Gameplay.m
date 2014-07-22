@@ -9,12 +9,14 @@
 #import "Gameplay.h"
 #import "MainScene.h"
 #import "Recap.h"
+#import "Player.h"
+#import "Enemy.h"
 
 @implementation Gameplay {
     CCNode *_levelNode;
-    CCPhysicsNode *_player;
-    CCPhysicsNode *_enemy;
-    CCPhysicsNode *_physicsWorld;
+    Player *_player;
+//    CCSprite *_enemy;
+    CCPhysicsNode *_physicsNode;
 }
 
 //+ (Gameplay *)scene
@@ -24,14 +26,16 @@
 //
 //// -----------------------------------------------------------------------
 
-//// is called when CCB file has completed loading
-//- (void)didLoadFromCCB {
-//    // tell this scene to accept touches
-//    self.userInteractionEnabled = TRUE;
-//    CCScene *level = [CCBReader loadAsScene:@"Gameplay"];
-//    [_levelNode addChild:level];
-//}
-//
+// is called when CCB file has completed loading
+- (void)didLoadFromCCB {
+    // tell this scene to accept touches
+    self.userInteractionEnabled = TRUE;
+    _physicsNode.collisionDelegate = self;
+    _physicsNode.debugDraw = TRUE;
+    //cartman off center
+    //enemy way too big
+}
+
 //- (id)init
 //{
 //    // Apple recommend assigning self with supers return value
@@ -102,23 +106,24 @@
 //#pragma mark - Enter & Exit
 //// -----------------------------------------------------------------------
 //
-//- (void)onEnter
-//{
-//    // always call super onEnter first
-//    [super onEnter];
-//    
-//    int minDuration = 1.0;
-//    int maxDuration = 2.0;
-//    int rangeDuration = maxDuration - minDuration;
-//    int randomDuration = (arc4random() % rangeDuration) + minDuration;
-//    
-//    [self schedule:@selector(addMonster:) interval:randomDuration];
-//    
-//    // In pre-v3, touch enable and scheduleUpdate was called here
-//    // In v3, touch is enabled by setting userInteractionEnabled for the individual nodes
-//    // Per frame update is automatically enabled, if update is overridden
-//    
-//}
+- (void)onEnter
+{
+    // always call super onEnter first
+    [super onEnter];
+    
+    int minDuration = 1.0;
+    int maxDuration = 2.0;
+    int rangeDuration = maxDuration - minDuration;
+    int randomDuration = (arc4random() % rangeDuration) + minDuration;
+    
+    self.enemyArray = [[NSMutableArray alloc] init];
+    [self schedule:@selector(spawnEnemy:) interval:randomDuration];
+    
+    // In pre-v3, touch enable and scheduleUpdate was called here
+    // In v3, touch is enabled by setting userInteractionEnabled for the individual nodes
+    // Per frame update is automatically enabled, if update is overridden
+    
+}
 //
 //// -----------------------------------------------------------------------
 //
@@ -178,100 +183,104 @@
 //}
 //
 //// -----------------------------------------------------------------------
-//#pragma mark - Monster Spawn
+//#pragma mark - _enemy Spawn
 //// -----------------------------------------------------------------------
 //
-//- (void)addMonster:(CCTime)dt {
-//    
-//    CCSprite *monster = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/1-up.png"];
-//    
-//    // 1 - set random X and Y coordinates for enemy spawn points
-//    //    int minY = monster.contentSize.height / 2;
-//    //    int maxY = self.contentSize.height - monster.contentSize.height / 2;
-//    //    int rangeY = maxY - minY;
-//    //    int randomY = (arc4random() % rangeY) + minY;
-//    //
-//    //    int minX = monster.contentSize.height / 2;
-//    //    int maxX = self.contentSize.width - monster.contentSize.width / 2;
-//    //    int rangeX = maxX - minX;
-//    //    int randomX = (arc4random() % rangeX) + minX;
-//    
-//    // 2 - use switch cases to determine which quadrant the enemy spawns on
-//    //    CC_DEGREES_TO_RADIANS(<#__ANGLE__#>) is sin/cos in degrees or radians?
-//    int i = arc4random_uniform(90);
-//    switch (arc4random_uniform(4)) {
-//        case 0: monster.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 1
-//        case 1: monster.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 2
-//        case 2: monster.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 3
-//        case 3: monster.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 4
-//    }
-//    //    int i = arc4random() % 4;
-//    //    switch (i) {
-//    //        case 0: monster.position = CGPointMake(_player.position.x + cos(arc4random_uniform(360)),); // spawn right
-//    //        case 1: monster.position = CGPointMake((self.contentSize.width + monster.contentSize.width/2) * -1, randomY); // spawn left
-//    //        case 2: monster.position = CGPointMake(randomX, self.contentSize.height + monster.contentSize.height/2); // spawn up
-//    //        case 3: monster.position = CGPointMake(randomX, (self.contentSize.height + monster.contentSize.height/2) * -1); // spawn down
-//    
-//    //        case 0: monster.position = CGPointMake(self.contentSize.width + monster.contentSize.width/2, randomY); // spawn right
-//    //        case 1: monster.position = CGPointMake((self.contentSize.width + monster.contentSize.width/2) * -1, randomY); // spawn left
-//    //        case 2: monster.position = CGPointMake(randomX, self.contentSize.height + monster.contentSize.height/2); // spawn up
-//    //        case 3: monster.position = CGPointMake(randomX, (self.contentSize.height + monster.contentSize.height/2) * -1); // spawn down
-//    //    }
-//    //    monster.position = CGPointMake(self.contentSize.width + monster.contentSize.width/2, randomY); // original spawn statement before switch cases
-//    monster.physicsBody = [CCPhysicsBody bodyWithRect:(CGRect){CGPointZero, monster.contentSize} cornerRadius:0];
-//    monster.physicsBody.collisionGroup = @"monsterGroup";
-//    monster.physicsBody.collisionType  = @"monsterCollision";
-//    [_physicsWorld addChild:monster];
-//    
-//    // 3 - set random durations for enemy movement across the screen
-//    int minDuration = 2.0;
-//    int maxDuration = 4.0;
-//    int rangeDuration = maxDuration - minDuration;
-//    int randomDuration = (arc4random() % rangeDuration) + minDuration;
-//    
-//    // 4 - use switch cases to determine which side the enemy moves towards
-//    //    CCAction *actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(-monster.contentSize.width/2, randomY)];
-//    CCAction *actionMove;
-//    
-//    i = arc4random_uniform(91);
-//    switch (arc4random_uniform(4)) {
-//        case 0: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height)]; // move to quadrant 1
-//        case 1: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height)]; // move to quadrant 2
-//        case 2: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height)]; // move to quadrant 3
-//        case 3: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height)]; // move to quadrant 4
-//    }
-//    
-//    //    switch (i) {
-//    //        case 0: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(-self.contentSize.width, self.contentSize.height - randomY)]; // move left
-//    //        case 1: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(self.contentSize.width, self.contentSize.height - randomY)]; // move right
-//    //        case 2: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(self.contentSize.width - randomX, -self.contentSize.height)]; // move down
-//    //        case 3: actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(self.contentSize.width - randomX, self.contentSize.height)]; // move up
-//    //    }
-//    
-//    //    CCAction *actionMove = [C7y7CActionMoveTo actionWithDuration:randomDuration position:CGPointMake(_player.position.x + cos(arc4random_uniform(360)) * self.contentSize.height, _player.position.y + sin(arc4random_uniform(360)) * self.contentSize.height)];
-//    
-//    //    CCAction *actionMove = [CCActionMoveTo actionWithDuration:randomDuration position:CGPointMake(-monster.contentSize.width/2, self.contentSize.height - randomY)];
+- (void)spawnEnemy:(CCTime)dt {
+    
+//    CCSprite *_enemy = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/1-up.png"];
+//    Enemy *_enemy = (Enemy*) [CCBReader load: @"Enemy"];
+    
+    
+    CCSprite* _enemy = (CCSprite *)[CCBReader load: @"SimpleEnemy"];
+    
+    //    CC_DEGREES_TO_RADIANS(<#__ANGLE__#>) is sin/cos in degrees or radians?
+        // value between 0.f and 1.f
+        //    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
+        //    CGFloat range = maximumYPosition - minimumYPosition;
+        
+    int i = arc4random_uniform(360); //degrees or radians?
+    
+    [_physicsNode addChild: _enemy];
+    
+//    CGPoint enemyPos = [_physicsNode convertToNodeSpace:ccp(_player.position.x + cos(i) * 100, _player.position.y + sin(i) * 100)];
+    _enemy.position = ccp(_player.position.x + cos(i) * 200, _player.position.y + sin(i) * 200);
+//    _enemy.position = ccp(_player.position.x + 100, _player.position.y + 100);
+//    _enemy.position = _player.position;
+//    _enemy.position = ccp(100, 100);
+//    _enemy.position = enemyPos;
+    
+//    CGPoint penguinPosition = [_catapultArm convertToWorldSpace:ccp(34, 138)];
+//    _currentPenguin.position = [_physicsNode convertToNodeSpace:penguinPosition];
+    
+//    [_physicsNode addChild: _enemy];
+    
+//    [self.enemyArray addObject: _enemy];
+
+    i = arc4random_uniform(360);
+    CGPoint offset = ccp(cos(i), sin(i));
+    CGPoint normalizedOffset = ccpNormalize(offset);
+    CGPoint force = ccpMult(normalizedOffset, 20000); //set random speed for enemy?
+////
+//////    _enemy.physicsBody = [CCPhysicsBody bodyWithRect:(CGRect){CGPointZero, _enemy.contentSize} cornerRadius:0];
+//    _enemy.physicsBody.collisionGroup = @"enemyGroup";
+    _enemy.physicsBody.collisionType  = @"enemyCollision";
+    [_enemy.physicsBody applyForce:force];
+   
+    //enemy shooting lasers
+    
 //    CCAction *actionRemove = [CCActionRemove action];
-//    [monster runAction:[CCActionSequence actionWithArray:@[actionMove,actionRemove]]];
+//    [_enemy runAction:[CCActionSequence actionWithArray:@[actionMove,actionRemove]]];
+}
+
+- (void) update:(CCTime)delta {
+    [self updateEnemyArray];
+//    [self updateEnemyProjectileArray];
+//    [self updatePlayerProjectileArray];
+}
+
+- (void) updateEnemyArray {
+    for (int i = 0; i < self.enemyArray.count; i++) {
+        CGPoint enemyPos = ((CCSprite*) self.enemyArray[i]).position;
+        CGPoint playerPos = ccp(self.contentSize.width/2, self.contentSize.height/2);
+        CGPoint distance = ccpSub(enemyPos, playerPos);
+        if (ccpLength(distance) >= self.contentSize.width*2) { //distance from player?
+            [self.enemyArray[i] removeFromParent];
+            [self.enemyArray removeObjectAtIndex:i];
+        }
+    }
+}
+
+//- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy wildcard:(CCNode *)object {
+//    [enemy removeFromParent];
+//    [self.enemyArray removeObject:enemy];
+//    [object removeFromParent];
 //}
-//
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair monsterCollision:(CCNode *)monster projectileCollision:(CCNode *)projectile {
-//    [monster removeFromParent];
-//    [projectile removeFromParent];
-//    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy projectileCollision:(CCNode *)projectile {
+    [enemy removeFromParent];
+    [self.enemyArray removeObject:enemy];
+    [projectile removeFromParent];
+//    [self.playerProjectileArray removeObject:projectile];
+    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+    return YES;
+}
+
+//- (BOOL) ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair playerCollision:(CCNode *)player wildcard:(CCNode *)object {
 //    return YES;
 //}
-//
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair monsterCollision:(CCNode *)monster playerCollision:(CCNode *)player {
-//    [monster removeFromParent];
-//    [player removeFromParent];
-//    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-//    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
-//    [[CCDirector sharedDirector] presentScene:gameplayScene];
-////    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-//    //    [self lose];
-//    return YES;
-//}
+
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
+    [enemy removeFromParent];
+    [self.enemyArray removeObject:enemy];
+    [player removeFromParent];
+    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+    [[CCDirector sharedDirector] presentScene:recapScene];
+//    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+    //    [self lose];
+    return YES;
+}
 //
 //- (void)lose {
 ////    CCLOG(@"You are dead");

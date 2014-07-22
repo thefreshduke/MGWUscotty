@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 Apportable. All rights reserved.
 //
 
-#import "CCPhysicsNode.h"
+#import "CCNode.h"
 
-@interface Player : CCPhysicsNode
+@interface Player : CCNode
 
 @end

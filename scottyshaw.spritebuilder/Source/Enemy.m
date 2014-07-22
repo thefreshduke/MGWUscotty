@@ -8,32 +8,51 @@
 
 #import "Enemy.h"
 
-@implementation Enemy {
+@implementation Enemy
 //    CCNode *_enemy;
-}
-//
+    // add enemy/laser collision group
+//}
+
 //#define ARC4RANDOM_MAX      0x100000000
-//
-//// visibility on a 3,5-inch iPhone ends a 88 points and we want some meat
+
+// visibility on a 3,5-inch iPhone ends a 88 points and we want some meat
 //static const CGFloat minimumYPosition = 200.f;
-//// visibility ends at 480 and we want some meat
+// visibility ends at 480 and we want some meat
 //static const CGFloat maximumYPosition = 380.f;
-//
+
 //- (void)didLoadFromCCB {
-//    _enemy.physicsBody.collisionType = @"Gameplay";
+//    _enemy.physicsBody.collisionGroup = @"enemyGroup";
+//    _enemy.physicsBody.collisionType = @"enemyCollision";
 //    _enemy.physicsBody.sensor = YES;
 //}
-//
-//- (void)randomSpawn {
-//    // value between 0.f and 1.f
+
+//- (void)spawnEnemy:(CCTime)dt {
+    // value between 0.f and 1.f
 //    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
 //    CGFloat range = maximumYPosition - minimumYPosition;
-//    self.position = ccp(self.position.x, minimumYPosition + (random * range));
+//    
+//    int i = arc4random_uniform(360);
+//    _enemy.position = ccp(self.contentSize.width/2 + cos(i) * self.contentSize.width, self.contentSize.height/2 + cos(i) * self.contentSize.height);
+//    self.enemyArray add
+    
+//    CGPoint offset    = ccpSub(touchLocation, _player.position);
+    //    float   ratio     = offset.y/offset.x;
+    //    CGPoint normalizedOffset = ccpNormalize(offset);
+    //    CGPoint force = ccpMult(normalizedOffset, 200);
+    //    //    [projectile.physicsBody applyForce:force];
+    
+//    int i = arc4random_uniform(90);
+//    switch (arc4random_uniform(4)) {
+//        case 0: _enemy.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 1
+//        case 1: _enemy.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 2
+//        case 2: _enemy.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 3
+//        case 3: _enemy.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 4
+//    }
 //}
-//
+
 //- (void)addMonster:(CCTime)dt {
 //    
-//    CCSprite *monster = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/1-up.png"];
+////    CCSprite *monster = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/1-up.png"];
 //    
 //    // 1 - set random X and Y coordinates for enemy spawn points
 //    //    int minY = monster.contentSize.height / 2;
@@ -50,10 +69,10 @@
 //    //    CC_DEGREES_TO_RADIANS(<#__ANGLE__#>) is sin/cos in degrees or radians?
 //    int i = arc4random_uniform(90);
 //    switch (arc4random_uniform(4)) {
-//        case 0: monster.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 1
-//        case 1: monster.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 2
-//        case 2: monster.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 3
-//        case 3: monster.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 4
+//        case 0: _enemy.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 1
+//        case 1: _enemy.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y + sin(i) * self.contentSize.height); // move to quadrant 2
+//        case 2: _enemy.position = CGPointMake(_player.position.x - cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 3
+//        case 3: _enemy.position = CGPointMake(_player.position.x + cos(i) * self.contentSize.height, _player.position.y - sin(i) * self.contentSize.height); // move to quadrant 4
 //    }
 //    //    int i = arc4random() % 4;
 //    //    switch (i) {

@@ -9,7 +9,7 @@
 #import "MainScene.h"
 
 @implementation MainScene {
-    CCPhysicsNode *_player;
+    CCPhysicsNode *_player; //keep this to allow tilt to move player on title screen
 }
 
 - (void)startGame {
