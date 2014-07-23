@@ -117,6 +117,7 @@
     int randomDuration = (arc4random() % rangeDuration) + minDuration;
     
     self.enemyArray = [[NSMutableArray alloc] init];
+    self.playerWeaponArray = [[NSMutableArray alloc] init];
     [self schedule:@selector(spawnEnemy:) interval:randomDuration];
     
     // In pre-v3, touch enable and scheduleUpdate was called here
@@ -124,7 +125,7 @@
     // Per frame update is automatically enabled, if update is overridden
     
 }
-//
+
 //// -----------------------------------------------------------------------
 //
 //- (void)onExit
@@ -137,39 +138,49 @@
 //#pragma mark - Touch Handler
 //// -----------------------------------------------------------------------
 //
-//- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-//    // 1
-//    CGPoint touchLocation = [touch locationInNode:self];
-//    
-//    // 2
-//    CGPoint offset    = ccpSub(touchLocation, _player.position);
+- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    
+    CCSprite* _projectile = (CCSprite *)[CCBReader load: @"PlayerWeapon"];
+    
+    #define screenWidth [[CCDirector sharedDirector] viewSize].width
+    #define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
+    // 1
+    CGPoint touchLocation = [touch locationInNode:self];
+    
+    // 2
+    _projectile.position = _player.position;
+    [_physicsNode addChild:_projectile];
+    [self.playerWeaponArray addObject: _projectile];
+    CGPoint offset    = ccpSub(touchLocation, _player.position);
 //    float   ratio     = offset.y/offset.x;
-//    CGPoint normalizedOffset = ccpNormalize(offset);
-//    CGPoint force = ccpMult(normalizedOffset, 200);
-//    //    [projectile.physicsBody applyForce:force];
+    CGPoint normalizedOffset = ccpNormalize(offset);
+//    CGPoint projectileOrigin = 0;
+    CGPoint force = ccpMult(normalizedOffset, 50000); //projectiles work just fine if player is not a child of the physicsNode in spritebuilder/Gameplay; unable to die however... mushrooms don't contact with player despite moving through the same spot
+    _projectile.physicsBody.collisionType  = @"projectileCollision";
+    [_projectile.physicsBody applyForce:force];
 //    int     targetX   = _player.contentSize.width/2 + self.contentSize.width;
 //    int     targetY   = (targetX*ratio) + _player.position.y;
 //    CGPoint targetPosition = ccp(targetX,targetY);
-//    
-//    // 3
+    
+    // 3
 //    CCSprite *projectile = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/jack-o-lantern.png"];
-//    projectile.position = _player.position;
-//    projectile.physicsBody = [CCPhysicsBody bodyWithCircleOfRadius:projectile.contentSize.width/2.0f andCenter:projectile.anchorPointInPoints];
-//    projectile.physicsBody.collisionGroup = @"playerGroup";
-//    projectile.physicsBody.collisionType  = @"projectileCollision";
-//    [_physicsWorld addChild:projectile];
-//    
-//    // 4
+//    _projectile.position = _player.position;
+//    _projectile.physicsBody = [CCPhysicsBody bodyWithCircleOfRadius:_projectile.contentSize.width/2.0f andCenter:_projectile.anchorPointInPoints];
+//    _projectile.physicsBody.collisionGroup = @"playerGroup";
+//    _projectile.physicsBody.collisionType  = @"projectileCollision";
+    
+    // 4
 //    CCActionMoveTo *actionMove   = [CCActionMoveTo actionWithDuration:0.5f position:targetPosition];
 //    CCActionRemove *actionRemove = [CCActionRemove action];
-//    [projectile runAction:[CCActionSequence actionWithArray:@[actionMove,actionRemove]]];
+//    [_projectile runAction:[CCActionSequence actionWithArray:@[actionMove,actionRemove]]];
 //    CCActionRotateBy* actionSpin = [CCActionRotateBy actionWithDuration:0.25f angle:360];
-//    [projectile runAction:[CCActionRepeatForever actionWithAction:actionSpin]];
-//    
-//    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/M1-Garand.caf"];
-//    //    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Mauser-K98.caf"];
-//}
-//
+//    [_projectile runAction:[CCActionRepeatForever actionWithAction:actionSpin]];
+    
+    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/M1-Garand.caf"];
+    //    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Mauser-K98.caf"];
+}
+
 //// -----------------------------------------------------------------------
 //#pragma mark - Button Callbacks
 //// -----------------------------------------------------------------------
@@ -191,7 +202,6 @@
 //    CCSprite *_enemy = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/1-up.png"];
 //    Enemy *_enemy = (Enemy*) [CCBReader load: @"Enemy"];
     
-    
     CCSprite* _enemy = (CCSprite *)[CCBReader load: @"SimpleEnemy"];
 //    CCSprite* _enemy = (CCSprite *)[CCBReader load: @"Enemy"]; //no force applied for some reason?
     
@@ -199,39 +209,33 @@
         // value between 0.f and 1.f
         //    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
         //    CGFloat range = maximumYPosition - minimumYPosition;
-        
+    
+    #define screenWidth [[CCDirector sharedDirector] viewSize].width
+    #define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
     int i = arc4random_uniform(360); //degrees or radians?
     
 //    [_physicsNode addChild: _enemy];
 //    [self.enemyArray addObject: _enemy];
     
-//    CGPoint enemyPos = [_physicsNode convertToNodeSpace:ccp(_player.position.x + cos(i) * 100, _player.position.y + sin(i) * 100)];
+//    _enemy.position = ccp(_player.position.x + cos(i) * screenWidth * 1.1, _player.position.y + sin(i) * screenWidth * 1.1);
     _enemy.position = ccp(_player.position.x + cos(i) * 200, _player.position.y + sin(i) * 200);
-//    _enemy.position = ccp(_player.position.x + 100, _player.position.y + 100);
-//    _enemy.position = _player.position;
-//    _enemy.position = ccp(100, 100);
-//    _enemy.position = enemyPos;
-    
-//    CGPoint penguinPosition = [_catapultArm convertToWorldSpace:ccp(34, 138)];
-//    _currentPenguin.position = [_physicsNode convertToNodeSpace:penguinPosition];
     
     [_physicsNode addChild: _enemy];
     [self.enemyArray addObject: _enemy]; // should this go after CGPoint force?
 
     i = arc4random_uniform(360);
-    CGPoint offset = ccp(cos(i), sin(i));
+//    CGPoint offset = ccp(cos(i), sin(i));
+    CGPoint offset = ccp(cos(i), sin(i)); //target destination - player location to get some kind of negatives so force calculates correctly
     CGPoint normalizedOffset = ccpNormalize(offset);
-    CGPoint force = ccpMult(normalizedOffset, 20000); //set random speed for enemy?
-
-//////    _enemy.physicsBody = [CCPhysicsBody bodyWithRect:(CGRect){CGPointZero, _enemy.contentSize} cornerRadius:0];
-//    _enemy.physicsBody.collisionGroup = @"enemyGroup";
+    CGPoint force = ccpAdd(ccpMult(normalizedOffset, 20000), _player.position); //set random speed for enemy?
+//    CGPoint force = ccpMult(normalizedOffset, 1);
+    
     _enemy.physicsBody.collisionType  = @"enemyCollision";
     [_enemy.physicsBody applyForce:force];
+    
    
     //enemy shooting lasers
-    
-//    CCAction *actionRemove = [CCActionRemove action];
-//    [_enemy runAction:[CCActionSequence actionWithArray:@[actionMove,actionRemove]]];
 }
 
 - (void) update:(CCTime)delta {
@@ -250,7 +254,8 @@
         CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
         CGPoint distance = ccpSub(enemyPos, playerPos);
         
-        if (ccpLength(distance) >= 225 || ccpLength(distance) <= 150) {
+//        if (ccpLength(distance) >= screenWidth * 2.0 || ccpLength(distance) <= 150) { //testing with "invincibility"
+        if (ccpLength(distance) >= screenWidth * 2.0) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
         }
@@ -262,6 +267,10 @@
 //    [self.enemyArray removeObject:enemy];
 //    [object removeFromParent];
 //}
+
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair playerCollision:(CCNode *)player projectileCollision:(CCNode *)projectile {
+    return NO;
+}
 
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy projectileCollision:(CCNode *)projectile {
     [enemy removeFromParent];

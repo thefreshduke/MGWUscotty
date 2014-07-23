@@ -11,5 +11,6 @@
 @interface Gameplay : CCNode <CCPhysicsCollisionDelegate>
 
 @property (nonatomic, strong) NSMutableArray* enemyArray;
+@property (nonatomic, strong) NSMutableArray* playerWeaponArray;
 
 @end
