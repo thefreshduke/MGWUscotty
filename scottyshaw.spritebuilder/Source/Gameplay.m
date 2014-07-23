@@ -202,6 +202,7 @@
     int i = arc4random_uniform(360); //degrees or radians?
     
     [_physicsNode addChild: _enemy];
+    [self.enemyArray addObject: _enemy];
     
 //    CGPoint enemyPos = [_physicsNode convertToNodeSpace:ccp(_player.position.x + cos(i) * 100, _player.position.y + sin(i) * 100)];
     _enemy.position = ccp(_player.position.x + cos(i) * 200, _player.position.y + sin(i) * 200);
@@ -221,7 +222,7 @@
     CGPoint offset = ccp(cos(i), sin(i));
     CGPoint normalizedOffset = ccpNormalize(offset);
     CGPoint force = ccpMult(normalizedOffset, 20000); //set random speed for enemy?
-////
+
 //////    _enemy.physicsBody = [CCPhysicsBody bodyWithRect:(CGRect){CGPointZero, _enemy.contentSize} cornerRadius:0];
 //    _enemy.physicsBody.collisionGroup = @"enemyGroup";
     _enemy.physicsBody.collisionType  = @"enemyCollision";
@@ -240,11 +241,16 @@
 }
 
 - (void) updateEnemyArray {
+    
+    #define screenWidth [[CCDirector sharedDirector] viewSize].width
+    #define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
     for (int i = 0; i < self.enemyArray.count; i++) {
         CGPoint enemyPos = ((CCSprite*) self.enemyArray[i]).position;
-        CGPoint playerPos = ccp(self.contentSize.width/2, self.contentSize.height/2);
+        CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
         CGPoint distance = ccpSub(enemyPos, playerPos);
-        if (ccpLength(distance) >= self.contentSize.width*2) { //distance from player?
+        
+        if (ccpLength(distance) >= screenWidth*2 || ccpLength(distance) <= 150) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
         }
