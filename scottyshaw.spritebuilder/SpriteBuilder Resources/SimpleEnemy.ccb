@@ -62,7 +62,7 @@
 			<key>collisionType</key>
 			<string></string>
 			<key>cornerRadius</key>
-			<real>50</real>
+			<real>25</real>
 			<key>density</key>
 			<real>1</real>
 			<key>dynamic</key>
@@ -74,8 +74,8 @@
 			<key>points</key>
 			<array>
 				<array>
-					<real>50</real>
-					<real>48.5</real>
+					<real>25</real>
+					<real>24</real>
 				</array>
 			</array>
 			<key>polygons</key>
@@ -137,7 +137,7 @@
 				<key>value</key>
 				<array>
 					<string></string>
-					<string>Images/mushroom.png</string>
+					<string>Images/rsz_1mushroom.png</string>
 				</array>
 			</dict>
 			<dict>

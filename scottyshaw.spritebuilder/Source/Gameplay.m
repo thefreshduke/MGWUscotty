@@ -193,6 +193,7 @@
     
     
     CCSprite* _enemy = (CCSprite *)[CCBReader load: @"SimpleEnemy"];
+//    CCSprite* _enemy = (CCSprite *)[CCBReader load: @"Enemy"]; //no force applied for some reason?
     
     //    CC_DEGREES_TO_RADIANS(<#__ANGLE__#>) is sin/cos in degrees or radians?
         // value between 0.f and 1.f
@@ -201,8 +202,8 @@
         
     int i = arc4random_uniform(360); //degrees or radians?
     
-    [_physicsNode addChild: _enemy];
-    [self.enemyArray addObject: _enemy];
+//    [_physicsNode addChild: _enemy];
+//    [self.enemyArray addObject: _enemy];
     
 //    CGPoint enemyPos = [_physicsNode convertToNodeSpace:ccp(_player.position.x + cos(i) * 100, _player.position.y + sin(i) * 100)];
     _enemy.position = ccp(_player.position.x + cos(i) * 200, _player.position.y + sin(i) * 200);
@@ -214,9 +215,8 @@
 //    CGPoint penguinPosition = [_catapultArm convertToWorldSpace:ccp(34, 138)];
 //    _currentPenguin.position = [_physicsNode convertToNodeSpace:penguinPosition];
     
-//    [_physicsNode addChild: _enemy];
-    
-//    [self.enemyArray addObject: _enemy];
+    [_physicsNode addChild: _enemy];
+    [self.enemyArray addObject: _enemy]; // should this go after CGPoint force?
 
     i = arc4random_uniform(360);
     CGPoint offset = ccp(cos(i), sin(i));
@@ -250,7 +250,7 @@
         CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
         CGPoint distance = ccpSub(enemyPos, playerPos);
         
-        if (ccpLength(distance) >= screenWidth*2 || ccpLength(distance) <= 150) {
+        if (ccpLength(distance) >= 225 || ccpLength(distance) <= 150) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
         }
