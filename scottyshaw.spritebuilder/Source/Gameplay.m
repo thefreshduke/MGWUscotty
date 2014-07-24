@@ -230,7 +230,6 @@
     
     _enemy.physicsBody.collisionType  = @"enemyCollision";
     [_enemy.physicsBody applyForce:force];
-    
    
     //enemy shooting lasers
     }
@@ -290,6 +289,12 @@
         }
     }
 }
+
+//- (void) updateEnemyProjectileArray {
+//    enemy only fires within a certain radius of the player
+//    aims at an enemyAimCircle
+//    add some randomized time length of cooldown before firing again?
+//}
 
 //- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy wildcard:(CCNode *)object {
 //    [enemy removeFromParent];
