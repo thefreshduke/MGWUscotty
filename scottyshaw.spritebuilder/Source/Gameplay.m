@@ -34,8 +34,7 @@
     self.userInteractionEnabled = TRUE;
     _physicsNode.collisionDelegate = self;
     _physicsNode.debugDraw = TRUE;
-    //cartman off center
-    //enemy way too big
+    //enemy too big?
 }
 
 //- (id)init
@@ -69,45 +68,45 @@
 //    _player.physicsBody = [CCPhysicsBody bodyWithRect:(CGRect){CGPointZero, _player.contentSize} cornerRadius:0]; // 1
 //    _player.physicsBody.collisionGroup = @"playerGroup"; // 2
 //    _player.physicsBody.collisionType  = @"playerCollision";
-//    
+    
 //    [_physicsWorld addChild:_player];
-//    
+    
 //    //    _weapon = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/ak47.png"];
 //    //    _weapon.position  = ccp(self.contentSize.width/8,self.contentSize.height/2);
-//    
+    
 //    // Animate sprite with action
 //    //CCActionRotateBy* actionSpin = [CCActionRotateBy actionWithDuration:1.5f angle:360];
 //    //[_player runAction:[CCActionRepeatForever actionWithAction:actionSpin]];
-//    
+    
 //    // Create a back button
 //    CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
 //    backButton.positionType = CCPositionTypeNormalized;
 //    backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
 //    [backButton setTarget:self selector:@selector(onBackClicked:)];
 //    [self addChild:backButton];
-//    
+    
 //    // Kill count
 //    CCLabelTTF *label = [CCLabelTTF labelWithString:@"Hello World" fontName:@"Chalkduster" fontSize:18.0f];
 //    label.positionType = CCPositionTypeNormalized;
 //    label.color = [CCColor redColor];
 //    label.position = ccp(0.15f, 0.95f); // Middle of screen
 //    [self addChild:label];
-//    
+    
 //    // done
 //	return self;
 //}
-//
+
 //// -----------------------------------------------------------------------
-//
+
 //- (void)dealloc
 //{
 //    // clean up code goes here
 //}
-//
+
 //// -----------------------------------------------------------------------
 //#pragma mark - Enter & Exit
 //// -----------------------------------------------------------------------
-//
+
 - (void)onEnter
 {
     // always call super onEnter first
@@ -129,17 +128,17 @@
 }
 
 //// -----------------------------------------------------------------------
-//
+
 //- (void)onExit
 //{
 //    // always call super onExit last
 //    [super onExit];
 //}
-//
+
 //// -----------------------------------------------------------------------
 //#pragma mark - Touch Handler
 //// -----------------------------------------------------------------------
-//
+
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     
     CCSprite* _projectile = (CCSprite *)[CCBReader load: @"PlayerWeapon"];
@@ -194,15 +193,13 @@
 //    [[CCDirector sharedDirector] presentScene:mainScene];
 ////    [[CCDirector sharedDirector] replaceScene:[@"mainScene"] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
 //}
-//
+
 //// -----------------------------------------------------------------------
 //#pragma mark - _enemy Spawn
 //// -----------------------------------------------------------------------
-//
+
 - (void)spawnEnemy:(CCTime)dt {
-    for (int i = 0; i < (arc4random_uniform(2) + 1); i++) { //allow game to spawn multiple enemy simultaneously
-//    CCSprite *_enemy = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/1-up.png"];
-//    Enemy *_enemy = (Enemy*) [CCBReader load: @"Enemy"];
+    for (int i = 0; i < (arc4random_uniform(2) + 1); i++) { //spawn multiple enemies simultaneously
     
     CCSprite* _enemy = (CCSprite *)[CCBReader load: @"SimpleEnemy"];
 //    CCSprite* _enemy = (CCSprite *)[CCBReader load: @"Enemy"]; //no force applied for some reason?
@@ -217,15 +214,14 @@
     
     int i = arc4random_uniform(360); //degrees or radians?
     
-//    _enemy.position = ccp(_player.position.x + cos(i) * screenWidth * 1.1, _player.position.y + sin(i) * screenWidth * 1.1);
     _enemy.position = ccp(_player.position.x + cos(i) * screenWidth * 0.55, _player.position.y + sin(i) * screenWidth * 0.55);
     
     [_physicsNode addChild: _enemy];
-    [self.enemyArray addObject: _enemy]; // should this go after CGPoint force?
+    [self.enemyArray addObject: _enemy];
     
     i = arc4random_uniform(360);
 //    CGPoint offset = ccp(cos(i), sin(i));
-    CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y); //target destination - player location to get some kind of negatives so force calculates correctly
+    CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
         
         // can tighten 200-radius for denser enemy ramming... maybe adjust other circle radiuses to happen closer off-screen
         
@@ -355,13 +351,6 @@
 //    gameEndPopover.zOrder = INT_MAX;
 ////    [gameEndPopover setMessage:message score:self.score];
 //    [self addChild:gameEndPopover];
-//}
-
-//- (void)goToRecap {
-//    CCScene *menuScene = [CCBReader loadAsScene:@"Recap"];
-//    //    [[CCDirector sharedDirector] presentScene:menuScene];
-//    CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
-//    [[CCDirector sharedDirector] presentScene:menuScene withTransition:transition];
 //}
 
 //- (void)lose {
