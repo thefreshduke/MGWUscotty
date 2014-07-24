@@ -117,7 +117,7 @@
     int randomDuration = (arc4random() % rangeDuration) + minDuration;
     
     self.enemyArray = [[NSMutableArray alloc] init];
-    self.playerWeaponArray = [[NSMutableArray alloc] init];
+    self.playerProjectileArray = [[NSMutableArray alloc] init];
     [self schedule:@selector(spawnEnemy:) interval:randomDuration];
     
     // In pre-v3, touch enable and scheduleUpdate was called here
@@ -151,7 +151,7 @@
     // 2
     _projectile.position = _player.position;
     [_physicsNode addChild:_projectile];
-    [self.playerWeaponArray addObject: _projectile];
+    [self.playerProjectileArray addObject: _projectile];
     CGPoint offset    = ccpSub(touchLocation, _player.position);
 //    float   ratio     = offset.y/offset.x;
     CGPoint normalizedOffset = ccpNormalize(offset);
@@ -242,7 +242,7 @@
 - (void) update:(CCTime)delta {
     [self updateEnemyArray];
 //    [self updateEnemyProjectileArray];
-//    [self updatePlayerProjectileArray];
+    [self updatePlayerProjectileArray];
 }
 
 - (void) updateEnemyArray {
@@ -259,6 +259,22 @@
         if (ccpLength(distance) >= screenWidth * 2.0) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
+        }
+    }
+}
+
+- (void) updatePlayerProjectileArray {
+    #define screenWidth [[CCDirector sharedDirector] viewSize].width
+    #define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
+    for (int i = 0; i < self.playerProjectileArray.count; i++) {
+        CGPoint playerProjectilePos = ((CCSprite*) self.playerProjectileArray[i]).position;
+        CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
+        CGPoint distance = ccpSub(playerProjectilePos, playerPos);
+        
+        if (ccpLength(distance) >= screenWidth * 2.0) {
+            [self.playerProjectileArray[i] removeFromParent];
+            [self.playerProjectileArray removeObjectAtIndex:i];
         }
     }
 }
@@ -281,7 +297,7 @@
     [enemy removeFromParent];
     [self.enemyArray removeObject:enemy];
     [projectile removeFromParent];
-//    [self.playerProjectileArray removeObject:projectile];
+    [self.playerProjectileArray removeObject:projectile];
     [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
     return YES;
 }
@@ -291,22 +307,22 @@
 //}
 
 // modified player-enemy interaction for invincibility
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
-//    return NO;
-//}
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
+    return NO;
+}
 
 // modified player-enemy interaction for dying
-- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
-    [enemy removeFromParent];
-    [self.enemyArray removeObject:enemy];
-    [player removeFromParent];
-    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-    [[CCDirector sharedDirector] presentScene:recapScene];
-//    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-    //    [self lose];
-    return YES;
-}
+//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
+//    [enemy removeFromParent];
+//    [self.enemyArray removeObject:enemy];
+//    [player removeFromParent];
+//    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+//    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+//    [[CCDirector sharedDirector] presentScene:recapScene];
+////    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+//    //    [self lose];
+//    return YES;
+//}
 
 //- (void)lose {
 ////    CCLOG(@"You are dead");
