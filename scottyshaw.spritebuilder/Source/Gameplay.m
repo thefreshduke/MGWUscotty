@@ -198,7 +198,7 @@
 //// -----------------------------------------------------------------------
 //
 - (void)spawnEnemy:(CCTime)dt {
-    
+    for (int i = 0; i < (arc4random_uniform(2) + 1); i++) { //allow game to spawn multiple enemy simultaneously
 //    CCSprite *_enemy = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/1-up.png"];
 //    Enemy *_enemy = (Enemy*) [CCBReader load: @"Enemy"];
     
@@ -236,6 +236,7 @@
     
    
     //enemy shooting lasers
+    }
 }
 
 - (void) update:(CCTime)delta {
@@ -254,7 +255,7 @@
         CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
         CGPoint distance = ccpSub(enemyPos, playerPos);
         
-//        if (ccpLength(distance) >= screenWidth * 2.0 || ccpLength(distance) <= 150) { //testing with "invincibility"
+//        if (ccpLength(distance) >= screenWidth * 2.0 || ccpLength(distance) <= 100) { //testing with "invincibility"
         if (ccpLength(distance) >= screenWidth * 2.0) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
@@ -272,6 +273,10 @@
     return NO;
 }
 
+//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair physicsNodeCollision:(CCNode *)physicsNode projectileCollision:(CCNode *)projectile {
+//    return NO;
+//}
+
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy projectileCollision:(CCNode *)projectile {
     [enemy removeFromParent];
     [self.enemyArray removeObject:enemy];
@@ -285,6 +290,12 @@
 //    return YES;
 //}
 
+// modified player-enemy interaction for invincibility
+//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
+//    return NO;
+//}
+
+// modified player-enemy interaction for dying
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
     [enemy removeFromParent];
     [self.enemyArray removeObject:enemy];
@@ -296,7 +307,7 @@
     //    [self lose];
     return YES;
 }
-//
+
 //- (void)lose {
 ////    CCLOG(@"You are dead");
 ////    NSNumber *highScore = [[NSUserDefaults standardUserDefaults] objectForKey:@"highScore"];

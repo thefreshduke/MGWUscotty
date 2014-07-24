@@ -12,7 +12,10 @@
 
 - (void)didLoadFromCCB
 {
-//    self.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    #define screenWidth [[CCDirector sharedDirector] viewSize].width
+    #define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
+    self.position = ccp(screenWidth/2, screenHeight/2);
     self.physicsBody.collisionType = @"playerCollision";
 }
 
