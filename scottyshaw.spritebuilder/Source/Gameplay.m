@@ -11,12 +11,14 @@
 #import "Recap.h"
 #import "Player.h"
 #import "Enemy.h"
+#import <CoreMotion/CoreMotion.h>
 
 @implementation Gameplay {
     CCNode *_levelNode;
     Player *_player;
 //    CCSprite *_enemy;
     CCPhysicsNode *_physicsNode;
+    CMMotionManager *_motionManager; //create only one instance of a motion manager
 }
 
 //+ (Gameplay *)scene
@@ -215,21 +217,20 @@
     
     int i = arc4random_uniform(360); //degrees or radians?
     
-//    [_physicsNode addChild: _enemy];
-//    [self.enemyArray addObject: _enemy];
-    
 //    _enemy.position = ccp(_player.position.x + cos(i) * screenWidth * 1.1, _player.position.y + sin(i) * screenWidth * 1.1);
-    _enemy.position = ccp(_player.position.x + cos(i) * 200, _player.position.y + sin(i) * 200);
+    _enemy.position = ccp(_player.position.x + cos(i) * screenWidth * 0.55, _player.position.y + sin(i) * screenWidth * 0.55);
     
     [_physicsNode addChild: _enemy];
     [self.enemyArray addObject: _enemy]; // should this go after CGPoint force?
-
+    
     i = arc4random_uniform(360);
 //    CGPoint offset = ccp(cos(i), sin(i));
-    CGPoint offset = ccp(cos(i), sin(i)); //target destination - player location to get some kind of negatives so force calculates correctly
-    CGPoint normalizedOffset = ccpNormalize(offset);
-    CGPoint force = ccpAdd(ccpMult(normalizedOffset, 20000), _player.position); //set random speed for enemy?
-//    CGPoint force = ccpMult(normalizedOffset, 1);
+    CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y); //target destination - player location to get some kind of negatives so force calculates correctly
+        
+        // can tighten 200-radius for denser enemy ramming... maybe adjust other circle radiuses to happen closer off-screen
+        
+    CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyDestination, _enemy.position));
+    CGPoint force = ccpMult(normalizedOffset, 12000 + arc4random_uniform(20000)); //set randomized speed
     
     _enemy.physicsBody.collisionType  = @"enemyCollision";
     [_enemy.physicsBody applyForce:force];
@@ -243,6 +244,22 @@
     [self updateEnemyArray];
 //    [self updateEnemyProjectileArray];
     [self updatePlayerProjectileArray];
+    
+//    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+//    CMAcceleration acceleration = accelerometerData.acceleration;
+//    
+//    //define movement variables
+//    CGFloat newXPosition = _player.position.x - acceleration.y * speedMultiplier * delta;
+//    CGFloat newYPosition = _player.position.y + acceleration.x * speedMultiplier * delta + Y_offset;
+//    newXPosition = clampf(newXPosition, 0, self.boundingBox.size.width);
+//    newYPosition = clampf(newYPosition, 0, self.boundingBox.size.height);
+//    
+//    //record last position in order to calculate appropriate rotation
+//    float lastX =_player.position.x;
+//    float lastY =_player.position.y;
+//    
+//    //move avatar
+//    _player.position = CGPointMake(newXPosition, newYPosition);
 }
 
 - (void) updateEnemyArray {
@@ -255,8 +272,7 @@
         CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
         CGPoint distance = ccpSub(enemyPos, playerPos);
         
-//        if (ccpLength(distance) >= screenWidth * 2.0 || ccpLength(distance) <= 100) { //testing with "invincibility"
-        if (ccpLength(distance) >= screenWidth * 2.0) {
+        if (ccpLength(distance) >= screenWidth * 0.75) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
         }
@@ -272,7 +288,7 @@
         CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
         CGPoint distance = ccpSub(playerProjectilePos, playerPos);
         
-        if (ccpLength(distance) >= screenWidth * 2.0) {
+        if (ccpLength(distance) >= screenWidth * 0.75) {
             [self.playerProjectileArray[i] removeFromParent];
             [self.playerProjectileArray removeObjectAtIndex:i];
         }

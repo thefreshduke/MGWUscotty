@@ -81,10 +81,7 @@
 			<true/>
 		</dict>
 		<key>Images</key>
-		<dict>
-			<key>isDirty</key>
-			<true/>
-		</dict>
+		<dict/>
 		<key>Sprites</key>
 		<dict/>
 		<key>ccbResources</key>
