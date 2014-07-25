@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSMutableArray* enemyArray;
 @property (nonatomic, strong) NSMutableArray* playerProjectileArray;
+@property (nonatomic, strong) NSMutableArray* enemyProjectileArray;
 
 @end
