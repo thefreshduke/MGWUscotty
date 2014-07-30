@@ -260,21 +260,24 @@
     [self updatePlayerProjectileArray];
     [self updateEnemyProjectileArray];
     
-    //    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
-    //    CMAcceleration acceleration = accelerometerData.acceleration;
-    //
-    //    //define movement variables
-    //    CGFloat newXPosition = _player.position.x - acceleration.y * speedMultiplier * delta;
-    //    CGFloat newYPosition = _player.position.y + acceleration.x * speedMultiplier * delta + Y_offset;
-    //    newXPosition = clampf(newXPosition, 0, self.boundingBox.size.width);
-    //    newYPosition = clampf(newYPosition, 0, self.boundingBox.size.height);
-    //
-    //    //record last position in order to calculate appropriate rotation
-    //    float lastX =_player.position.x;
-    //    float lastY =_player.position.y;
-    //
-    //    //move avatar
-    //    _player.position = CGPointMake(newXPosition, newYPosition);
+//    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+//    CMAcceleration acceleration = accelerometerData.acceleration;
+//    
+//    //define movement variables
+//    CGFloat newXPosition = _player.position.x - acceleration.y * 1500 * delta;
+//    CGFloat newYPosition = _player.position.y + acceleration.x * 1500 * delta + 10;
+//    newXPosition = clampf(newXPosition, 0, self.boundingBox.size.width);
+//    newYPosition = clampf(newYPosition, 0, self.boundingBox.size.height);
+//    
+//    //record last position in order to calculate appropriate rotation
+//    float lastX =_player.position.x;
+//    float lastY =_player.position.y;
+//    
+//    //move avatar
+//    _player.position = CGPointMake(newXPosition, newYPosition);
+//    
+//    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player worldBoundary:self.boundingBox];
+//    [self runAction:follow];
 }
 
 //doesn't shoot if player holds down one spot and taps another?
@@ -351,6 +354,10 @@
     return NO;
 }
 
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile enemyProjectileCollision:(CCNode *)enemyProjectile {
+    return NO;
+}
+
 //- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision1:(CCNode *)enemyProjectile1 enemyProjectileCollision2:(CCNode *)enemyProjectile2 {
 //    return NO;
 //}
@@ -391,22 +398,22 @@
 //}
 
 //player-enemyProjectile interaction for dying
-- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
-    [enemyProjectile removeFromParent];
-    [self.enemyProjectileArray removeObject:enemyProjectile];
-    [player removeFromParent];
-    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-    [[CCDirector sharedDirector] presentScene:recapScene];
-    //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-    //    [self lose];
-    return YES;
-}
+//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
+//    [enemyProjectile removeFromParent];
+//    [self.enemyProjectileArray removeObject:enemyProjectile];
+//    [player removeFromParent];
+//    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+//    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+//    [[CCDirector sharedDirector] presentScene:recapScene];
+//    //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+//    //    [self lose];
+//    return YES;
+//}
 
 //modified player-enemyProjectile interaction for invincibility
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
-//    return NO;
-//}
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
+    return YES;
+}
 
 //- (void)lose {
 ////    CCLOG(@"You are dead");
