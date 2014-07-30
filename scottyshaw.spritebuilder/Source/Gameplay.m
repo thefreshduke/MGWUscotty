@@ -215,7 +215,7 @@
         
         int i = arc4random_uniform(360); //degrees or radians?
         
-        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth * 0.55, _player.position.y + sin(i) * screenWidth * 0.55);
+        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
         
         [_physicsNode addChild: _enemy];
         [self.enemyArray addObject: _enemy];
@@ -265,7 +265,7 @@
 //    
 //    //define movement variables
 //    CGFloat newXPosition = _player.position.x - acceleration.y * 1500 * delta;
-//    CGFloat newYPosition = _player.position.y + acceleration.x * 1500 * delta + 10;
+//    CGFloat newYPosition = _player.position.y + acceleration.x * 1500 * delta + 12;
 //    newXPosition = clampf(newXPosition, 0, self.boundingBox.size.width);
 //    newYPosition = clampf(newYPosition, 0, self.boundingBox.size.height);
 //    
@@ -275,7 +275,7 @@
 //    
 //    //move avatar
 //    _player.position = CGPointMake(newXPosition, newYPosition);
-//    
+////    _player.position = ccp(0, 0);
 //    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player worldBoundary:self.boundingBox];
 //    [self runAction:follow];
 }
