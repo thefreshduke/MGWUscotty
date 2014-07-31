@@ -224,10 +224,13 @@
     
     // screen has been locked left (button to the left) for the following orientation
     CGFloat newXPosition = _player.position.x + acceleration.y * 1000 * delta;
-    newXPosition = clampf(newXPosition, 30, screenWidth-25);
+    newXPosition = clampf(newXPosition, 25, screenWidth-25);
     CGFloat newYPosition = _player.position.y - acceleration.x * 1000 * delta;
-    newYPosition = clampf(newYPosition, 20, screenHeight-25);
+    newYPosition = clampf(newYPosition, 25, screenHeight-25);
     _player.position = CGPointMake(newXPosition, newYPosition);
+    
+//    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player worldBoundary:self.boundingBox];
+//    [self runAction:follow];
 }
 
 //// -----------------------------------------------------------------------
