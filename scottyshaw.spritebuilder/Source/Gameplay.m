@@ -34,6 +34,9 @@
     self.userInteractionEnabled = TRUE;
     _physicsNode.collisionDelegate = self;
     _physicsNode.debugDraw = TRUE;
+    
+    _motionManager = [[CMMotionManager alloc] init];
+    
     //enemy too big?
 }
 
@@ -109,8 +112,13 @@
 
 - (void)onEnter
 {
+#define screenWidth [[CCDirector sharedDirector] viewSize].width
+#define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
     // always call super onEnter first
     [super onEnter];
+    _player.position = ccp(screenWidth/2, screenHeight/2);
+    [_motionManager startAccelerometerUpdates];
     
     int minDuration = 1.0;
     int maxDuration = 2.0;
@@ -126,6 +134,12 @@
     // In v3, touch is enabled by setting userInteractionEnabled for the individual nodes
     // Per frame update is automatically enabled, if update is overridden
     
+}
+
+- (void)onExit
+{
+    [super onExit];
+    [_motionManager stopAccelerometerUpdates];
 }
 
 //// -----------------------------------------------------------------------
@@ -215,14 +229,16 @@
         
         int i = arc4random_uniform(360); //degrees or radians?
         
-        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
+//        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
+        _enemy.position = ccp(screenWidth/2 + cos(i) * 300, screenHeight/2 + sin(i) * 300);
         
         [_physicsNode addChild: _enemy];
         [self.enemyArray addObject: _enemy];
         
         i = arc4random_uniform(360);
         //    CGPoint offset = ccp(cos(i), sin(i));
-        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
+//        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
+        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + screenWidth/2, sin(i) * (200 + arc4random_uniform(150)) + screenHeight/2);
         
         // can tighten 200-radius for denser enemy ramming... maybe adjust other circle radiuses to happen closer off-screen
         
@@ -250,8 +266,8 @@
     CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyAim, _enemyProjectile.position));
     CGPoint force = ccpMult(normalizedOffset, 25000);
     _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision";
-//    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision1";
-//    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision2";
+    //    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision1";
+    //    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision2";
     [_enemyProjectile.physicsBody applyForce:force];
 }
 
@@ -260,27 +276,22 @@
     [self updatePlayerProjectileArray];
     [self updateEnemyProjectileArray];
     
-//    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
-//    CMAcceleration acceleration = accelerometerData.acceleration;
-//    
-//    //define movement variables
-//    CGFloat newXPosition = _player.position.x - acceleration.y * 1500 * delta;
-//    CGFloat newYPosition = _player.position.y + acceleration.x * 1500 * delta + 12;
-//    newXPosition = clampf(newXPosition, 0, self.boundingBox.size.width);
-//    newYPosition = clampf(newYPosition, 0, self.boundingBox.size.height);
-//    
-//    //record last position in order to calculate appropriate rotation
-//    float lastX =_player.position.x;
-//    float lastY =_player.position.y;
-//    
-//    //move avatar
-//    _player.position = CGPointMake(newXPosition, newYPosition);
-////    _player.position = ccp(0, 0);
-//    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player worldBoundary:self.boundingBox];
-//    [self runAction:follow];
+#define screenWidth [[CCDirector sharedDirector] viewSize].width
+#define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
+    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+    CMAcceleration acceleration = accelerometerData.acceleration;
+    
+    //define movement variables
+    
+    CGFloat newXPosition = _player.position.x - acceleration.y * 1000 * delta;
+    newXPosition = clampf(newXPosition, 30, screenWidth-25);
+    CGFloat newYPosition = _player.position.y + acceleration.x * 1000 * delta + 12;
+    newYPosition = clampf(newYPosition, 20, screenHeight-25);
+    _player.position = CGPointMake(newXPosition, newYPosition);
 }
 
-//doesn't shoot if player holds down one spot and taps another?
+//player doesn't shoot if user holds down one spot and taps another? ask shady about his hold/tap thing
 
 - (void) updateEnemyArray {
     
@@ -329,7 +340,7 @@
         CGPoint distance = ccpSub(enemyProjectilePos, playerPos);
         
         if (ccpLength(distance) >= screenWidth * 0.55) {
-//        if (ccpLength(distance) <= 100) {
+            //        if (ccpLength(distance) <= 100) {
             [self.enemyProjectileArray[i] removeFromParent];
             [self.enemyProjectileArray removeObjectAtIndex:i];
         }
@@ -354,7 +365,7 @@
     return NO;
 }
 
-- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile enemyProjectileCollision:(CCNode *)enemyProjectile {
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile1 enemyProjectileCollision:(CCNode *)enemyProjectile2 {
     return NO;
 }
 
@@ -412,7 +423,7 @@
 
 //modified player-enemyProjectile interaction for invincibility
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
-    return YES;
+    return NO;
 }
 
 //- (void)lose {
