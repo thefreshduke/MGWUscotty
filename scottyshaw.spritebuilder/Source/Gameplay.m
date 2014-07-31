@@ -122,7 +122,7 @@ static NSInteger ammo;
 //// -----------------------------------------------------------------------
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    if (ammo > -1000) {
+    if (ammo > 0) {
         
         ammo = ammo - 10;
         armor = armor + 10;
@@ -132,7 +132,7 @@ static NSInteger ammo;
         }
         
         if (ammo < 0) {
-            ammo = 100;
+            ammo = 0;
         }
         
         CCSprite* _playerProjectile = (CCSprite *)[CCBReader load: @"PlayerWeapon"];
@@ -318,71 +318,71 @@ static NSInteger ammo;
 }
 
 // modified player-enemy interaction for invincibility
-- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
-    return NO;
-}
+//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
+//    return NO;
+//}
 
 // modified player-enemy interaction for dying
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
-//    life = life - 40;
-//    armor = life - 20;
-//    [enemy removeFromParent];
-//    [self.enemyArray removeObject:enemy];
-//    if (life <= 0) {
-//        
-//        NSLog(@"DEATH BY COLLISION");
-//        NSLog(@"life: %i", life);
-//        NSLog(@"armor: %i", armor);
-//        NSLog(@"ammo: %i", ammo);
-//        NSLog(@"");
-//        
-//        [player removeFromParent];
-//        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-//        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-//        [[CCDirector sharedDirector] presentScene:recapScene];
-//        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-//        //    [self lose];
-//    }
-//    
-//    NSLog(@"COLLIDED");
-//    NSLog(@"life: %i", life);
-//    NSLog(@"armor: %i", armor);
-//    NSLog(@"ammo: %i", ammo);
-//    NSLog(@"");
-//    return YES;
-//}
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
+    life = life - 40;
+    armor = life - 20;
+    [enemy removeFromParent];
+    [self.enemyArray removeObject:enemy];
+    if (life <= 0) {
+        
+        NSLog(@"DEATH BY COLLISION");
+        NSLog(@"life: %i", life);
+        NSLog(@"armor: %i", armor);
+        NSLog(@"ammo: %i", ammo);
+        NSLog(@"");
+        
+        [player removeFromParent];
+        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+        [[CCDirector sharedDirector] presentScene:recapScene];
+        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+        //    [self lose];
+    }
+
+    NSLog(@"COLLIDED");
+    NSLog(@"life: %i", life);
+    NSLog(@"armor: %i", armor);
+    NSLog(@"ammo: %i", ammo);
+    NSLog(@"");
+    return YES;
+}
 
 //player-enemyProjectile interaction for dying
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
-//    armor = armor - 10;
-//    ammo = ammo + 10;
-//    [enemyProjectile removeFromParent];
-//    [self.enemyProjectileArray removeObject:enemyProjectile];
-//    if (armor <= 0) {
-//        NSLog(@"SHOT TO DEATH");
-//        NSLog(@"life: %i", life);
-//        NSLog(@"armor: %i", armor);
-//        NSLog(@"ammo: %i", ammo);
-//        NSLog(@"");
-//        [player removeFromParent];
-//        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-//        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-//        [[CCDirector sharedDirector] presentScene:recapScene];
-//        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-//        //    [self lose];
-//    }
-//    NSLog(@"SHOT");
-//    NSLog(@"life: %i", life);
-//    NSLog(@"armor: %i", armor);
-//    NSLog(@"ammo: %i", ammo);
-//    NSLog(@"");
-//    return YES;
-//}
+- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
+    armor = armor - 10;
+    ammo = ammo + 10;
+    [enemyProjectile removeFromParent];
+    [self.enemyProjectileArray removeObject:enemyProjectile];
+    if (armor <= 0) {
+        NSLog(@"SHOT TO DEATH");
+        NSLog(@"life: %i", life);
+        NSLog(@"armor: %i", armor);
+        NSLog(@"ammo: %i", ammo);
+        NSLog(@"");
+        [player removeFromParent];
+        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+        [[CCDirector sharedDirector] presentScene:recapScene];
+        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+        //    [self lose];
+    }
+    NSLog(@"SHOT");
+    NSLog(@"life: %i", life);
+    NSLog(@"armor: %i", armor);
+    NSLog(@"ammo: %i", ammo);
+    NSLog(@"");
+    return YES;
+}
 
 //modified player-enemyProjectile interaction for invincibility
-- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
-    return NO;
-}
+//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
+//    return NO;
+//}
 
 //- (void)lose {
 ////    CCLOG(@"You are dead");
