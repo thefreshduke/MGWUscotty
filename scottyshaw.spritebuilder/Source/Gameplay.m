@@ -21,14 +21,10 @@
     CMMotionManager *_motionManager; //create only one instance of a motion manager
 }
 
-//+ (Gameplay *)scene
-//{
-//    return [[self alloc] init];
-//}
-//
-//// -----------------------------------------------------------------------
+static NSInteger life;
+static NSInteger armor;
+static NSInteger ammo;
 
-// is called when CCB file has completed loading
 - (void)didLoadFromCCB {
     // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
@@ -40,78 +36,16 @@
     //enemy too big?
 }
 
-//- (id)init
-//{
-//    // Apple recommend assigning self with supers return value
-//    self = [super init];
-//    if (!self) return(nil);
-//
-//    // Enable touch handling on scene node
-//    self.userInteractionEnabled = YES;
-////    [[OALSimpleAudio sharedInstance] playBg:@"ResourcePack/Sounds/background-music-aac.caf" loop:YES];
-////    [[OALSimpleAudio sharedInstance] playEffect:@"M1-Garand-Reloading.caf"];
-////    [[OALSimpleAudio sharedInstance] playEffect:@"Authoritah.caf"];
-//
-//    // Create a colored background (Light Grey)
-//    CCNodeColor *background = [CCNodeColor nodeWithColor:[CCColor colorWithRed:0.6f green:0.6f blue:0.6f alpha:1.0f]];
-//    [self addChild:background];
-//
-//    _physicsWorld = [CCPhysicsNode node];
-//    _physicsWorld.gravity = ccp(0,0);
-//    // _physicsWorld.debugDraw = YES;
-//    _physicsWorld.collisionDelegate = self;
-//    [self addChild:_physicsWorld];
-//
-//    // Add a sprite
-//    _player = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/cartman.png"];
-//    // off-left player position
-//    //    _player.position  = ccp(self.contentSize.width/8, self.contentSize.height/2);
-//    // centralized player position
-//    _player.position  = ccp(self.contentSize.width/2, self.contentSize.height/2);
-//    _player.physicsBody = [CCPhysicsBody bodyWithRect:(CGRect){CGPointZero, _player.contentSize} cornerRadius:0]; // 1
-//    _player.physicsBody.collisionGroup = @"playerGroup"; // 2
-//    _player.physicsBody.collisionType  = @"playerCollision";
-
-//    [_physicsWorld addChild:_player];
-
-//    //    _weapon = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/ak47.png"];
-//    //    _weapon.position  = ccp(self.contentSize.width/8,self.contentSize.height/2);
-
-//    // Animate sprite with action
-//    //CCActionRotateBy* actionSpin = [CCActionRotateBy actionWithDuration:1.5f angle:360];
-//    //[_player runAction:[CCActionRepeatForever actionWithAction:actionSpin]];
-
-//    // Create a back button
-//    CCButton *backButton = [CCButton buttonWithTitle:@"[ Menu ]" fontName:@"Verdana-Bold" fontSize:18.0f];
-//    backButton.positionType = CCPositionTypeNormalized;
-//    backButton.position = ccp(0.85f, 0.95f); // Top Right of screen
-//    [backButton setTarget:self selector:@selector(onBackClicked:)];
-//    [self addChild:backButton];
-
-//    // Kill count
-//    CCLabelTTF *label = [CCLabelTTF labelWithString:@"Hello World" fontName:@"Chalkduster" fontSize:18.0f];
-//    label.positionType = CCPositionTypeNormalized;
-//    label.color = [CCColor redColor];
-//    label.position = ccp(0.15f, 0.95f); // Middle of screen
-//    [self addChild:label];
-
-//    // done
-//	return self;
-//}
-
-//// -----------------------------------------------------------------------
-
-//- (void)dealloc
-//{
-//    // clean up code goes here
-//}
-
 //// -----------------------------------------------------------------------
 //#pragma mark - Enter & Exit
 //// -----------------------------------------------------------------------
 
 - (void)onEnter
 {
+    life = 100;
+    armor = 50;
+    ammo = life - armor;
+    
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
     
@@ -129,72 +63,12 @@
     self.playerProjectileArray = [[NSMutableArray alloc] init];
     self.enemyProjectileArray = [[NSMutableArray alloc] init];
     [self schedule:@selector(spawnEnemy:) interval:randomDuration];
-    
-    // In pre-v3, touch enable and scheduleUpdate was called here
-    // In v3, touch is enabled by setting userInteractionEnabled for the individual nodes
-    // Per frame update is automatically enabled, if update is overridden
-    
 }
 
 - (void)onExit
 {
     [super onExit];
     [_motionManager stopAccelerometerUpdates];
-}
-
-//// -----------------------------------------------------------------------
-
-//- (void)onExit
-//{
-//    // always call super onExit last
-//    [super onExit];
-//}
-
-//// -----------------------------------------------------------------------
-//#pragma mark - Touch Handler
-//// -----------------------------------------------------------------------
-
-- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    
-    CCSprite* _playerProjectile = (CCSprite *)[CCBReader load: @"PlayerWeapon"];
-    
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
-    
-    // 1
-    CGPoint touchLocation = [touch locationInNode:self];
-    
-    // 2
-    _playerProjectile.position = _player.position;
-    [_physicsNode addChild:_playerProjectile];
-    [self.playerProjectileArray addObject: _playerProjectile];
-    CGPoint offset    = ccpSub(touchLocation, _player.position);
-    //    float   ratio     = offset.y/offset.x;
-    CGPoint normalizedOffset = ccpNormalize(offset);
-    //    CGPoint projectileOrigin = 0;
-    CGPoint force = ccpMult(normalizedOffset, 50000); //projectiles work just fine if player is not a child of the physicsNode in spritebuilder/Gameplay; unable to die however... mushrooms don't contact with player despite moving through the same spot
-    _playerProjectile.physicsBody.collisionType  = @"playerProjectileCollision";
-    [_playerProjectile.physicsBody applyForce:force];
-    //    int     targetX   = _player.contentSize.width/2 + self.contentSize.width;
-    //    int     targetY   = (targetX*ratio) + _player.position.y;
-    //    CGPoint targetPosition = ccp(targetX,targetY);
-    
-    // 3
-    //    CCSprite *projectile = [CCSprite spriteWithImageNamed:@"ResourcePack/Art/jack-o-lantern.png"];
-    //    _projectile.position = _player.position;
-    //    _projectile.physicsBody = [CCPhysicsBody bodyWithCircleOfRadius:_projectile.contentSize.width/2.0f andCenter:_projectile.anchorPointInPoints];
-    //    _projectile.physicsBody.collisionGroup = @"playerGroup";
-    //    _projectile.physicsBody.collisionType  = @"projectileCollision";
-    
-    // 4
-    //    CCActionMoveTo *actionMove   = [CCActionMoveTo actionWithDuration:0.5f position:targetPosition];
-    //    CCActionRemove *actionRemove = [CCActionRemove action];
-    //    [_projectile runAction:[CCActionSequence actionWithArray:@[actionMove,actionRemove]]];
-    //    CCActionRotateBy* actionSpin = [CCActionRotateBy actionWithDuration:0.25f angle:360];
-    //    [_projectile runAction:[CCActionRepeatForever actionWithAction:actionSpin]];
-    
-    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/M1-Garand.caf"];
-    //    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Mauser-K98.caf"];
 }
 
 //// -----------------------------------------------------------------------
@@ -210,6 +84,13 @@
 //}
 
 - (void) update:(CCTime)delta {
+    
+    if (armor > life) {
+        armor = life;
+    }
+    
+    ammo = life - armor;
+    
     [self updateEnemyArray];
     [self updatePlayerProjectileArray];
     [self updateEnemyProjectileArray];
@@ -224,13 +105,69 @@
     
     // screen has been locked left (button to the left) for the following orientation
     CGFloat newXPosition = _player.position.x + acceleration.y * 1000 * delta;
-    newXPosition = clampf(newXPosition, 25, screenWidth-25);
+//    newXPosition = clampf(newXPosition, 25, screenWidth-25);
     CGFloat newYPosition = _player.position.y - acceleration.x * 1000 * delta;
-    newYPosition = clampf(newYPosition, 25, screenHeight-25);
+//    newYPosition = clampf(newYPosition, 25, screenHeight-25);
     _player.position = CGPointMake(newXPosition, newYPosition);
     
-//    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player worldBoundary:self.boundingBox];
-//    [self runAction:follow];
+    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player];
+    [_levelNode runAction:follow];
+    //    [self runAction:[CCFollow actionWithTarget:_player worldBoundary:CGRectMake(0,0,screenWidth,screenHeight)]];
+    
+//    NSLog(@"%i", armor);
+}
+
+//// -----------------------------------------------------------------------
+//#pragma mark - Touch Handler
+//// -----------------------------------------------------------------------
+
+- (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
+    if (ammo > -1000) {
+        
+        ammo = ammo - 10;
+        armor = armor + 10;
+        
+        if (armor > life) {
+            armor = life;
+        }
+        
+        if (ammo < 0) {
+            ammo = 100;
+        }
+        
+        CCSprite* _playerProjectile = (CCSprite *)[CCBReader load: @"PlayerWeapon"];
+        
+#define screenWidth [[CCDirector sharedDirector] viewSize].width
+#define screenHeight [[CCDirector sharedDirector] viewSize].height
+        
+        CGPoint touchLocation = [touch locationInNode:_levelNode];
+        
+        _playerProjectile.position = _player.position;
+        [_physicsNode addChild:_playerProjectile];
+        [self.playerProjectileArray addObject: _playerProjectile];
+        CGPoint offset    = ccpSub(touchLocation, _player.position);
+        //    float   ratio     = offset.y/offset.x;
+        CGPoint normalizedOffset = ccpNormalize(offset);
+        //    CGPoint projectileOrigin = 0;
+        CGPoint force = ccpMult(normalizedOffset, 50000); //projectiles work just fine if player is not a child of the physicsNode in spritebuilder/Gameplay; unable to die however... mushrooms don't contact with player despite moving through the same spot
+        _playerProjectile.physicsBody.collisionType  = @"playerProjectileCollision";
+        [_playerProjectile.physicsBody applyForce:force];
+        
+        //    CCActionMoveTo *actionMove   = [CCActionMoveTo actionWithDuration:0.5f position:targetPosition];
+        //    CCActionRemove *actionRemove = [CCActionRemove action];
+        //    [_projectile runAction:[CCActionSequence actionWithArray:@[actionMove,actionRemove]]];
+        //    CCActionRotateBy* actionSpin = [CCActionRotateBy actionWithDuration:0.25f angle:360];
+        //    [_projectile runAction:[CCActionRepeatForever actionWithAction:actionSpin]];
+        
+        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/M1-Garand.caf"];
+        //    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Mauser-K98.caf"];
+    }
+    
+    NSLog(@"SHOTS FIRED");
+    NSLog(@"life: %i", life);
+    NSLog(@"armor: %i", armor);
+    NSLog(@"ammo: %i", ammo);
+    NSLog(@"");
 }
 
 //// -----------------------------------------------------------------------
@@ -254,7 +191,7 @@
         int i = arc4random_uniform(360); //degrees or radians?
         
         //        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
-        _enemy.position = ccp(screenWidth/2 + cos(i) * 300, screenHeight/2 + sin(i) * 300);
+        _enemy.position = ccp(_player.position.x + cos(i) * 300, _player.position.y + sin(i) * 300);
         
         [_physicsNode addChild: _enemy];
         [self.enemyArray addObject: _enemy];
@@ -262,7 +199,7 @@
         i = arc4random_uniform(360);
         //    CGPoint offset = ccp(cos(i), sin(i));
         //        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
-        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + screenWidth/2, sin(i) * (200 + arc4random_uniform(150)) + screenHeight/2);
+        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
         
         // can tighten 200-radius for denser enemy ramming... maybe adjust other circle radiuses to happen closer off-screen
         
@@ -283,18 +220,19 @@
     
     for (int i = 0; i < self.enemyArray.count; i++) {
         CGPoint enemyPos = ((CCSprite*) self.enemyArray[i]).position;
-        CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
+        CGPoint playerPos = ccp(_player.position.x, _player.position.y);
         CGPoint distance = ccpSub(enemyPos, playerPos);
+        
+        if (ccpLength(ccpSub(enemyPos, playerPos)) <= screenWidth * 0.55 && ccpLength(ccpSub(enemyPos, playerPos)) > 200 && arc4random_uniform(1000) % 80 == 0) {
+            [self enemyShootFromLocationX:enemyPos.x fromLocationY:enemyPos.y];
+        }
         
         if (ccpLength(distance) >= screenWidth * 0.75) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
         }
-        
-        if (ccpLength(ccpSub(enemyPos, playerPos)) <= screenWidth * 0.55 && ccpLength(ccpSub(enemyPos, playerPos)) > 200 && arc4random_uniform(1000) % 80 == 0) {
-            [self enemyShootFromLocationX:enemyPos.x fromLocationY:enemyPos.y];
-        }
     }
+    //    NSLog(@"%f", (float)self.enemyArray.count);
 }
 
 - (void)enemyShootFromLocationX:(float)enemyPosX fromLocationY:(float)enemyPosY{
@@ -305,7 +243,7 @@
     int i = arc4random_uniform(360);
     [_physicsNode addChild: _enemyProjectile];
     [self.enemyProjectileArray addObject: _enemyProjectile];
-    CGPoint enemyAim = ccp(cos(i) * arc4random_uniform(150) + screenWidth/2, sin(i) * arc4random_uniform(150) + screenHeight/2);
+    CGPoint enemyAim = ccp(cos(i) * arc4random_uniform(150) + _player.position.x, sin(i) * arc4random_uniform(150) + _player.position.y);
     CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyAim, _enemyProjectile.position));
     CGPoint force = ccpMult(normalizedOffset, 25000);
     _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision";
@@ -319,14 +257,15 @@
     
     for (int i = 0; i < self.playerProjectileArray.count; i++) {
         CGPoint playerProjectilePos = ((CCSprite*) self.playerProjectileArray[i]).position;
-        CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
+        CGPoint playerPos = ccp(_player.position.x, _player.position.y);
         CGPoint distance = ccpSub(playerProjectilePos, playerPos);
         
-        if (ccpLength(distance) >= screenWidth * 0.75) {
+        if (ccpLength(distance) >= screenWidth * 0.55) {
             [self.playerProjectileArray[i] removeFromParent];
             [self.playerProjectileArray removeObjectAtIndex:i];
         }
     }
+    //    NSLog(@"%f", (float)self.playerProjectileArray.count);
 }
 
 - (void) updateEnemyProjectileArray {
@@ -335,7 +274,7 @@
     
     for (int i = 0; i < self.enemyProjectileArray.count; i++) {
         CGPoint enemyProjectilePos = ((CCSprite*) self.enemyProjectileArray[i]).position;
-        CGPoint playerPos = ccp(screenWidth/2, screenHeight/2);
+        CGPoint playerPos = ccp(_player.position.x, _player.position.y);
         CGPoint distance = ccpSub(enemyProjectilePos, playerPos);
         
         if (ccpLength(distance) >= screenWidth * 0.55) {
@@ -344,6 +283,7 @@
             [self.enemyProjectileArray removeObjectAtIndex:i];
         }
     }
+    //    NSLog(@"%f", (float)self.enemyProjectileArray.count);
 }
 
 //- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy wildcard:(CCNode *)object {
@@ -368,14 +308,6 @@
     return NO;
 }
 
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision1:(CCNode *)enemyProjectile1 enemyProjectileCollision2:(CCNode *)enemyProjectile2 {
-//    return NO;
-//}
-
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair physicsNodeCollision:(CCNode *)physicsNode playerProjectileCollision:(CCNode *)playerProjectile {
-//    return NO;
-//}
-
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerProjectileCollision:(CCNode *)playerProjectile {
     [enemy removeFromParent];
     [self.enemyArray removeObject:enemy];
@@ -385,10 +317,6 @@
     return YES;
 }
 
-//- (BOOL) ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair playerCollision:(CCNode *)player wildcard:(CCNode *)object {
-//    return YES;
-//}
-
 // modified player-enemy interaction for invincibility
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
     return NO;
@@ -396,27 +324,58 @@
 
 // modified player-enemy interaction for dying
 //- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
+//    life = life - 40;
+//    armor = life - 20;
 //    [enemy removeFromParent];
 //    [self.enemyArray removeObject:enemy];
-//    [player removeFromParent];
-//    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-//    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-//    [[CCDirector sharedDirector] presentScene:recapScene];
-////    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-//    //    [self lose];
+//    if (life <= 0) {
+//        
+//        NSLog(@"DEATH BY COLLISION");
+//        NSLog(@"life: %i", life);
+//        NSLog(@"armor: %i", armor);
+//        NSLog(@"ammo: %i", ammo);
+//        NSLog(@"");
+//        
+//        [player removeFromParent];
+//        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+//        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+//        [[CCDirector sharedDirector] presentScene:recapScene];
+//        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+//        //    [self lose];
+//    }
+//    
+//    NSLog(@"COLLIDED");
+//    NSLog(@"life: %i", life);
+//    NSLog(@"armor: %i", armor);
+//    NSLog(@"ammo: %i", ammo);
+//    NSLog(@"");
 //    return YES;
 //}
 
 //player-enemyProjectile interaction for dying
 //- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
+//    armor = armor - 10;
+//    ammo = ammo + 10;
 //    [enemyProjectile removeFromParent];
 //    [self.enemyProjectileArray removeObject:enemyProjectile];
-//    [player removeFromParent];
-//    [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-//    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-//    [[CCDirector sharedDirector] presentScene:recapScene];
-//    //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-//    //    [self lose];
+//    if (armor <= 0) {
+//        NSLog(@"SHOT TO DEATH");
+//        NSLog(@"life: %i", life);
+//        NSLog(@"armor: %i", armor);
+//        NSLog(@"ammo: %i", ammo);
+//        NSLog(@"");
+//        [player removeFromParent];
+//        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+//        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+//        [[CCDirector sharedDirector] presentScene:recapScene];
+//        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
+//        //    [self lose];
+//    }
+//    NSLog(@"SHOT");
+//    NSLog(@"life: %i", life);
+//    NSLog(@"armor: %i", armor);
+//    NSLog(@"ammo: %i", ammo);
+//    NSLog(@"");
 //    return YES;
 //}
 
