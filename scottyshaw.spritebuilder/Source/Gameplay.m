@@ -209,6 +209,27 @@
 ////    [[CCDirector sharedDirector] replaceScene:[@"mainScene"] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionRight duration:1.0f]];
 //}
 
+- (void) update:(CCTime)delta {
+    [self updateEnemyArray];
+    [self updatePlayerProjectileArray];
+    [self updateEnemyProjectileArray];
+    
+#define screenWidth [[CCDirector sharedDirector] viewSize].width
+#define screenHeight [[CCDirector sharedDirector] viewSize].height
+    
+    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+    CMAcceleration acceleration = accelerometerData.acceleration;
+    
+    //define movement variables
+    
+    // screen has been locked left (button to the left) for the following orientation
+    CGFloat newXPosition = _player.position.x + acceleration.y * 1000 * delta;
+    newXPosition = clampf(newXPosition, 30, screenWidth-25);
+    CGFloat newYPosition = _player.position.y - acceleration.x * 1000 * delta;
+    newYPosition = clampf(newYPosition, 20, screenHeight-25);
+    _player.position = CGPointMake(newXPosition, newYPosition);
+}
+
 //// -----------------------------------------------------------------------
 //#pragma mark - _enemy Spawn
 //// -----------------------------------------------------------------------
@@ -229,7 +250,7 @@
         
         int i = arc4random_uniform(360); //degrees or radians?
         
-//        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
+        //        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
         _enemy.position = ccp(screenWidth/2 + cos(i) * 300, screenHeight/2 + sin(i) * 300);
         
         [_physicsNode addChild: _enemy];
@@ -237,7 +258,7 @@
         
         i = arc4random_uniform(360);
         //    CGPoint offset = ccp(cos(i), sin(i));
-//        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
+        //        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
         CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + screenWidth/2, sin(i) * (200 + arc4random_uniform(150)) + screenHeight/2);
         
         // can tighten 200-radius for denser enemy ramming... maybe adjust other circle radiuses to happen closer off-screen
@@ -248,47 +269,6 @@
         _enemy.physicsBody.collisionType = @"enemyCollision";
         [_enemy.physicsBody applyForce:force];
     }
-}
-
-//    enemy only fires within a certain radius of the player
-//    aims at an enemyAimCircle
-//    add some randomized time length of cooldown before firing again?
-
-- (void)enemyShootFromLocationX:(float)enemyPosX fromLocationY:(float)enemyPosY{
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
-    CCSprite* _enemyProjectile = (CCSprite *)[CCBReader load: @"EnemyWeapon"];
-    _enemyProjectile.position = ccp(enemyPosX, enemyPosY);
-    int i = arc4random_uniform(360);
-    [_physicsNode addChild: _enemyProjectile];
-    [self.enemyProjectileArray addObject: _enemyProjectile];
-    CGPoint enemyAim = ccp(cos(i) * arc4random_uniform(150) + screenWidth/2, sin(i) * arc4random_uniform(150) + screenHeight/2);
-    CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyAim, _enemyProjectile.position));
-    CGPoint force = ccpMult(normalizedOffset, 25000);
-    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision";
-    //    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision1";
-    //    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision2";
-    [_enemyProjectile.physicsBody applyForce:force];
-}
-
-- (void) update:(CCTime)delta {
-    [self updateEnemyArray];
-    [self updatePlayerProjectileArray];
-    [self updateEnemyProjectileArray];
-    
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
-    
-    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
-    CMAcceleration acceleration = accelerometerData.acceleration;
-    
-    //define movement variables
-    
-    CGFloat newXPosition = _player.position.x - acceleration.y * 1000 * delta;
-    newXPosition = clampf(newXPosition, 30, screenWidth-25);
-    CGFloat newYPosition = _player.position.y + acceleration.x * 1000 * delta + 12;
-    newYPosition = clampf(newYPosition, 20, screenHeight-25);
-    _player.position = CGPointMake(newXPosition, newYPosition);
 }
 
 //player doesn't shoot if user holds down one spot and taps another? ask shady about his hold/tap thing
@@ -313,6 +293,22 @@
         }
     }
 }
+
+- (void)enemyShootFromLocationX:(float)enemyPosX fromLocationY:(float)enemyPosY{
+#define screenWidth [[CCDirector sharedDirector] viewSize].width
+#define screenHeight [[CCDirector sharedDirector] viewSize].height
+    CCSprite* _enemyProjectile = (CCSprite *)[CCBReader load: @"EnemyWeapon"];
+    _enemyProjectile.position = ccp(enemyPosX, enemyPosY);
+    int i = arc4random_uniform(360);
+    [_physicsNode addChild: _enemyProjectile];
+    [self.enemyProjectileArray addObject: _enemyProjectile];
+    CGPoint enemyAim = ccp(cos(i) * arc4random_uniform(150) + screenWidth/2, sin(i) * arc4random_uniform(150) + screenHeight/2);
+    CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyAim, _enemyProjectile.position));
+    CGPoint force = ccpMult(normalizedOffset, 25000);
+    _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision";
+    [_enemyProjectile.physicsBody applyForce:force];
+}
+
 
 - (void) updatePlayerProjectileArray {
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
