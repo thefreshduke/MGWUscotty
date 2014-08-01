@@ -18,6 +18,11 @@
     Player *_player;
     //    CCSprite *_enemy;
     CCPhysicsNode *_physicsNode;
+    CCLabelTTF *_lifeLabel;
+    CCLabelTTF *_armorLabel;
+    CCLabelTTF *_ammoLabel;
+    CCLabelTTF *_dangerLabel;
+    CCLabelTTF *_lowLabel;
     CMMotionManager *_motionManager; //create only one instance of a motion manager
 }
 
@@ -54,6 +59,90 @@ static NSInteger ammo;
     _player.position = ccp(screenWidth/2, screenHeight/2);
     [_motionManager startAccelerometerUpdates];
     
+    _lifeLabel.string = [NSString stringWithFormat:@"%ld", (long) life];
+    if (life < 40) {
+        _lifeLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:0.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+        _dangerLabel.string = [NSString stringWithFormat:@"DANGER: %ld LIFE LEFT", (long) life];
+    }
+    else if (life < 70) {
+        _lifeLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+    }
+    else if (life < 100) {
+        _lifeLabel.color = [CCColor colorWithRed:0.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+    }
+    else if (life == 100) {
+        _lifeLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:255.0f/255.0f
+                                           alpha:1.0f];
+    }
+    _armorLabel.string = [NSString stringWithFormat:@"%ld", (long) armor];
+    if (armor < 40) {
+        _armorLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:0.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+        _lowLabel.string = [NSString stringWithFormat:@"LOW ARMOR: %ld LEFT", (long) armor];
+    }
+    else if (armor >= 40 && armor < 70) {
+        _armorLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+//        _lowLabel.string = [NSString stringWithFormat:@""];
+    }
+    else if (armor >= 70 && armor < 100) {
+        _armorLabel.color = [CCColor colorWithRed:0.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+    }
+    else if (armor == 100) {
+        _armorLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                            green:255.0f/255.0f
+                                             blue:255.0f/255.0f
+                                            alpha:1.0f];
+    }
+    _ammoLabel.string = [NSString stringWithFormat:@"%ld", (long) ammo];
+    if (ammo < 40) {
+        _ammoLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                            green:0.0f/255.0f
+                                             blue:0.0f/255.0f
+                                            alpha:1.0f];
+        _lowLabel.string = [NSString stringWithFormat:@"LOW AMMO: %ld LEFT", (long) ammo];
+    }
+    if (ammo >= 40 && ammo < 70) {
+        _ammoLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                            green:255.0f/255.0f
+                                             blue:0.0f/255.0f
+                                            alpha:1.0f];
+//        _lowLabel.string = [NSString stringWithFormat:@" "];
+    }
+    if (ammo >= 70 && ammo < 100) {
+        _ammoLabel.color = [CCColor colorWithRed:0.0f/255.0f
+                                            green:255.0f/255.0f
+                                             blue:0.0f/255.0f
+                                            alpha:1.0f];
+    }
+    if (ammo == 100) {
+        _ammoLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:255.0f/255.0f
+                                           alpha:1.0f];
+    }
+//    while (armor < 40 || ammo < 40) {
+//        _lowLabel.string = [NSString stringWithFormat:@"LOW ARMOR: %ld LEFT", (long) armor];
+//    }
+    
     int minDuration = 1.0;
     int maxDuration = 2.0;
     int rangeDuration = maxDuration - minDuration;
@@ -84,12 +173,98 @@ static NSInteger ammo;
 //}
 
 - (void) update:(CCTime)delta {
-    
-    if (armor > life) {
-        armor = life;
-    }
+#define screenWidth [[CCDirector sharedDirector] viewSize].width
+#define screenHeight [[CCDirector sharedDirector] viewSize].height
     
     ammo = life - armor;
+    
+    _lifeLabel.string = [NSString stringWithFormat:@"%ld", (long) life];
+    if (life < 40) {
+        _lifeLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:0.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+        _dangerLabel.string = [NSString stringWithFormat:@"!!!DANGER!!!"];
+    }
+    else if (life < 70) {
+        _lifeLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+    }
+    else if (life < 100) {
+        _lifeLabel.color = [CCColor colorWithRed:0.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+    }
+    else if (life == 100) {
+        _lifeLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:255.0f/255.0f
+                                           alpha:1.0f];
+    }
+    _armorLabel.string = [NSString stringWithFormat:@"%ld", (long) armor];
+    if (armor < 40) {
+        _armorLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                            green:0.0f/255.0f
+                                             blue:0.0f/255.0f
+                                            alpha:1.0f];
+        _lowLabel.string = [NSString stringWithFormat:@"LOW ARMOR: %ld LEFT", (long) armor];
+    }
+    if (armor >= 40 && armor < 70) {
+        _armorLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                            green:255.0f/255.0f
+                                             blue:0.0f/255.0f
+                                            alpha:1.0f];
+        _lowLabel.string = [NSString stringWithFormat:@" "];
+    }
+    if (armor >= 70 && armor < 100) {
+        _armorLabel.color = [CCColor colorWithRed:0.0f/255.0f
+                                            green:255.0f/255.0f
+                                             blue:0.0f/255.0f
+                                            alpha:1.0f];
+    }
+    if (armor == 100) {
+        _armorLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                            green:255.0f/255.0f
+                                             blue:255.0f/255.0f
+                                            alpha:1.0f];
+    }
+//    else {
+//        float d = ;
+//        _armorLabel.color = [CCColor colorWithRed:255.0f/255.0f
+//                                           green:255.0f/255.0f
+//                                            blue:255.0f/255.0f
+//                                           alpha:1.0f];
+//    }
+    _ammoLabel.string = [NSString stringWithFormat:@"%ld", (long) ammo];
+    if (ammo < 40) {
+        _ammoLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:0.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+        _lowLabel.string = [NSString stringWithFormat:@"LOW AMMO: %ld LEFT", (long) ammo];
+    }
+    if (ammo >= 40 && ammo < 70) {
+        _ammoLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+        _lowLabel.string = [NSString stringWithFormat:@" "];
+    }
+    if (ammo >= 70 && ammo < 100) {
+        _ammoLabel.color = [CCColor colorWithRed:0.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:0.0f/255.0f
+                                           alpha:1.0f];
+    }
+    if (ammo == 100) {
+        _ammoLabel.color = [CCColor colorWithRed:255.0f/255.0f
+                                           green:255.0f/255.0f
+                                            blue:255.0f/255.0f
+                                           alpha:1.0f];
+    }
     
     [self updateEnemyArray];
     [self updatePlayerProjectileArray];
@@ -127,8 +302,8 @@ static NSInteger ammo;
         ammo = ammo - 10;
         armor = armor + 10;
         
-        if (armor > life) {
-            armor = life;
+        if (armor > 100) {
+            armor = 100;
         }
         
         if (ammo < 0) {
@@ -358,7 +533,7 @@ static NSInteger ammo;
     ammo = ammo + 10;
     [enemyProjectile removeFromParent];
     [self.enemyProjectileArray removeObject:enemyProjectile];
-    if (armor <= 0) {
+    if (armor < 0) {
         NSLog(@"SHOT TO DEATH");
         NSLog(@"life: %i", life);
         NSLog(@"armor: %i", armor);
