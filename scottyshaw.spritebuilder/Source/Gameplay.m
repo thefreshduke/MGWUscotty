@@ -49,7 +49,7 @@ static NSInteger ammo;
 {
     life = 100;
     armor = 50;
-    ammo = life - armor;
+    ammo = 100 - armor;
     
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
@@ -65,7 +65,7 @@ static NSInteger ammo;
                                            green:0.0f/255.0f
                                             blue:0.0f/255.0f
                                            alpha:1.0f];
-        _dangerLabel.string = [NSString stringWithFormat:@"DANGER: %ld LIFE LEFT", (long) life];
+        _dangerLabel.string = [NSString stringWithFormat:@"!!!DANGER!!!"];
     }
     else if (life < 70) {
         _lifeLabel.color = [CCColor colorWithRed:255.0f/255.0f
@@ -176,7 +176,7 @@ static NSInteger ammo;
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
     
-    ammo = life - armor;
+    ammo = 100 - armor;
     
     _lifeLabel.string = [NSString stringWithFormat:@"%ld", (long) life];
     if (life < 40) {
@@ -299,8 +299,8 @@ static NSInteger ammo;
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     if (ammo > 0) {
         
-        ammo = ammo - 10;
-        armor = armor + 10;
+        ammo = ammo - 5;
+        armor = armor + 5;
         
         if (armor > 100) {
             armor = 100;
@@ -339,9 +339,9 @@ static NSInteger ammo;
     }
     
     NSLog(@"SHOTS FIRED");
-    NSLog(@"life: %i", life);
-    NSLog(@"armor: %i", armor);
-    NSLog(@"ammo: %i", ammo);
+    NSLog(@"life: %ld", (long)life);
+    NSLog(@"armor: %ld", (long)armor);
+    NSLog(@"ammo: %ld", (long)ammo);
     NSLog(@"");
 }
 
@@ -500,15 +500,14 @@ static NSInteger ammo;
 // modified player-enemy interaction for dying
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
     life = life - 40;
-    armor = life - 20;
     [enemy removeFromParent];
     [self.enemyArray removeObject:enemy];
     if (life <= 0) {
         
         NSLog(@"DEATH BY COLLISION");
-        NSLog(@"life: %i", life);
-        NSLog(@"armor: %i", armor);
-        NSLog(@"ammo: %i", ammo);
+        NSLog(@"life: %ld", (long)life);
+        NSLog(@"armor: %ld", (long)armor);
+        NSLog(@"ammo: %ld", (long)ammo);
         NSLog(@"");
         
         [player removeFromParent];
@@ -520,9 +519,9 @@ static NSInteger ammo;
     }
 
     NSLog(@"COLLIDED");
-    NSLog(@"life: %i", life);
-    NSLog(@"armor: %i", armor);
-    NSLog(@"ammo: %i", ammo);
+    NSLog(@"life: %ld", (long)life);
+    NSLog(@"armor: %ld", (long)armor);
+    NSLog(@"ammo: %ld", (long)ammo);
     NSLog(@"");
     return YES;
 }
@@ -535,21 +534,22 @@ static NSInteger ammo;
     [self.enemyProjectileArray removeObject:enemyProjectile];
     if (armor < 0) {
         NSLog(@"SHOT TO DEATH");
-        NSLog(@"life: %i", life);
-        NSLog(@"armor: %i", armor);
-        NSLog(@"ammo: %i", ammo);
+        NSLog(@"life: %ld", (long)life);
+        NSLog(@"armor: %ld", (long)armor);
+        NSLog(@"ammo: %ld", (long)ammo);
         NSLog(@"");
         [player removeFromParent];
         [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
         CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+        
         [[CCDirector sharedDirector] presentScene:recapScene];
         //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
         //    [self lose];
     }
     NSLog(@"SHOT");
-    NSLog(@"life: %i", life);
-    NSLog(@"armor: %i", armor);
-    NSLog(@"ammo: %i", ammo);
+    NSLog(@"life: %ld", (long)life);
+    NSLog(@"armor: %ld", (long)armor);
+    NSLog(@"ammo: %ld", (long)ammo);
     NSLog(@"");
     return YES;
 }
