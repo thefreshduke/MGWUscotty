@@ -407,7 +407,6 @@ static NSInteger ammo;
             [self.enemyArray removeObjectAtIndex:i];
         }
     }
-    //    NSLog(@"%f", (float)self.enemyArray.count);
 }
 
 - (void)enemyShootFromLocationX:(float)enemyPosX fromLocationY:(float)enemyPosY{
@@ -440,7 +439,6 @@ static NSInteger ammo;
             [self.playerProjectileArray removeObjectAtIndex:i];
         }
     }
-    //    NSLog(@"%f", (float)self.playerProjectileArray.count);
 }
 
 - (void) updateEnemyProjectileArray {
@@ -453,12 +451,10 @@ static NSInteger ammo;
         CGPoint distance = ccpSub(enemyProjectilePos, playerPos);
         
         if (ccpLength(distance) >= screenWidth * 0.55) {
-            //        if (ccpLength(distance) <= 100) {
             [self.enemyProjectileArray[i] removeFromParent];
             [self.enemyProjectileArray removeObjectAtIndex:i];
         }
     }
-    //    NSLog(@"%f", (float)self.enemyProjectileArray.count);
 }
 
 //- (void)ccPhysicsCollisionPostSolve:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy wildcard:(CCNode *)object {
@@ -484,6 +480,10 @@ static NSInteger ammo;
 }
 
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerProjectileCollision:(CCNode *)playerProjectile {
+    CCParticleSystem *enemyExplosion = (CCParticleSystem *)[CCBReader load:@"EnemyExplosion"];
+    enemyExplosion.autoRemoveOnFinish = TRUE;
+    enemyExplosion.position = enemy.position;
+    [enemy.parent addChild:enemyExplosion];
     [enemy removeFromParent];
     [self.enemyArray removeObject:enemy];
     [playerProjectile removeFromParent];
@@ -500,6 +500,10 @@ static NSInteger ammo;
 // modified player-enemy interaction for dying
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
     life = life - 40;
+    CCParticleSystem *enemyExplosion = (CCParticleSystem *)[CCBReader load:@"EnemyExplosion"];
+    enemyExplosion.autoRemoveOnFinish = TRUE;
+    enemyExplosion.position = enemy.position;
+    [enemy.parent addChild:enemyExplosion];
     [enemy removeFromParent];
     [self.enemyArray removeObject:enemy];
     if (life <= 0) {
@@ -509,13 +513,20 @@ static NSInteger ammo;
         NSLog(@"armor: %ld", (long)armor);
         NSLog(@"ammo: %ld", (long)ammo);
         NSLog(@"");
-        
+        CCParticleSystem *playerExplosion = (CCParticleSystem *)[CCBReader load:@"PlayerExplosion"];
+        playerExplosion.autoRemoveOnFinish = TRUE;
+        playerExplosion.position = player.position;
+        [player.parent addChild:playerExplosion];
         [player removeFromParent];
         [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-        [[CCDirector sharedDirector] presentScene:recapScene];
+//        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+//        [[CCDirector sharedDirector] presentScene:recapScene];
         //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
         //    [self lose];
+//        CCTransition *transition = [CCTransition transitionFadeWithDuration:3.0f];
+//        [[CCDirector sharedDirector] presentScene:recapScene withTransition:transition];
+        int pause = 2.0;
+        [self schedule:@selector(goToRecap:) interval:pause];
     }
 
     NSLog(@"COLLIDED");
@@ -538,13 +549,22 @@ static NSInteger ammo;
         NSLog(@"armor: %ld", (long)armor);
         NSLog(@"ammo: %ld", (long)ammo);
         NSLog(@"");
+        CCParticleSystem *playerExplosion = (CCParticleSystem *)[CCBReader load:@"PlayerExplosion"];
+        playerExplosion.autoRemoveOnFinish = TRUE;
+        playerExplosion.position = player.position;
+        [player.parent addChild:playerExplosion];
+        [player removeFromParent];
         [player removeFromParent];
         [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
+//        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
         
-        [[CCDirector sharedDirector] presentScene:recapScene];
+//        [[CCDirector sharedDirector] presentScene:recapScene];
         //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
         //    [self lose];
+//        CCTransition *transition = [CCTransition transitionFadeWithDuration:3.0f];
+//        [[CCDirector sharedDirector] presentScene:recapScene withTransition:transition];
+        int pause = 2.0;
+        [self schedule:@selector(goToRecap:) interval:pause];
     }
     NSLog(@"SHOT");
     NSLog(@"life: %ld", (long)life);
@@ -601,10 +621,10 @@ static NSInteger ammo;
 }
 
 - (void)goToRecap {
-    CCScene *menuScene = [CCBReader loadAsScene:@"Recap"];
+    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
     //    [[CCDirector sharedDirector] presentScene:menuScene];
     CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
-    [[CCDirector sharedDirector] presentScene:menuScene withTransition:transition];
+    [[CCDirector sharedDirector] presentScene:recapScene withTransition:transition];
 }
 
 @end
