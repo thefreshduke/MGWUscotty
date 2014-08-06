@@ -34,22 +34,20 @@ static NSInteger armor;
 static NSInteger ammo;
 
 - (void)didLoadFromCCB {
-    // tell this scene to accept touches
     self.userInteractionEnabled = TRUE;
     _physicsNode.collisionDelegate = self;
     _physicsNode.debugDraw = TRUE;
-    
     _motionManager = [[CMMotionManager alloc] init];
-    
-    //enemy too big?
 }
 
 //// -----------------------------------------------------------------------
 //#pragma mark - Enter & Exit
 //// -----------------------------------------------------------------------
 
-- (void)onEnter
-{
+- (void)onEnter {
+    // always call super onEnter first
+    [super onEnter];
+    
     life = 100;
     armor = 50;
     ammo = 100 - armor;
@@ -59,8 +57,6 @@ static NSInteger ammo;
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
     
-    // always call super onEnter first
-    [super onEnter];
     _player.position = ccp(screenWidth/2, screenHeight/2);
     [_motionManager startAccelerometerUpdates];
     
@@ -146,9 +142,6 @@ static NSInteger ammo;
                                             blue:255.0f/255.0f
                                            alpha:1.0f];
     }
-    //    while (armor < 40 || ammo < 40) {
-    //        _lowLabel.string = [NSString stringWithFormat:@"LOW ARMOR: %ld LEFT", (long) armor];
-    //    }
     
     int minDuration = 1.0;
     int maxDuration = 2.0;

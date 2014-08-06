@@ -14,8 +14,4 @@
 @property (nonatomic, strong) NSMutableArray* playerProjectileArray;
 @property (nonatomic, strong) NSMutableArray* enemyProjectileArray;
 
-@property (nonatomic, assign) NSInteger shotCount;
-@property (nonatomic, assign) NSInteger hitCount;
-@property (nonatomic, assign) NSInteger enemyShots;
-
 @end
