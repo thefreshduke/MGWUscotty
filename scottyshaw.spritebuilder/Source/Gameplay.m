@@ -23,7 +23,8 @@
     CCLabelTTF *_ammoLabel;
     CCLabelTTF *_dangerLabel;
     CCLabelTTF *_lowLabel;
-    CCLabelTTF *_tipsLabel;
+    CCLabelTTF *_tipsLabel1;
+    CCLabelTTF *_tipsLabel2;
     CCButton *_calibrateButton;
     CMMotionManager *_motionManager; //create only one instance of a motion manager
     BOOL tiltCalibrated;
@@ -59,8 +60,6 @@ static NSInteger ammo;
     
     _player.position = ccp(screenWidth/2, screenHeight/2);
     [_motionManager startAccelerometerUpdates];
-    
-    _tipsLabel.string = [NSString stringWithFormat: @"Tilt to move"];
     
     _lifeLabel.string = [NSString stringWithFormat:@"%ld", (long) life];
     if (life < 40) {
@@ -300,7 +299,7 @@ static NSInteger ammo;
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     
-    _tipsLabel.string = [NSString stringWithFormat: @" "];
+    _tipsLabel2.string = [NSString stringWithFormat: @" "];
     
     if (ammo > 0) {
         
@@ -507,6 +506,8 @@ static NSInteger ammo;
 // modified player-enemy interaction for dying
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
     life = life - 30;
+    armor -= 10;
+    ammo += 10;
     CCParticleSystem *enemyExplosion = (CCParticleSystem *)[CCBReader load:@"EnemyExplosion"];
     enemyExplosion.autoRemoveOnFinish = TRUE;
     enemyExplosion.position = enemy.position;
@@ -642,7 +643,8 @@ static NSInteger ammo;
     float calibrationY = - _motionManager.accelerometerData.acceleration.y;
     [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationY] forKey:@"calibrationY"];
     tiltCalibrated = true;
-    _tipsLabel.string = [NSString stringWithFormat: @"Tap to shoot"];
+    _tipsLabel1.string = [NSString stringWithFormat: @" "];
+    _tipsLabel2.string = [NSString stringWithFormat: @"Tap to shoot"];
     // remove button?
     [_calibrateButton removeFromParent];
 }

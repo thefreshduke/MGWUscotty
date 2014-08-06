@@ -14,13 +14,6 @@
     CMMotionManager *_motionManager;
 }
 
-//- (void)startGame {
-//    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
-//    [[CCDirector sharedDirector] presentScene:gameplayScene];
-//    //CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
-//    //[[CCDirector sharedDirector] presentScene:firstLevel withTransition:transition];
-//}
-
 - (void)startGame {
     float calibrationX = -_motionManager.accelerometerData.acceleration.x;
     [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationX] forKey:@"calibrationX"];
@@ -33,10 +26,6 @@
 }
 
 - (void)startTutorial {
-//    float calibrationX = -_motionManager.accelerometerData.acceleration.x;
-//    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationX] forKey:@"calibrationX"];
-//    float calibrationY = -_motionManager.accelerometerData.acceleration.y;
-//    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationY] forKey:@"calibrationY"];
     CCScene *tutorialScene = [CCBReader loadAsScene:@"Tutorial"];
     [[CCDirector sharedDirector] presentScene:tutorialScene];
     //CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
