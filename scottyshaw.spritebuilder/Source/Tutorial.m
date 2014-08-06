@@ -1,19 +1,19 @@
 //
-//  Gameplay.m
+//  Tutorial.m
 //  scottyshaw
 //
-//  Created by Scotty Shaw on 7/9/14.
+//  Created by Scotty Shaw on 8/5/14.
 //  Copyright (c) 2014 Apportable. All rights reserved.
 //
 
-#import "Gameplay.h"
+#import "Tutorial.h"
 #import "MainScene.h"
 #import "Recap.h"
 #import "Player.h"
 #import "Enemy.h"
-#import <CoreMotion/CoreMotion.h>
+//#import <CoreMotion/CoreMotion.h>
 
-@implementation Gameplay {
+@implementation Tutorial {
     CCNode *_levelNode;
     Player *_player;
     //    CCSprite *_enemy;
@@ -24,9 +24,11 @@
     CCLabelTTF *_dangerLabel;
     CCLabelTTF *_lowLabel;
     CCLabelTTF *_tipsLabel;
-    CCButton *_calibrateButton;
-    CMMotionManager *_motionManager; //create only one instance of a motion manager
-    BOOL tiltCalibrated;
+    CCLabelTTF *_infoLabel1;
+    CCLabelTTF *_infoLabel2;
+    CCLabelTTF *_infoLabel3;
+    CCLabelTTF *_infoLabel4;
+    //    CMMotionManager *_motionManager; //create only one instance of a motion manager
 }
 
 static NSInteger life;
@@ -39,7 +41,7 @@ static NSInteger ammo;
     _physicsNode.collisionDelegate = self;
     _physicsNode.debugDraw = TRUE;
     
-    _motionManager = [[CMMotionManager alloc] init];
+    //    _motionManager = [[CMMotionManager alloc] init];
     
     //enemy too big?
 }
@@ -54,17 +56,14 @@ static NSInteger ammo;
     armor = 50;
     ammo = 100 - armor;
     
-    tiltCalibrated = false;
-    
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
     
     // always call super onEnter first
     [super onEnter];
     _player.position = ccp(screenWidth/2, screenHeight/2);
-    [_motionManager startAccelerometerUpdates];
-    
-    _tipsLabel.string = [NSString stringWithFormat: @"Tilt to move"];
+    //    [_motionManager startAccelerometerUpdates];
+    _tipsLabel.string = [NSString stringWithFormat:@"Tap to shoot"];
     
     _lifeLabel.string = [NSString stringWithFormat:@"%ld", (long) life];
     if (life < 40) {
@@ -158,13 +157,13 @@ static NSInteger ammo;
     self.enemyArray = [[NSMutableArray alloc] init];
     self.playerProjectileArray = [[NSMutableArray alloc] init];
     self.enemyProjectileArray = [[NSMutableArray alloc] init];
-    [self schedule:@selector(spawnEnemy:) interval:randomDuration];
+    [self schedule:@selector(spawnEnemy:) interval:maxDuration];
 }
 
 - (void)onExit
 {
     [super onExit];
-    [_motionManager stopAccelerometerUpdates];
+    //    [_motionManager stopAccelerometerUpdates];
 }
 
 //// -----------------------------------------------------------------------
@@ -184,6 +183,8 @@ static NSInteger ammo;
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
     
     ammo = 100 - armor;
+    
+    
     
     _lifeLabel.string = [NSString stringWithFormat:@"%ld", (long) life];
     if (life < 40) {
@@ -280,22 +281,22 @@ static NSInteger ammo;
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
     
-    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
-    CMAcceleration acceleration = accelerometerData.acceleration;
+    //    CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
+    //    CMAcceleration acceleration = accelerometerData.acceleration;
     
     //define movement variables
     
     // screen has been locked left (button to the left) for the following orientation
-//    CGFloat newXPosition = _player.position.x + acceleration.y * 1000 * delta;
-    CGFloat newXPosition = _player.position.x + (acceleration.y + [[[NSUserDefaults standardUserDefaults] objectForKey:@"calibrationY"] floatValue]) * 1000 * delta; //
+    //    CGFloat newXPosition = _player.position.x + acceleration.y * 1000 * delta;
+    //    CGFloat newXPosition = _player.position.x + (acceleration.x + [[[NSUserDefaults standardUserDefaults] objectForKey:@"calibrationX"] floatValue]) * 1000 * delta;
     //    newXPosition = clampf(newXPosition, 25, screenWidth-25);
-//    CGFloat newYPosition = _player.position.y - acceleration.x * 1000 * delta;
-    CGFloat newYPosition = _player.position.y - (acceleration.x + [[[NSUserDefaults standardUserDefaults] objectForKey:@"calibrationX"] floatValue]) * 1000 * delta;
+    //    CGFloat newYPosition = _player.position.y - acceleration.x * 1000 * delta;
+    //    CGFloat newYPosition = _player.position.y + (acceleration.y + [[[NSUserDefaults standardUserDefaults] objectForKey:@"calibrationY"] floatValue]) * 1000 * delta;
     //    newYPosition = clampf(newYPosition, 25, screenHeight-25);
-    _player.position = CGPointMake(newXPosition, newYPosition);
+    //    _player.position = CGPointMake(newXPosition, newYPosition);
     
-    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player];
-    [_levelNode runAction:follow];
+    //    CCActionFollow *follow = [CCActionFollow actionWithTarget:_player];
+    //    [_levelNode runAction:follow];
     //    [self runAction:[CCFollow actionWithTarget:_player worldBoundary:CGRectMake(0,0,screenWidth,screenHeight)]];
     
     //    NSLog(@"%i", armor);
@@ -306,13 +307,11 @@ static NSInteger ammo;
 //// -----------------------------------------------------------------------
 
 - (void)touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
-    
-    _tipsLabel.string = [NSString stringWithFormat: @" "];
-    
     if (ammo > 0) {
         
         ammo = ammo - 5;
         armor = armor + 5;
+        _shotCount++;
         
         if (armor > 100) {
             armor = 100;
@@ -321,6 +320,22 @@ static NSInteger ammo;
         if (ammo < 0) {
             ammo = 0;
         }
+        
+        if (_shotCount > 0 && _shotCount < 3) {
+            _tipsLabel.string = [NSString stringWithFormat:@" "];
+            _infoLabel1.string = [NSString stringWithFormat:@"1 shot"];
+            _infoLabel2.string = [NSString stringWithFormat:@"="];
+            _infoLabel3.string = [NSString stringWithFormat:@"+ 5 armor"];
+            _infoLabel4.string = [NSString stringWithFormat:@"– 5 ammo"];
+        }
+        
+//        if (_shotCount == 3) {
+//            _tipsLabel.string = [NSString stringWithFormat:@"Enemy shots refill ammo"];
+//            _infoLabel1.string = [NSString stringWithFormat:@" "];
+//            _infoLabel2.string = [NSString stringWithFormat:@" "];
+//            _infoLabel3.string = [NSString stringWithFormat:@" "];
+//            _infoLabel4.string = [NSString stringWithFormat:@" "];
+//        }
         
         CCSprite* _playerProjectile = (CCSprite *)[CCBReader load: @"PlayerWeapon"];
         
@@ -362,42 +377,35 @@ static NSInteger ammo;
 //// -----------------------------------------------------------------------
 
 - (void)spawnEnemy:(CCTime)delta {
-    if (tiltCalibrated) {
-        for (int i = 0; i < (arc4random_uniform(2) + 1); i++) { //spawn multiple enemies simultaneously
-            
-            CCSprite* _enemy = (CCSprite *)[CCBReader load: @"SimpleEnemy"];
-            //    CCSprite* _enemy = (CCSprite *)[CCBReader load: @"Enemy"]; //no force applied for some reason?
-            
-            //    CC_DEGREES_TO_RADIANS(<#__ANGLE__#>) is sin/cos in degrees or radians?
-            // value between 0.f and 1.f
-            //    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
-            //    CGFloat range = maximumYPosition - minimumYPosition;
-            
+    //    for (int i = 0; i < (arc4random_uniform(2) + 1); i++) { //spawn multiple enemies simultaneously
+    
+    CCSprite* _enemy = (CCSprite *)[CCBReader load: @"SimpleEnemy"];
+    //    CCSprite* _enemy = (CCSprite *)[CCBReader load: @"Enemy"]; //no force applied for some reason?
+    
+    //    CC_DEGREES_TO_RADIANS(<#__ANGLE__#>) is sin/cos in degrees or radians?
+    // value between 0.f and 1.f
+    //    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
+    //    CGFloat range = maximumYPosition - minimumYPosition;
+    
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
-            
-            int i = arc4random_uniform(360); //degrees or radians?
-            
-            //        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
-            _enemy.position = ccp(_player.position.x + cos(i) * 300, _player.position.y + sin(i) * 300);
-            
-            [_physicsNode addChild: _enemy];
-            [self.enemyArray addObject: _enemy];
-            
-            i = arc4random_uniform(360);
-            //    CGPoint offset = ccp(cos(i), sin(i));
-            //        CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
-            CGPoint enemyDestination = ccp(cos(i) * (100 + arc4random_uniform(150)) + _player.position.x, sin(i) * (200 + arc4random_uniform(150)) + _player.position.y);
-            
-            // can tighten 200-radius for denser enemy ramming... maybe adjust other circle radiuses to happen closer off-screen
-            
-            CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyDestination, _enemy.position));
-            CGPoint force = ccpMult(normalizedOffset, 12000 + arc4random_uniform(20000)); //set randomized speed
-            
-            _enemy.physicsBody.collisionType = @"enemyCollision";
-            [_enemy.physicsBody applyForce:force];
-        }
-    }
+    
+    //        int i = arc4random_uniform(360); //degrees or radians?
+    
+    //        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
+    //        _enemy.position = ccp(_player.position.x + cos(i) * 300, _player.position.y + sin(i) * 300);
+    _enemy.position = ccp(-10, 0.15 * screenHeight);
+    
+    [_physicsNode addChild: _enemy];
+    [self.enemyArray addObject: _enemy];
+    
+    CGPoint enemyDestination = ccp(screenWidth * 1.1, 0.15 * screenHeight);
+    CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyDestination, _enemy.position));
+    CGPoint force = ccpMult(normalizedOffset, 12000);
+    
+    _enemy.physicsBody.collisionType = @"enemyCollision";
+    [_enemy.physicsBody applyForce:force];
+    //    }
 }
 
 //player doesn't shoot if user holds down one spot and taps another? ask shady about his hold/tap thing
@@ -412,28 +420,60 @@ static NSInteger ammo;
         CGPoint playerPos = ccp(_player.position.x, _player.position.y);
         CGPoint distance = ccpSub(enemyPos, playerPos);
         
-        if (ccpLength(ccpSub(enemyPos, playerPos)) <= screenWidth * 0.55 && ccpLength(ccpSub(enemyPos, playerPos)) > 200 && arc4random_uniform(1000) % 80 == 0) {
-            [self enemyShootFromLocationX:enemyPos.x fromLocationY:enemyPos.y];
+        if (armor == 0) {
+            _tipsLabel.string = [NSString stringWithFormat:@"Shoot to refill armor"];
+            _infoLabel1.string = [NSString stringWithFormat:@" "];
+            _infoLabel2.string = [NSString stringWithFormat:@" "];
+            _infoLabel3.string = [NSString stringWithFormat:@" "];
+            _infoLabel4.string = [NSString stringWithFormat:@" "];
         }
         
-        if (ccpLength(distance) >= screenWidth * 0.75) {
+        if (ammo == 0) {
+            _tipsLabel.string = [NSString stringWithFormat:@"Enemy shots refill ammo"];
+            _infoLabel1.string = [NSString stringWithFormat:@" "];
+            _infoLabel2.string = [NSString stringWithFormat:@" "];
+            _infoLabel3.string = [NSString stringWithFormat:@" "];
+            _infoLabel4.string = [NSString stringWithFormat:@" "];
+        }
+        
+        if (_enemyShots == 1) {
+            _tipsLabel.string = [NSString stringWithFormat:@" "];
+            _infoLabel1.string = [NSString stringWithFormat:@"1 hit"];
+            _infoLabel2.string = [NSString stringWithFormat:@"="];
+            _infoLabel3.string = [NSString stringWithFormat:@"+ 10 ammo"];
+            _infoLabel4.string = [NSString stringWithFormat:@"– 10 armor"];
+        }
+        
+        if (ccpLength(ccpSub(enemyPos, playerPos)) <= 150 && _shotCount >= 3 && [self.enemyProjectileArray count] < 1 && armor >= 10) {
+//            int pause = 2.0;
+//            [self schedule:@selector(enemyShoot:) interval:pause];
+            [self enemyShootFromLocationX:enemyPos.x fromLocationY:enemyPos.y toLocationX:playerPos.x toLocationY:playerPos.y];
+        }
+        
+        if (ccpLength(distance) >= screenWidth * 0.6) {
             [self.enemyArray[i] removeFromParent];
             [self.enemyArray removeObjectAtIndex:i];
         }
     }
 }
 
-- (void)enemyShootFromLocationX:(float)enemyPosX fromLocationY:(float)enemyPosY{
+//- (void)enemyShoot:(CCTime)delta {
+//    
+//}
+
+- (void)enemyShootFromLocationX:(float)enemyPosX fromLocationY:(float)enemyPosY toLocationX:(float)playerPosX toLocationY:(float)playerPosY{
+    _enemyShots++;
 #define screenWidth [[CCDirector sharedDirector] viewSize].width
 #define screenHeight [[CCDirector sharedDirector] viewSize].height
     CCSprite* _enemyProjectile = (CCSprite *)[CCBReader load: @"EnemyWeapon"];
     _enemyProjectile.position = ccp(enemyPosX, enemyPosY);
-    int i = arc4random_uniform(360);
+    //        int i = arc4random_uniform(360);
     [_physicsNode addChild: _enemyProjectile];
     [self.enemyProjectileArray addObject: _enemyProjectile];
-    CGPoint enemyAim = ccp(cos(i) * arc4random_uniform(150) + _player.position.x, sin(i) * arc4random_uniform(150) + _player.position.y);
+    //        CGPoint enemyAim = ccp(cos(i) * arc4random_uniform(150) + _player.position.x, sin(i) * arc4random_uniform(150) + _player.position.y);
+    CGPoint enemyAim = ccp(playerPosX, playerPosY);
     CGPoint normalizedOffset = ccpNormalize(ccpSub(enemyAim, _enemyProjectile.position));
-    CGPoint force = ccpMult(normalizedOffset, 25000);
+    CGPoint force = ccpMult(normalizedOffset, 5000);
     _enemyProjectile.physicsBody.collisionType = @"enemyProjectileCollision";
     [_enemyProjectile.physicsBody applyForce:force];
 }
@@ -489,9 +529,9 @@ static NSInteger ammo;
     return NO;
 }
 
-- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile1 enemyProjectileCollision:(CCNode *)enemyProjectile2 {
-    return NO;
-}
+//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile1 enemyProjectileCollision:(CCNode *)enemyProjectile2 {
+//    return NO;
+//}
 
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerProjectileCollision:(CCNode *)playerProjectile {
     CCParticleSystem *enemyExplosion = (CCParticleSystem *)[CCBReader load:@"EnemyExplosion"];
@@ -506,128 +546,25 @@ static NSInteger ammo;
     return YES;
 }
 
-// modified player-enemy interaction for invincibility
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
-//    return NO;
-//}
-
-// modified player-enemy interaction for dying
-- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyCollision:(CCNode *)enemy playerCollision:(CCNode *)player {
-    life = life - 30;
-    CCParticleSystem *enemyExplosion = (CCParticleSystem *)[CCBReader load:@"EnemyExplosion"];
-    enemyExplosion.autoRemoveOnFinish = TRUE;
-    enemyExplosion.position = enemy.position;
-    [enemy.parent addChild:enemyExplosion];
-    [enemy removeFromParent];
-    [self.enemyArray removeObject:enemy];
-    if (life <= 0) {
-        armor = 0;
-        life = 0;
-        NSLog(@"DEATH BY COLLISION");
-        NSLog(@"life: %ld", (long)life);
-        NSLog(@"armor: %ld", (long)armor);
-        NSLog(@"ammo: %ld", (long)ammo);
-        NSLog(@"");
-        CCParticleSystem *playerExplosion = (CCParticleSystem *)[CCBReader load:@"PlayerExplosion"];
-        playerExplosion.autoRemoveOnFinish = TRUE;
-        playerExplosion.position = player.position;
-        [player.parent addChild:playerExplosion];
-        [player removeFromParent];
-        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-        //        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-        //        [[CCDirector sharedDirector] presentScene:recapScene];
-        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-        //    [self lose];
-        //        CCTransition *transition = [CCTransition transitionFadeWithDuration:3.0f];
-        //        [[CCDirector sharedDirector] presentScene:recapScene withTransition:transition];
-        int pause = 2.0;
-        [self schedule:@selector(goToRecap:) interval:pause];
-    }
-    
-    NSLog(@"COLLIDED");
-    NSLog(@"life: %ld", (long)life);
-    NSLog(@"armor: %ld", (long)armor);
-    NSLog(@"ammo: %ld", (long)ammo);
-    NSLog(@"");
-    return YES;
-}
-
 //player-enemyProjectile interaction for dying
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
     armor = armor - 10;
     ammo = ammo + 10;
+    _hitCount++;
     [enemyProjectile removeFromParent];
     [self.enemyProjectileArray removeObject:enemyProjectile];
-    if (armor < 0) {
-        armor = 0;
-        life = 0;
-        NSLog(@"SHOT TO DEATH");
-        NSLog(@"life: %ld", (long)life);
-        NSLog(@"armor: %ld", (long)armor);
-        NSLog(@"ammo: %ld", (long)ammo);
-        NSLog(@"");
-        CCParticleSystem *playerExplosion = (CCParticleSystem *)[CCBReader load:@"PlayerExplosion"];
-        playerExplosion.autoRemoveOnFinish = TRUE;
-        playerExplosion.position = player.position;
-        [player.parent addChild:playerExplosion];
-        [player removeFromParent];
-        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
-        //        CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-        
-        //        [[CCDirector sharedDirector] presentScene:recapScene];
-        //    [[CCDirector sharedDirector] replaceScene:[Recap scene] withTransition:[CCTransition transitionPushWithDirection:CCTransitionDirectionLeft duration:1.0f]];
-        //    [self lose];
-        //        CCTransition *transition = [CCTransition transitionFadeWithDuration:3.0f];
-        //        [[CCDirector sharedDirector] presentScene:recapScene withTransition:transition];
-        int pause = 2.0;
-        [self schedule:@selector(goToRecap:) interval:pause];
-    }
-    NSLog(@"SHOT");
-    NSLog(@"life: %ld", (long)life);
-    NSLog(@"armor: %ld", (long)armor);
-    NSLog(@"ammo: %ld", (long)ammo);
-    NSLog(@"");
+//    if (armor < 0) {
+//        CCParticleSystem *playerExplosion = (CCParticleSystem *)[CCBReader load:@"PlayerExplosion"];
+//        playerExplosion.autoRemoveOnFinish = TRUE;
+//        playerExplosion.position = player.position;
+//        [player.parent addChild:playerExplosion];
+//        [player removeFromParent];
+//        [[OALSimpleAudio sharedInstance] playEffect:@"ResourcePack/Sounds/Explosion.caf"];
+//        int pause = 2.0;
+//        [self schedule:@selector(returnTOMenu:) interval:pause];
+//    }
     return YES;
 }
-
-//modified player-enemyProjectile interaction for invincibility
-//- (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair enemyProjectileCollision:(CCNode *)enemyProjectile playerCollision:(CCNode *)player {
-//    return NO;
-//}
-
-//- (void)lose {
-////    CCLOG(@"You are dead");
-////    NSNumber *highScore = [[NSUserDefaults standardUserDefaults] objectForKey:@"highScore"];
-////    if (self.score > [highScore intValue]) {
-////        // new high score!
-////        highScore = [NSNumber numberWithInt:self.score];
-////        [[NSUserDefaults standardUserDefaults] setObject:highScore forKey:@"highScore"];
-////        [[NSUserDefaults standardUserDefaults] synchronize];
-////    }
-//    Recap *gameEndPopover = (Recap *)[CCBReader load:@"Recap"];
-//    gameEndPopover.positionType = CCPositionTypeNormalized;
-//    gameEndPopover.position = ccp(0.5, 0.5);
-//    gameEndPopover.zOrder = INT_MAX;
-////    [gameEndPopover setMessage:message score:self.score];
-//    [self addChild:gameEndPopover];
-//}
-
-//- (void)lose {
-//    CCLOG(@"You are dead");
-//    NSNumber *highScore = [[NSUserDefaults standardUserDefaults] objectForKey:@"highScore"];
-//    if (self.score > [highScore intValue]) {
-//        // new high score!
-//        highScore = [NSNumber numberWithInt:self.score];
-//        [[NSUserDefaults standardUserDefaults] setObject:highScore forKey:@"highScore"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//    }
-//    RecapScene *gameEndPopover = (RecapScene *)[CCBReader load:@"GameEnd"];
-//    gameEndPopover.positionType = CCPositionTypeNormalized;
-//    gameEndPopover.position = ccp(0.5, 0.5);
-//    gameEndPopover.zOrder = INT_MAX;
-//    [gameEndPopover setMessage:message score:self.score];
-//    [self addChild:gameEndPopover];
-//}
 
 - (void)returnToMenu {
     CCScene *menuScene = [CCBReader loadAsScene:@"MainScene"];
@@ -636,22 +573,15 @@ static NSInteger ammo;
     [[CCDirector sharedDirector] presentScene:menuScene withTransition:transition];
 }
 
-- (void)goToRecap:(CCTime)delta {
-    CCScene *recapScene = [CCBReader loadAsScene:@"Recap"];
-    //    [[CCDirector sharedDirector] presentScene:menuScene];
-    CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
-    [[CCDirector sharedDirector] presentScene:recapScene withTransition:transition];
-}
-
-- (void)calibrate {
-    float calibrationX = - _motionManager.accelerometerData.acceleration.x;
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationX] forKey:@"calibrationX"];
-    float calibrationY = - _motionManager.accelerometerData.acceleration.y;
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationY] forKey:@"calibrationY"];
-    tiltCalibrated = true;
-    _tipsLabel.string = [NSString stringWithFormat: @"Tap to shoot"];
-    // remove button?
-    [_calibrateButton removeFromParent];
+- (void)startGame {
+    //    float calibrationX = -_motionManager.accelerometerData.acceleration.x;
+    //    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationX] forKey:@"calibrationX"];
+    //    float calibrationY = -_motionManager.accelerometerData.acceleration.y;
+    //    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationY] forKey:@"calibrationY"];
+    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
+    [[CCDirector sharedDirector] presentScene:gameplayScene];
+    //CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
+    //[[CCDirector sharedDirector] presentScene:firstLevel withTransition:transition];
 }
 
 @end

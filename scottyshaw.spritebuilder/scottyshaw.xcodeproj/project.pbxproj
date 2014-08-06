@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6F237867196ED3AA006D38BE /* Recap.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F237866196ED3AA006D38BE /* Recap.m */; };
+		6F43EA2719909702006FE64E /* Tutorial.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F43EA2619909702006FE64E /* Tutorial.m */; };
 		6F4420B8198189B2009E1BB1 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F4420B7198189B2009E1BB1 /* CoreMotion.framework */; };
 		6FA50D891979AC16007C05E2 /* ResourcePack in Resources */ = {isa = PBXBuildFile; fileRef = 6FA50D881979AC16007C05E2 /* ResourcePack */; };
 		6FD6C1C8196DCEEE00961B8F /* Enemy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FD6C1C7196DCEEE00961B8F /* Enemy.m */; };
@@ -64,6 +65,8 @@
 /* Begin PBXFileReference section */
 		6F237865196ED3AA006D38BE /* Recap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Recap.h; path = Source/Recap.h; sourceTree = "<group>"; };
 		6F237866196ED3AA006D38BE /* Recap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Recap.m; path = Source/Recap.m; sourceTree = "<group>"; };
+		6F43EA2519909702006FE64E /* Tutorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Tutorial.h; path = Source/Tutorial.h; sourceTree = "<group>"; };
+		6F43EA2619909702006FE64E /* Tutorial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Tutorial.m; path = Source/Tutorial.m; sourceTree = "<group>"; };
 		6F4420B7198189B2009E1BB1 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		6F4420B919818ABF009E1BB1 /* CCNode_GameConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CCNode_GameConstants.h; path = Source/CCNode_GameConstants.h; sourceTree = "<group>"; };
 		6FA50D881979AC16007C05E2 /* ResourcePack */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ResourcePack; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 				6FD6C1CD196DCF1D00961B8F /* Player.m */,
 				6F237865196ED3AA006D38BE /* Recap.h */,
 				6F237866196ED3AA006D38BE /* Recap.m */,
+				6F43EA2519909702006FE64E /* Tutorial.h */,
+				6F43EA2619909702006FE64E /* Tutorial.m */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -371,6 +376,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FD6C1D1196DCF5000961B8F /* Gameplay.m in Sources */,
+				6F43EA2719909702006FE64E /* Tutorial.m in Sources */,
 				B737893F1807617C0076A88C /* AppDelegate.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
