@@ -205,19 +205,16 @@ static NSInteger hitCount;
         }
     }
     else {
+        _tipsLabel.string = [NSString stringWithFormat:@"Tap \"Game\" on left to play"];
+        _infoLabel1.string = [NSString stringWithFormat:@" "];
+        _infoLabel2.string = [NSString stringWithFormat:@" "];
+        _infoLabel3.string = [NSString stringWithFormat:@" "];
+        _infoLabel4.string = [NSString stringWithFormat:@" "];
         if (lowArmor) {
             _tipsLabel.string = [NSString stringWithFormat:@"Shoot to refill armor"];
-            _infoLabel1.string = [NSString stringWithFormat:@" "];
-            _infoLabel2.string = [NSString stringWithFormat:@" "];
-            _infoLabel3.string = [NSString stringWithFormat:@" "];
-            _infoLabel4.string = [NSString stringWithFormat:@" "];
         }
         if (lowAmmo) {
             _tipsLabel.string = [NSString stringWithFormat:@"Enemy shots refill ammo"];
-            _infoLabel1.string = [NSString stringWithFormat:@" "];
-            _infoLabel2.string = [NSString stringWithFormat:@" "];
-            _infoLabel3.string = [NSString stringWithFormat:@" "];
-            _infoLabel4.string = [NSString stringWithFormat:@" "];
         }
     }
     
