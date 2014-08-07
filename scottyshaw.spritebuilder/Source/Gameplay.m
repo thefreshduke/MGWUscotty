@@ -15,6 +15,8 @@
 
 @implementation Gameplay {
     CCNode *_levelNode;
+    CCNode *_ammoArmorBar;
+    CCNode *_ammoArmorBarMark;
     Player *_player;
     //    CCSprite *_enemy;
     CCPhysicsNode *_physicsNode;
@@ -33,6 +35,9 @@
 static NSInteger life;
 static NSInteger armor;
 static NSInteger ammo;
+
+#define screenWidth [[CCDirector sharedDirector] viewSize].width
+#define screenHeight [[CCDirector sharedDirector] viewSize].height
 
 - (void)didLoadFromCCB {
     self.userInteractionEnabled = TRUE;
@@ -54,9 +59,6 @@ static NSInteger ammo;
     ammo = 100 - armor;
     
     tiltCalibrated = false;
-    
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
     
     _player.position = ccp(screenWidth/2, screenHeight/2);
     [_motionManager startAccelerometerUpdates];
@@ -172,10 +174,9 @@ static NSInteger ammo;
 //}
 
 - (void) update:(CCTime)delta {
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
     
     ammo = 100 - armor;
+    _ammoArmorBarMark.position = ccp(ammo / 100.f * .97 + _ammoArmorBarMark.contentSize.width/2, _ammoArmorBarMark.position.y);
     
     _lifeLabel.string = [NSString stringWithFormat:@"%ld", (long) life];
     if (life < 40) {
@@ -269,9 +270,6 @@ static NSInteger ammo;
     [self updatePlayerProjectileArray];
     [self updateEnemyProjectileArray];
     
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
-    
     CMAccelerometerData *accelerometerData = _motionManager.accelerometerData;
     CMAcceleration acceleration = accelerometerData.acceleration;
     
@@ -315,9 +313,6 @@ static NSInteger ammo;
         }
         
         CCSprite* _playerProjectile = (CCSprite *)[CCBReader load: @"PlayerWeapon"];
-        
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
         
         CGPoint touchLocation = [touch locationInNode:_levelNode];
         
@@ -365,9 +360,6 @@ static NSInteger ammo;
             //    CGFloat random = ((double)arc4random() / ARC4RANDOM_MAX);
             //    CGFloat range = maximumYPosition - minimumYPosition;
             
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
-            
             int i = arc4random_uniform(360); //degrees or radians?
             
             //        _enemy.position = ccp(_player.position.x + cos(i) * screenWidth, _player.position.y + sin(i) * screenWidth);
@@ -396,9 +388,6 @@ static NSInteger ammo;
 
 - (void) updateEnemyArray {
     
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
-    
     for (int i = 0; i < self.enemyArray.count; i++) {
         CGPoint enemyPos = ((CCSprite*) self.enemyArray[i]).position;
         CGPoint playerPos = ccp(_player.position.x, _player.position.y);
@@ -416,8 +405,6 @@ static NSInteger ammo;
 }
 
 - (void)enemyShootFromLocationX:(float)enemyPosX fromLocationY:(float)enemyPosY{
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
     CCSprite* _enemyProjectile = (CCSprite *)[CCBReader load: @"EnemyWeapon"];
     _enemyProjectile.position = ccp(enemyPosX, enemyPosY);
     int i = arc4random_uniform(360);
@@ -432,8 +419,6 @@ static NSInteger ammo;
 
 
 - (void) updatePlayerProjectileArray {
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
     
     for (int i = 0; i < self.playerProjectileArray.count; i++) {
         CGPoint playerProjectilePos = ((CCSprite*) self.playerProjectileArray[i]).position;
@@ -448,8 +433,6 @@ static NSInteger ammo;
 }
 
 - (void) updateEnemyProjectileArray {
-#define screenWidth [[CCDirector sharedDirector] viewSize].width
-#define screenHeight [[CCDirector sharedDirector] viewSize].height
     
     for (int i = 0; i < self.enemyProjectileArray.count; i++) {
         CGPoint enemyProjectilePos = ((CCSprite*) self.enemyProjectileArray[i]).position;
