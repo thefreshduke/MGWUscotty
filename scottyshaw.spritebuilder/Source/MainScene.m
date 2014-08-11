@@ -31,13 +31,19 @@
 //    }
 //}
 
+
 - (void)startGame {
-    float calibrationX = -_motionManager.accelerometerData.acceleration.x;
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationX] forKey:@"calibrationX"];
-    float calibrationY = -_motionManager.accelerometerData.acceleration.y;
-    [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationY] forKey:@"calibrationY"];
-    CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
-    [[CCDirector sharedDirector] presentScene:gameplayScene];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialCompleted"]) {
+        [self startTutorial];
+    }
+    else {
+        float calibrationX = -_motionManager.accelerometerData.acceleration.x;
+        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationX] forKey:@"calibrationX"];
+        float calibrationY = -_motionManager.accelerometerData.acceleration.y;
+        [[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithFloat:calibrationY] forKey:@"calibrationY"];
+        CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
+        [[CCDirector sharedDirector] presentScene:gameplayScene];
+    }
     //CCTransition *transition = [CCTransition transitionFadeWithDuration:0.5f];
     //[[CCDirector sharedDirector] presentScene:firstLevel withTransition:transition];
 }

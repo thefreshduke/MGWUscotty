@@ -210,6 +210,9 @@ static NSInteger hitCount;
         _infoLabel2.string = [NSString stringWithFormat:@" "];
         _infoLabel3.string = [NSString stringWithFormat:@" "];
         _infoLabel4.string = [NSString stringWithFormat:@" "];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"tutorialCompleted"];
+        
         if (lowArmor) {
             _tipsLabel.string = [NSString stringWithFormat:@"Shoot to refill armor"];
         }
