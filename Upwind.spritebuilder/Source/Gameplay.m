@@ -49,11 +49,6 @@
 - (void)didLoadFromCCB {
     self.userInteractionEnabled = true;
     _physicsNode.collisionDelegate = self;
-//    _physicsNode.debugDraw = true;
-    //    NSLog(@"distance: %f", (float) _wall.position.x * 1000000000000000000000000000.00000000000000000000000000 - (float) _player.position.x * 1000000000000000000000000000.00000000000000000000000000);
-    //    NSLog(@"error margin: %ld", (long)_errorMargin);
-    //    NSLog(@"score: %ld", _score);
-    //    NSLog(@"level: %ld", _level);
     
     [self addObserver:self forKeyPath:@"score" options:0 context:NULL];
     [[NSUserDefaults standardUserDefaults] addObserver:self
@@ -62,11 +57,6 @@
                                                context:NULL];
     // load high score
     [_recap updateHighScore];
-    
-//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialCompleted"]) {
-//        [self startTutorial];
-//    }
-//    [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"tutorialCompleted"];
     
     _level = 1;
     _score = 0;
@@ -86,8 +76,6 @@
     perfectStreak = 0;
     
     _instructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
-//    _target.position = ccp(200, 200);
-    //    _levelLabel.string = [NSString stringWithFormat:@"%ld", (long)_level];
     _scoreLabel.string = [NSString stringWithFormat:@"%ld", (long)_score];
     _marginLabel.string = [NSString stringWithFormat:@"%ld", (long)_errorMargin];
 }
@@ -114,15 +102,14 @@
     _instructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
     [self scheduleBlock:^(CCTimer *timer) {
         [_instructionLabel removeFromParent];
-        [_target removeFromParent];
+        _target.visible = false;
     } delay:1.f];
 }
 
 - (void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
     
-//    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"tutorialCompleted"]) {
     if (!collision) {
-    
+        
         touching = false;
         int distance = (_wall.position.x - _player.position.x) / 4;
         _errorMargin -= distance;
@@ -131,10 +118,6 @@
             
             _score += _errorMargin * _level;
             _level++;
-            
-//            if (distance <= 10) {
-//                [[NSUserDefaults standardUserDefaults] setBool:true forKey:@"tutorialCompleted"];
-//            }
             
             if (distance == 0) {
                 
@@ -178,32 +161,28 @@
             }
             else {
                 [[OALSimpleAudio sharedInstance] playEffect:@"Buzzer.caf"];
-                _performanceLabel.string = [NSString stringWithFormat:@"BAD"]; //don't say bad?
+                _performanceLabel.string = [NSString stringWithFormat:@"GO FURTHER"];
                 if (distance > 30) {
                     if (_level < 3) {
                         [_instructionLabel removeFromParent];
                         _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
                         if (distance > 75) {
                             _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+                            _target.visible = true;
                             _level--;
                             _score -= _errorMargin * _level;
                             _errorMargin += distance;
                             [self scheduleBlock:^(CCTimer *timer) {
                                 _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
                                 [self scheduleBlock:^(CCTimer *timer) {
-                                    [_idiotInstructionLabel removeFromParent];
-                                    [_target removeFromParent];
+                                    _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
+                                    _target.visible = false; // why is timing dfferent for target and label???
                                 } delay:1.f];
                             } delay:1.f];
                         }
                     }
                 }
             }
-            
-//            NSLog(@"level: %ld", (long)_level);
-//            NSLog(@"score: %ld", (long)_score);
-//            NSLog(@"margin: %ld", (long)_errorMargin);
-//            NSLog(@"distance: %ld", (long)distance);
             
             [[self animationManager] runAnimationsForSequenceNamed:@"Default Timeline"];
             waiting = true;
@@ -216,7 +195,6 @@
             NSNumber* ifPerfect = [NSNumber numberWithBool: perfect];
             NSDictionary *params = [[NSDictionary alloc] initWithObjectsAndKeys: distanceTraveled, @"distance", margin, @"errorMargin", ifPerfect, @"perfect", nil];
             [MGWU logEvent:@"levelComplete" withParams:params];
-            // syntax correct?
             
             _player.position = ccp(0, 17);
             if (headWind) {
@@ -232,7 +210,6 @@
         }
         else {
             self.userInteractionEnabled = false;
-//            [_instructionLabel removeFromParent];
             [_idiotLabel removeFromParent];
             [_idiotInstructionLabel removeFromParent];
             [_obstacleLabel removeFromParent];
@@ -345,7 +322,7 @@
             }
             _wall.position = ccp(_wall.position.x + _oscillatingWallSpeed, _wall.position.y);
         }
-        if (headWind) { //works as intended, except it sometimes crashes??? needs visuals...
+        if (headWind) { // needs visuals...
             long i = arc4random_uniform(20);
             if (_playerSpeed == 4) {
                 [self scheduleBlock:^(CCTimer *timer) {
@@ -360,15 +337,6 @@
                 }
             }
         }
-//        if (headWind) {
-//            long i = arc4random_uniform(20);
-//            if (i < 15) {
-//                _playerSpeed = 1;
-//            }
-//            if (i == 19) {
-//                _playerSpeed = 4;
-//            }
-//        }
         
         if (closingWall) {
             _wall.position = ccp(_wall.position.x - 2, _wall.position.y);
@@ -381,7 +349,6 @@
         }
         if (touching) {
             _player.position = ccp(_player.position.x + _playerSpeed, _player.position.y);
-            //randomize anti-wind effect
         }
     }
 }
@@ -389,7 +356,6 @@
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair playerCollision:(CCNode *)player wallCollision:(CCNode *)wall {
     collision = true;
     self.userInteractionEnabled = false;
-    //    [_instructionLabel removeFromParent];
     [_idiotLabel removeFromParent];
     [_idiotInstructionLabel removeFromParent];
     [_obstacleLabel removeFromParent];
