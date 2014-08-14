@@ -122,8 +122,14 @@
             if (distance == 0) {
                 
                 perfect = true;
-                _performanceLabel.string = [NSString stringWithFormat:@"PERFECT"];
-                
+                _performanceLabel.string = [NSString stringWithFormat:@"PERFECT!!!"];
+//                for (int i = 0; i < [_performanceLabel.string length]; i++) {
+//                    NSString *s = _performanceLabel.string[i];
+//                    _performanceLabel.string[0].color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
+//                    s.color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
+//                }
+                //rainbow, larger, italics?
+            
                 if (perfect) {
                     perfectStreak++;
                 }
@@ -148,16 +154,20 @@
                 }
             }
             else if (distance > 0 && distance <= 2) {
-                _performanceLabel.string = [NSString stringWithFormat:@"AWESOME"];
+                _performanceLabel.string = [NSString stringWithFormat:@"AWESOME!!"];
+                _performanceLabel.color = [CCColor colorWithRed:255.0f/255.0f green:130.0/255.0f blue:0.0/255.0f alpha:1.0f];
             }
             else if (distance > 2 && distance <= 5) {
-                _performanceLabel.string = [NSString stringWithFormat:@"GREAT"];
+                _performanceLabel.string = [NSString stringWithFormat:@"GREAT!"];
+                _performanceLabel.color = [CCColor colorWithRed:175.0f/255.0f green:255.0/255.0f blue:0.0/255.0f alpha:1.0f];
             }
             else if (distance > 5 && distance <= 10) {
                 _performanceLabel.string = [NSString stringWithFormat:@"GOOD"];
+                _performanceLabel.color = [CCColor colorWithRed:126.0f/255.0f green:168.0/255.0f blue:53.0/255.0f alpha:1.0f];
             }
             else if (distance > 10 && distance <= 20) {
                 _performanceLabel.string = [NSString stringWithFormat:@"OKAY"];
+                _performanceLabel.color = [CCColor colorWithRed:0.0f/255.0f green:168.0/255.0f blue:255.0/255.0f alpha:1.0f];
             }
             else {
                 [[OALSimpleAudio sharedInstance] playEffect:@"Buzzer.caf"];
