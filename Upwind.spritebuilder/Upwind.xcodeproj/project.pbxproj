@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F00F934199C56B30037A45D /* Target.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F00F933199C56B30037A45D /* Target.m */; };
 		6F0C98A6198C82D8006EC450 /* Gameplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0C98A5198C82D8006EC450 /* Gameplay.m */; };
 		6F0C98AE198C9CC4006EC450 /* Recap.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0C98AD198C9CC4006EC450 /* Recap.m */; };
 		6F1084C219969FBD00CF5E76 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F1084C119969FBD00CF5E76 /* libz.dylib */; };
@@ -143,6 +144,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6F00F932199C56B30037A45D /* Target.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Target.h; path = Source/Target.h; sourceTree = "<group>"; };
+		6F00F933199C56B30037A45D /* Target.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Target.m; path = Source/Target.m; sourceTree = "<group>"; };
 		6F0C98A4198C82D8006EC450 /* Gameplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gameplay.h; path = Source/Gameplay.h; sourceTree = "<group>"; };
 		6F0C98A5198C82D8006EC450 /* Gameplay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Gameplay.m; path = Source/Gameplay.m; sourceTree = "<group>"; };
 		6F0C98AC198C9CC3006EC450 /* Recap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Recap.h; path = Source/Recap.h; sourceTree = "<group>"; };
@@ -408,6 +411,8 @@
 				B7378993180767190076A88C /* MainScene.m */,
 				6F9D0898198C112300817BD1 /* Player.h */,
 				6F9D0899198C112300817BD1 /* Player.m */,
+				6F00F932199C56B30037A45D /* Target.h */,
+				6F00F933199C56B30037A45D /* Target.m */,
 				6F9D089C198C112E00817BD1 /* Wall.h */,
 				6F9D089D198C112E00817BD1 /* Wall.m */,
 			);
@@ -714,6 +719,7 @@
 				B737893F1807617C0076A88C /* AppDelegate.m in Sources */,
 				B7378994180767190076A88C /* MainScene.m in Sources */,
 				6F0C98AE198C9CC4006EC450 /* Recap.m in Sources */,
+				6F00F934199C56B30037A45D /* Target.m in Sources */,
 				B73789871807631A0076A88C /* main.m in Sources */,
 				6F0C98A6198C82D8006EC450 /* Gameplay.m in Sources */,
 				6F346D0319950C5600ADEDE4 /* Explosion.m in Sources */,

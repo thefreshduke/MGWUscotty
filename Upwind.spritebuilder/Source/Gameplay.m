@@ -10,11 +10,13 @@
 #import "Player.h"
 #import "Wall.h"
 #import "Recap.h"
+#import "Target.h"
 
 @implementation Gameplay {
     Recap *_recap;
     Player *_player;
     Wall *_wall;
+    Target *_target;
     CCPhysicsNode *_physicsNode;
     CCLabelTTF *_instructionLabel;
     CCLabelTTF *_idiotLabel;
@@ -84,7 +86,8 @@
     perfectStreak = 0;
     
     _instructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
-//    _levelLabel.string = [NSString stringWithFormat:@"%ld", (long)_level];
+//    _target.position = ccp(200, 200);
+    //    _levelLabel.string = [NSString stringWithFormat:@"%ld", (long)_level];
     _scoreLabel.string = [NSString stringWithFormat:@"%ld", (long)_score];
     _marginLabel.string = [NSString stringWithFormat:@"%ld", (long)_errorMargin];
 }
@@ -111,6 +114,7 @@
     _instructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
     [self scheduleBlock:^(CCTimer *timer) {
         [_instructionLabel removeFromParent];
+        [_target removeFromParent];
     } delay:1.f];
 }
 
@@ -188,6 +192,7 @@
                                 _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
                                 [self scheduleBlock:^(CCTimer *timer) {
                                     [_idiotInstructionLabel removeFromParent];
+                                    [_target removeFromParent];
                                 } delay:1.f];
                             } delay:1.f];
                         }
