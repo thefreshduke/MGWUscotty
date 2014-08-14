@@ -12,7 +12,7 @@
 
 - (void)didLoadFromCCB
 {
-    self.position = ccp(400, 20);
+    self.position = ccp(373, 50);
 }
 
 @end

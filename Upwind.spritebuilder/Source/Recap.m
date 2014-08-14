@@ -7,10 +7,12 @@
 //
 
 #import "Recap.h"
+#import "Player.h"
 #import "Wall.h"
 #import "Gameplay.h"
 
 @implementation Recap {
+    Player *_player;
     Wall *_wall;
     CCPhysicsNode *_physicsNode;
     CCLabelTTF *_deathLabel;
