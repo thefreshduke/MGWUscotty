@@ -449,6 +449,9 @@
 - (BOOL)ccPhysicsCollisionBegin:(CCPhysicsCollisionPair *)pair playerCollision:(CCNode *)player wallCollision:(CCNode *)wall {
     collision = true;
     self.userInteractionEnabled = false;
+    if (_instructionLabel) {
+        [_instructionLabel removeFromParent];
+    }
     [_idiotLabel removeFromParent];
     [_idiotInstructionLabel removeFromParent];
     [_obstacleLabel removeFromParent];
