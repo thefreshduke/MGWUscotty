@@ -61,6 +61,9 @@
     _errorMargin = 100;
     _playerSpeed = 4;
     _oscillatingWallSpeed = -2; //might not need this line
+    
+    _instructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+    
     collision = false;
     highScore = false;
     perfect = false;
