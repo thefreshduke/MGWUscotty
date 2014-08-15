@@ -269,25 +269,25 @@
             _marginLabel.string = [NSString stringWithFormat:@"%ld", (long)_errorMargin];
         }
         else {
-//            if (_level < 3) {
-//                _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
-//                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
-//                _score -= _errorMargin * _level;
-//                _errorMargin += distance;
-//                [self scheduleBlock:^(CCTimer *timer) {
-//                    _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
-//                    [self scheduleBlock:^(CCTimer *timer) {
-//                        _idiotInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
-//                        [self scheduleBlock:^(CCTimer *timer) {
-//                            _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
-//                        } delay:1.f];
-//                    } delay:1.f];
-//                } delay:1.f];
-//            }
-//            else {
-                if (_instructionLabel) {
-                    [_instructionLabel removeFromParent];
-                }
+            if (_instructionLabel) {
+                [_instructionLabel removeFromParent];
+            }
+            if (_level < 2) {
+                _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
+                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+                _score -= _errorMargin * _level;
+                _errorMargin += distance;
+                [self scheduleBlock:^(CCTimer *timer) {
+                    _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
+                    [self scheduleBlock:^(CCTimer *timer) {
+                        _idiotInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
+                        [self scheduleBlock:^(CCTimer *timer) {
+                            _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
+                        } delay:1.f];
+                    } delay:1.f];
+                } delay:1.f];
+            }
+            else {
                 [_idiotLabel removeFromParent];
                 [_idiotInstructionLabel removeFromParent];
                 [_obstacleLabel removeFromParent];
@@ -307,7 +307,7 @@
                 
                 float pause = 0.5;
                 [self scheduleOnce:@selector(goToRecap) delay:pause];
-//            }
+            }
         }
     }
 }
