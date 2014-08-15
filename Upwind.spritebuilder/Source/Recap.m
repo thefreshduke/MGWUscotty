@@ -23,6 +23,7 @@
 }
 
 - (void)play {
+    [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
     CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
     [[CCDirector sharedDirector] replaceScene:gameplayScene];
 }

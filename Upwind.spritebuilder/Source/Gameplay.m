@@ -33,13 +33,14 @@
     BOOL waiting;
     BOOL highScore;
     BOOL perfect;
+    BOOL rollOut;
     BOOL oscillatingWall;
     BOOL headWind; // blowing on and off
-    BOOL tailWind; // blowing on and off // currently unused?
+    //    BOOL tailWind; // blowing on and off
     BOOL closingWall;
     BOOL jumpingWall; // currently unused
     BOOL backwardsConveyerBelt; // constant movement
-//    BOOL forwardsConveyerBelt; // constant movement
+    //    BOOL forwardsConveyerBelt; // constant movement
     int perfectStreak;
 }
 
@@ -59,10 +60,11 @@
     _score = 0;
     _errorMargin = 100;
     _playerSpeed = 4;
-    _oscillatingWallSpeed = -2;
+    _oscillatingWallSpeed = -2; //might not need this line
     collision = false;
     highScore = false;
     perfect = false;
+    rollOut = false;
     
     oscillatingWall = false;
     headWind = false;
@@ -70,10 +72,6 @@
     backwardsConveyerBelt = false;
     waiting = false;
     perfectStreak = 0;
-    
-    _instructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
-    _scoreLabel.string = [NSString stringWithFormat:@"%ld", (long)_score];
-    _marginLabel.string = [NSString stringWithFormat:@"%ld", (long)_errorMargin];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -95,6 +93,10 @@
 - (void) touchBegan:(UITouch *)touch withEvent:(UIEvent *)event {
     touching = true;
     waiting = false;
+    
+    [[OALSimpleAudio sharedInstance] playBg:@"Drumroll.caf" loop:NO];
+//    [[OALSimpleAudio sharedInstance] playBg:@"Roll-In.caf" loop:YES];
+    
     _instructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
     [self scheduleBlock:^(CCTimer *timer) {
         _instructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
@@ -106,36 +108,42 @@
 
 - (void) touchEnded:(UITouch *)touch withEvent:(UIEvent *)event {
     
+    [[OALSimpleAudio sharedInstance] stopBg];
+    rollOut = false;
+    
     if (!collision) {
         
         touching = false;
         int distance = (_wall.position.x - _player.position.x) / 4;
+        if (distance < 0) {
+            distance = 0;
+        }
         _errorMargin -= distance;
         
         // in case distance = -1 (aka player released just in time to explode, but register a distance not covered by the standard 0-100 situation
-        if (distance < 0) {
-            collision = true;
-            self.userInteractionEnabled = false;
-            [_idiotLabel removeFromParent];
-            [_idiotInstructionLabel removeFromParent];
-            [_obstacleLabel removeFromParent];
-            [_infoLabel1 removeFromParent];
-            [_infoLabel2 removeFromParent];
-            [_infoLabel3 removeFromParent];
-            [_scoreLabel removeFromParent];
-            [_marginLabel removeFromParent];
-            [_performanceLabel removeFromParent];
-            _deathLabel.string = [NSString stringWithFormat:@"You ran into the wall!"];
-            [[OALSimpleAudio sharedInstance] playEffect:@"Explosion1.caf"];
-            CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
-            playerExplosion.position = ccp(_player.position.x - 20, _player.position.y + 20);
-            [_player.parent addChild:playerExplosion];
-            [_player removeFromParent];
-            [_wall removeFromParent];
-            float pause = 0.5;
-            //    [playerExplosion removeFromParent];
-            [self scheduleOnce:@selector(goToRecap) delay:pause];
-        }
+//        if (distance < 0) {
+//            collision = true;
+//            self.userInteractionEnabled = false;
+//            [_idiotLabel removeFromParent];
+//            [_idiotInstructionLabel removeFromParent];
+//            [_obstacleLabel removeFromParent];
+//            [_infoLabel1 removeFromParent];
+//            [_infoLabel2 removeFromParent];
+//            [_infoLabel3 removeFromParent];
+//            [_scoreLabel removeFromParent];
+//            [_marginLabel removeFromParent];
+//            [_performanceLabel removeFromParent];
+//            _deathLabel.string = [NSString stringWithFormat:@"You ran into the wall!"];
+//            [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
+//            CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
+//            playerExplosion.position = ccp(_player.position.x - 20, _player.position.y + 20);
+//            [_player.parent addChild:playerExplosion];
+//            [_player removeFromParent];
+//            [_wall removeFromParent];
+//            float pause = 0.5;
+//            //    [playerExplosion removeFromParent];
+//            [self scheduleOnce:@selector(goToRecap) delay:pause];
+//        }
         
         if (_errorMargin > 0) {
             
@@ -148,16 +156,16 @@
                 perfectStreak++;
                 _errorMargin += 5 * perfectStreak;
                 
-                if (perfectStreak == 1) {
-                _performanceLabel.string = [NSString stringWithFormat:@"PERFECT!!!!!\n+5 MARGIN"];
-//                for (int i = 0; i < [_performanceLabel.string length]; i++) {
-//                    NSString *s = _performanceLabel.string[i];
-//                    _performanceLabel.string[0].color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
-//                    s.color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
-//                }
-                //rainbow, larger, italics?
-                }
+                [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
+                [[OALSimpleAudio sharedInstance] playEffect:@"Firework.caf"];
+                [[OALSimpleAudio sharedInstance] playEffect:@"Winner.caf"];
+                [self scheduleBlock:^(CCTimer *timer) {
+                    [[OALSimpleAudio sharedInstance] playEffect:@"Firecracker.caf"];
+                } delay:1.f];
                 
+                if (perfectStreak == 1) {
+                    _performanceLabel.string = [NSString stringWithFormat:@"PERFECT!!!!!\n+5 MARGIN"];
+                }
                 else if (perfectStreak == 2) {
                     _performanceLabel.string = [NSString stringWithFormat:@"WOW\n+10 MARGIN"];
                 }
@@ -173,6 +181,13 @@
                 else {
                     _performanceLabel.string = [NSString stringWithFormat:@"PHENOMENAL\n+30 MARGIN"];
                 }
+                
+                //                for (int i = 0; i < [_performanceLabel.string length]; i++) {
+                //                    NSString *s = _performanceLabel.string[i];
+                //                    _performanceLabel.string[0].color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
+                //                    s.color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
+                //                }
+                //rainbow, larger, italics? cclabel gradient overlay or shade effect?
             }
             
             else {
@@ -183,43 +198,49 @@
                 if (distance > 0 && distance <= 2) {
                     _performanceLabel.string = [NSString stringWithFormat:@"AWESOME!!!!"];
                     _performanceLabel.color = [CCColor colorWithRed:255.0f/255.0f green:130.0/255.0f blue:0.0/255.0f alpha:1.0f];
+                    [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
+                    [[OALSimpleAudio sharedInstance] playEffect:@"Win.caf"];
                 }
                 else if (distance > 2 && distance <= 5) {
                     _performanceLabel.string = [NSString stringWithFormat:@"GREAT!!!"];
                     _performanceLabel.color = [CCColor colorWithRed:175.0f/255.0f green:255.0/255.0f blue:0.0/255.0f alpha:1.0f];
+                    [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
                 }
                 else if (distance > 5 && distance <= 10) {
                     _performanceLabel.string = [NSString stringWithFormat:@"GOOD!!"];
                     _performanceLabel.color = [CCColor colorWithRed:126.0f/255.0f green:168.0/255.0f blue:53.0/255.0f alpha:1.0f];
+                    [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
                 }
                 else if (distance > 10 && distance <= 20) {
                     _performanceLabel.string = [NSString stringWithFormat:@"OKAY!"];
                     _performanceLabel.color = [CCColor colorWithRed:0.0f/255.0f green:189.0/255.0f blue:255.0/255.0f alpha:1.0f];
+                    [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
                 }
                 else {
                     _performanceLabel.string = [NSString stringWithFormat:@"GO FURTHER"];
                     _performanceLabel.color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
-                    if (distance > 30) {
-                        [_instructionLabel removeFromParent];
+                    [_instructionLabel removeFromParent];
+                    if (distance > 75) {
+                        [[OALSimpleAudio sharedInstance] playEffect:@"Buzzer.caf"];
                         if (_level < 3) {
-                            if (distance > 75) {
-                                [[OALSimpleAudio sharedInstance] playEffect:@"Buzzer.caf"];
-                                _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
-                                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
-                                _level--;
-                                _score -= _errorMargin * _level;
-                                _errorMargin += distance;
+                            _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
+                            _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+                            _level--;
+                            _score -= _errorMargin * _level;
+                            _errorMargin += distance;
+                            [self scheduleBlock:^(CCTimer *timer) {
+                                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
                                 [self scheduleBlock:^(CCTimer *timer) {
-                                    _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
+                                    _idiotInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
                                     [self scheduleBlock:^(CCTimer *timer) {
-                                        _idiotInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
-                                        [self scheduleBlock:^(CCTimer *timer) {
-                                            _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
-                                        } delay:1.f];
+                                        _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
                                     } delay:1.f];
                                 } delay:1.f];
-                            }
+                            } delay:1.f];
                         }
+                    }
+                    else {
+                        [[OALSimpleAudio sharedInstance] playEffect:@"Fizzle.caf"];
                     }
                 }
             }
@@ -228,7 +249,7 @@
             waiting = true;
             [self scheduleBlock:^(CCTimer *timer) {
                 waiting = false;
-            } delay:1.f]; //maybe switch time?
+            } delay:1.f];
             
             NSNumber* distanceTraveled = [NSNumber numberWithInt: distance];
             NSNumber* margin = [NSNumber numberWithInt: self.errorMargin];
@@ -248,32 +269,62 @@
             _marginLabel.string = [NSString stringWithFormat:@"%ld", (long)_errorMargin];
         }
         else {
-//            self.userInteractionEnabled = false;
-            [_idiotLabel removeFromParent];
-            [_idiotInstructionLabel removeFromParent];
-            [_obstacleLabel removeFromParent];
-            [_infoLabel1 removeFromParent];
-            [_infoLabel2 removeFromParent];
-            [_infoLabel3 removeFromParent];
-            [_scoreLabel removeFromParent];
-            [_marginLabel removeFromParent];
-            [_performanceLabel removeFromParent];
-            _deathLabel.string = [NSString stringWithFormat:@"Too far from the wall!"];
-            [[OALSimpleAudio sharedInstance] playEffect:@"Explosion1.caf"];
-            CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
-            playerExplosion.position = ccp(_player.position.x - 20, _player.position.y + 20);
-            [_player.parent addChild:playerExplosion];
-            [_player removeFromParent];
-            [_wall removeFromParent];
-//            [[OALSimpleAudio sharedInstance] playEffect:@"Drumroll.caf"];
-            
-            float pause = 0.5;
-            [self scheduleOnce:@selector(goToRecap) delay:pause];
+            if (_level < 3) {
+                _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
+                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+                _score -= _errorMargin * _level;
+                _errorMargin += distance;
+                [self scheduleBlock:^(CCTimer *timer) {
+                    _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
+                    [self scheduleBlock:^(CCTimer *timer) {
+                        _idiotInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
+                        [self scheduleBlock:^(CCTimer *timer) {
+                            _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
+                        } delay:1.f];
+                    } delay:1.f];
+                } delay:1.f];
+            }
+            else {
+                if (_instructionLabel) {
+                    [_instructionLabel removeFromParent];
+                }
+                [_idiotLabel removeFromParent];
+                [_idiotInstructionLabel removeFromParent];
+                [_obstacleLabel removeFromParent];
+                [_infoLabel1 removeFromParent];
+                [_infoLabel2 removeFromParent];
+                [_infoLabel3 removeFromParent];
+                [_scoreLabel removeFromParent];
+                [_marginLabel removeFromParent];
+                [_performanceLabel removeFromParent];
+                _deathLabel.string = [NSString stringWithFormat:@"Too far from the wall!"];
+                [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
+                CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
+                playerExplosion.position = ccp(_player.position.x - 20, _player.position.y + 20);
+                [_player.parent addChild:playerExplosion];
+                [_player removeFromParent];
+                [_wall removeFromParent];
+                
+                float pause = 0.5;
+                [self scheduleOnce:@selector(goToRecap) delay:pause];
+            }
         }
     }
 }
 
 -(void)update:(CCTime)delta {
+    
+    if ((_wall.position.x - _player.position.x) / 4 <= 16) {
+        if (!rollOut) {
+            rollOut = true;
+            [[OALSimpleAudio sharedInstance] stopBg];
+            [[OALSimpleAudio sharedInstance] playEffect:@"Roll-Out.caf"];
+        }
+    }
+    
+    if (_level == 2) {
+        [_idiotLabel removeFromParent];
+    }
     if (_level < 5) {
         oscillatingWall = false;
         headWind = false;
@@ -314,7 +365,6 @@
         headWind = false;
         closingWall = true;
         backwardsConveyerBelt = true;
-//        _obstacleLabel.string = [NSString stringWithFormat:@" "];
         [_obstacleLabel removeFromParent];
     }
     else if (_level < 29) {
@@ -355,6 +405,16 @@
     }
     
     if (!waiting) {
+        if (backwardsConveyerBelt) { // needs visuals...
+            _playerSpeed = 4;
+            _player.position = ccp(_player.position.x - 2, _player.position.y);
+        }
+    }
+    if (touching) {
+//        if (forwardsConveyerBelt) { // needs visuals...
+//            _playerSpeed = 4;
+//            _player.position = ccp(_player.position.x + 2, _player.position.y);
+//        }
         if (oscillatingWall) {
             if (_wall.position.x >= 420) {
                 _oscillatingWallSpeed = -2;
@@ -379,21 +439,10 @@
                 }
             }
         }
-        
         if (closingWall) {
             _wall.position = ccp(_wall.position.x - 2, _wall.position.y);
         }
-        if (backwardsConveyerBelt) {
-            _playerSpeed = 4;
-            _player.position = ccp(_player.position.x - 2, _player.position.y);
-        }
-//        if (forwardsConveyerBelt) {
-//            _playerSpeed = 4;
-//            _player.position = ccp(_player.position.x + 2, _player.position.y);
-//        }
-        if (touching) {
-            _player.position = ccp(_player.position.x + _playerSpeed, _player.position.y);
-        }
+        _player.position = ccp(_player.position.x + _playerSpeed, _player.position.y);
     }
 }
 
@@ -410,7 +459,8 @@
     [_marginLabel removeFromParent];
     [_performanceLabel removeFromParent];
     _deathLabel.string = [NSString stringWithFormat:@"You ran into the wall!"];
-    [[OALSimpleAudio sharedInstance] playEffect:@"Explosion1.caf"];
+    [[OALSimpleAudio sharedInstance] playEffect:@"Roll-Out.caf"];
+    [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
     CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
     playerExplosion.position = ccp(player.position.x - 20, player.position.y + 20);
     [player.parent addChild:playerExplosion];

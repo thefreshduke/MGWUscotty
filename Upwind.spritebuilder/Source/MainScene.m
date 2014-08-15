@@ -20,7 +20,7 @@
 }
 
 - (void)play {
-    [[OALSimpleAudio sharedInstance] playEffect:@"Sounds/Explosion.caf"];
+    [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
     self.userInteractionEnabled = false; // needed?
     CCScene *gameplayScene = [CCBReader loadAsScene:@"Gameplay"];
     [[CCDirector sharedDirector] replaceScene:gameplayScene];
