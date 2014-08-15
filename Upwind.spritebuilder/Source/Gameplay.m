@@ -269,6 +269,9 @@
             _marginLabel.string = [NSString stringWithFormat:@"%ld", (long)_errorMargin];
         }
         else {
+            if (_instructionLabel) {
+                [_instructionLabel removeFromParent];
+            }
             if (_level < 3) {
                 _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
                 _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
@@ -285,9 +288,6 @@
                 } delay:1.f];
             }
             else {
-                if (_instructionLabel) {
-                    [_instructionLabel removeFromParent];
-                }
                 [_idiotLabel removeFromParent];
                 [_idiotInstructionLabel removeFromParent];
                 [_obstacleLabel removeFromParent];
