@@ -40,7 +40,7 @@
 }
 
 - (void)updateHighScore {
-    NSInteger *newHighScore = [[NSUserDefaults standardUserDefaults] integerForKey:@"HighScore"];
+    NSInteger newHighScore = [[NSUserDefaults standardUserDefaults] integerForKey:@"HighScore"];
     _highScoreLabel.string = [NSString stringWithFormat:@"%d", (int)newHighScore];
 }
 

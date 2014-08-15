@@ -88,12 +88,11 @@
 		6F10855B1996A18300CF5E76 /* send-field-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F1085151996A18300CF5E76 /* send-field-landscape.png */; };
 		6F2DCEEA199D388800DEA71F /* appIcons in Resources */ = {isa = PBXBuildFile; fileRef = 6F2DCEE9199D388800DEA71F /* appIcons */; };
 		6F346D0319950C5600ADEDE4 /* Explosion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F346D0219950C5600ADEDE4 /* Explosion.m */; };
-		6F7749A0199E8B4700DFD561 /* launchImages in Resources */ = {isa = PBXBuildFile; fileRef = 6F77499F199E8B4700DFD561 /* launchImages */; };
+		6F7749A4199E9B9900DFD561 /* launchImages in Resources */ = {isa = PBXBuildFile; fileRef = 6F7749A3199E9B9900DFD561 /* launchImages */; };
 		6F939322199C3D2000850342 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F939321199C3D2000850342 /* Icon.png */; };
 		6F939325199C3D5200850342 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F939324199C3D5200850342 /* Images.xcassets */; };
 		6F9D089A198C112300817BD1 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9D0899198C112300817BD1 /* Player.m */; };
 		6F9D089E198C112E00817BD1 /* Wall.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9D089D198C112E00817BD1 /* Wall.m */; };
-		6FA3D70B199BF3C5003FAA38 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FA3D70A199BF3C5003FAA38 /* Default.png */; };
 		6FD8EBD6199DA75C00FA7509 /* Cymbal.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD8EBD5199DA75C00FA7509 /* Cymbal.caf */; };
 		6FD8EBD9199DA8D400FA7509 /* Win.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD8EBD8199DA8D400FA7509 /* Win.caf */; };
 		6FD8EBDB199DABA500FA7509 /* Firework.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD8EBDA199DABA500FA7509 /* Firework.caf */; };
@@ -239,14 +238,13 @@
 		6F2DCEE9199D388800DEA71F /* appIcons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = appIcons; sourceTree = "<group>"; };
 		6F346D0119950C5600ADEDE4 /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explosion.h; path = Source/Explosion.h; sourceTree = "<group>"; };
 		6F346D0219950C5600ADEDE4 /* Explosion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explosion.m; path = Source/Explosion.m; sourceTree = "<group>"; };
-		6F77499F199E8B4700DFD561 /* launchImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = launchImages; sourceTree = "<group>"; };
+		6F7749A3199E9B9900DFD561 /* launchImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = launchImages; sourceTree = "<group>"; };
 		6F939321199C3D2000850342 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		6F939324199C3D5200850342 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Upwind/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		6F9D0898198C112300817BD1 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Player.h; path = Source/Player.h; sourceTree = "<group>"; };
 		6F9D0899198C112300817BD1 /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Player.m; path = Source/Player.m; sourceTree = "<group>"; };
 		6F9D089C198C112E00817BD1 /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Wall.h; path = Source/Wall.h; sourceTree = "<group>"; };
 		6F9D089D198C112E00817BD1 /* Wall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Wall.m; path = Source/Wall.m; sourceTree = "<group>"; };
-		6FA3D70A199BF3C5003FAA38 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		6FD8EBD5199DA75C00FA7509 /* Cymbal.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cymbal.caf; sourceTree = "<group>"; };
 		6FD8EBD8199DA8D400FA7509 /* Win.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Win.caf; sourceTree = "<group>"; };
 		6FD8EBDA199DABA500FA7509 /* Firework.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Firework.caf; sourceTree = "<group>"; };
@@ -473,7 +471,6 @@
 			children = (
 				6FEC904A199E52480086AF12 /* Buzzer.caf */,
 				6FD8EBD5199DA75C00FA7509 /* Cymbal.caf */,
-				6FA3D70A199BF3C5003FAA38 /* Default.png */,
 				6FEC905E199E72C40086AF12 /* Drumroll.caf */,
 				6FEC9052199E5C560086AF12 /* Explosion.caf */,
 				6FEC9048199E44C00086AF12 /* Firecracker.caf */,
@@ -530,7 +527,7 @@
 			isa = PBXGroup;
 			children = (
 				6F2DCEE9199D388800DEA71F /* appIcons */,
-				6F77499F199E8B4700DFD561 /* launchImages */,
+				6F7749A3199E9B9900DFD561 /* launchImages */,
 				6F939324199C3D5200850342 /* Images.xcassets */,
 				B73789911807667A0076A88C /* Icons */,
 				B737893A180761570076A88C /* Published-iOS */,
@@ -627,12 +624,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F7749A4199E9B9900DFD561 /* launchImages in Resources */,
 				6F1085231996A18300CF5E76 /* FBNoThanksButtonPressed@2x.png in Resources */,
 				6F10855B1996A18300CF5E76 /* send-field-landscape.png in Resources */,
 				6F1085511996A18300CF5E76 /* mgwuPlaceholderIcon.png in Resources */,
 				6F10855A1996A18300CF5E76 /* send-button-instate.png in Resources */,
 				B71F5919188484E7003F4D28 /* Settings.png in Resources */,
-				6F7749A0199E8B4700DFD561 /* launchImages in Resources */,
 				6F10852B1996A18300CF5E76 /* mgwu-gk-notification@2x.png in Resources */,
 				6F10853A1996A18300CF5E76 /* MGWUBackground-Landscape~iphone.png in Resources */,
 				6F10851C1996A18300CF5E76 /* FBLoginButton.png in Resources */,
@@ -703,7 +700,6 @@
 				6F1085261996A18300CF5E76 /* hipmob.back.btn.png in Resources */,
 				B71F5918188484E7003F4D28 /* iPhone@2x.png in Resources */,
 				6F10851A1996A18300CF5E76 /* FacebookIcon.png in Resources */,
-				6FA3D70B199BF3C5003FAA38 /* Default.png in Resources */,
 				6FEC9049199E44C00086AF12 /* Firecracker.caf in Resources */,
 				6F10854E1996A18300CF5E76 /* mgwuLogo@2x.png in Resources */,
 				6F1085501996A18300CF5E76 /* mgwuLogoDark@2x.png in Resources */,
