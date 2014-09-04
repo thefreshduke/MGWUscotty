@@ -7,13 +7,13 @@
 		<key>Animation/vector explosion-1@4x.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{1, 187}, {165, 183}}</string>
+			<string>{{1, 187}, {166, 183}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>
 			<false/>
 			<key>sourceColorRect</key>
-			<string>{{1, 0}, {165, 183}}</string>
+			<string>{{0, 0}, {166, 183}}</string>
 			<key>sourceSize</key>
 			<string>{166, 183}</string>
 		</dict>
@@ -46,7 +46,7 @@
 		<key>Animation/vector explosion-4@4x.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{168, 187}, {182, 177}}</string>
+			<string>{{169, 187}, {182, 177}}</string>
 			<key>offset</key>
 			<string>{1, 0}</string>
 			<key>rotated</key>
@@ -59,7 +59,7 @@
 		<key>Animation/vector explosion-5@4x.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{347, 187}, {154, 144}}</string>
+			<string>{{348, 187}, {154, 144}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>

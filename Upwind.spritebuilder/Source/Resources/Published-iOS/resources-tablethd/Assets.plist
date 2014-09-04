@@ -7,20 +7,20 @@
 		<key>Assets/bomb.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{140, 1539}, {161, 218}}</string>
+			<string>{{140, 2181}, {162, 218}}</string>
 			<key>offset</key>
-			<string>{10, 10}</string>
+			<string>{11, 10}</string>
 			<key>rotated</key>
 			<false/>
 			<key>sourceColorRect</key>
-			<string>{{58, 9}, {161, 218}}</string>
+			<string>{{58, 9}, {162, 218}}</string>
 			<key>sourceSize</key>
 			<string>{256, 256}</string>
 		</dict>
 		<key>Assets/cardboard.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{1, 1539}, {398, 137}}</string>
+			<string>{{1, 2181}, {398, 137}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>
@@ -46,7 +46,7 @@
 		<key>Assets/crate.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{1, 1939}, {284, 285}}</string>
+			<string>{{1, 2581}, {284, 285}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>
@@ -59,15 +59,15 @@
 		<key>Assets/target.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{3978, 1}, {80, 80}}</string>
+			<string>{{1, 1539}, {640, 640}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>rotated</key>
 			<false/>
 			<key>sourceColorRect</key>
-			<string>{{0, 0}, {80, 80}}</string>
+			<string>{{0, 0}, {640, 640}}</string>
 			<key>sourceSize</key>
-			<string>{80, 80}</string>
+			<string>{640, 640}</string>
 		</dict>
 	</dict>
 	<key>metadata</key>
