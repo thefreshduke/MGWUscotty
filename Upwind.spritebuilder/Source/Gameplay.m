@@ -62,7 +62,7 @@
     _playerSpeed = 4;
     _oscillatingWallSpeed = -2; //might not need this line
     
-    _instructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+    _instructionLabel.string = [NSString stringWithFormat:@"Tap and hold to move"];
     
     collision = false;
     highScore = false;
@@ -198,23 +198,23 @@
                 perfect = false;
                 perfectStreak = 0;
                 
-                if (distance > 0 && distance <= 2) {
+                if (distance > 0 && distance <= 3) {
                     _performanceLabel.string = [NSString stringWithFormat:@"AWESOME!!!!"];
                     _performanceLabel.color = [CCColor colorWithRed:255.0f/255.0f green:130.0/255.0f blue:0.0/255.0f alpha:1.0f];
                     [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
                     [[OALSimpleAudio sharedInstance] playEffect:@"Win.caf"];
                 }
-                else if (distance > 2 && distance <= 5) {
+                else if (distance > 2 && distance <= 7) {
                     _performanceLabel.string = [NSString stringWithFormat:@"GREAT!!!"];
                     _performanceLabel.color = [CCColor colorWithRed:175.0f/255.0f green:255.0/255.0f blue:0.0/255.0f alpha:1.0f];
                     [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
                 }
-                else if (distance > 5 && distance <= 10) {
+                else if (distance > 5 && distance <= 15) {
                     _performanceLabel.string = [NSString stringWithFormat:@"GOOD!!"];
                     _performanceLabel.color = [CCColor colorWithRed:126.0f/255.0f green:168.0/255.0f blue:53.0/255.0f alpha:1.0f];
                     [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
                 }
-                else if (distance > 10 && distance <= 20) {
+                else if (distance > 10 && distance <= 25) {
                     _performanceLabel.string = [NSString stringWithFormat:@"OKAY!"];
                     _performanceLabel.color = [CCColor colorWithRed:0.0f/255.0f green:189.0/255.0f blue:255.0/255.0f alpha:1.0f];
                     [[OALSimpleAudio sharedInstance] playEffect:@"Cymbal.caf"];
@@ -226,8 +226,8 @@
                     if (distance > 75) {
                         [[OALSimpleAudio sharedInstance] playEffect:@"Buzzer.caf"];
                         if (_level < 3) {
-                            _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
-                            _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+                            _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE TARGET"];
+                            _idiotInstructionLabel.string = [NSString stringWithFormat:@"Tap and hold to move"];
                             _level--;
                             _score -= _errorMargin * _level;
                             _errorMargin += distance;
@@ -276,8 +276,8 @@
                 [_instructionLabel removeFromParent];
             }
             if (_level < 2) {
-                _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE WALL"];
-                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Hold to move"];
+                _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE TARGET"];
+                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Tap and hold to move"];
                 _score -= _errorMargin * _level;
                 _errorMargin += distance;
                 [self scheduleBlock:^(CCTimer *timer) {
