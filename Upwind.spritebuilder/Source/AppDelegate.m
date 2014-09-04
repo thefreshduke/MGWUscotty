@@ -24,7 +24,7 @@
  */
 
 #import "cocos2d.h"
-
+#import <Crashlytics/Crashlytics.h>
 #import "AppDelegate.h"
 #import "CCBuilderReader.h"
 
@@ -36,7 +36,9 @@
 //    [MGWU dark]; // the Cross Promo, About and Facebook Login pages have a dark theme instead of the standard white
     
 //    [MGWU setAppiraterAppId:appid andAppName:appname];
-    [MGWU setReminderMessage:@"Brave enough for more Bombardare? "];
+    [MGWU setReminderMessage:@"Don't be chicken... come back To The Wall!"];
+    
+    [Crashlytics startWithAPIKey:@"ded6406565981f8f4254da18dc7c5334f4c6a400"];
     
     // Configure Cocos2d with the options set in SpriteBuilder
     NSString* configPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"Published-iOS"]; // TODO: add support for Published-Android support

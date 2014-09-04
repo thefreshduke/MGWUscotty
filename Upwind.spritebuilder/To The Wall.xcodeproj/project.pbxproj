@@ -87,6 +87,7 @@
 		6F10855A1996A18300CF5E76 /* send-button-instate.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F1085141996A18300CF5E76 /* send-button-instate.png */; };
 		6F10855B1996A18300CF5E76 /* send-field-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F1085151996A18300CF5E76 /* send-field-landscape.png */; };
 		6F346D0319950C5600ADEDE4 /* Explosion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F346D0219950C5600ADEDE4 /* Explosion.m */; };
+		6F4BFA7019B8BF3900A98BD4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F4BFA6F19B8BF3900A98BD4 /* Crashlytics.framework */; };
 		6F6A478E199EA60300714330 /* appIcons in Resources */ = {isa = PBXBuildFile; fileRef = 6F6A478D199EA60300714330 /* appIcons */; };
 		6F7749A4199E9B9900DFD561 /* launchImages in Resources */ = {isa = PBXBuildFile; fileRef = 6F7749A3199E9B9900DFD561 /* launchImages */; };
 		6F939322199C3D2000850342 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F939321199C3D2000850342 /* Icon.png */; };
@@ -237,6 +238,7 @@
 		6F1085151996A18300CF5E76 /* send-field-landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "send-field-landscape.png"; sourceTree = "<group>"; };
 		6F346D0119950C5600ADEDE4 /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explosion.h; path = Source/Explosion.h; sourceTree = "<group>"; };
 		6F346D0219950C5600ADEDE4 /* Explosion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explosion.m; path = Source/Explosion.m; sourceTree = "<group>"; };
+		6F4BFA6F19B8BF3900A98BD4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		6F6A478D199EA60300714330 /* appIcons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = appIcons; sourceTree = "<group>"; };
 		6F7749A3199E9B9900DFD561 /* launchImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = launchImages; sourceTree = "<group>"; };
 		6F939321199C3D2000850342 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 			files = (
 				6F1084CD1996A02300CF5E76 /* Twitter.framework in Frameworks */,
 				6F1084CB1996A01700CF5E76 /* SystemConfiguration.framework in Frameworks */,
+				6F4BFA7019B8BF3900A98BD4 /* Crashlytics.framework in Frameworks */,
 				6F1084C91996A00F00CF5E76 /* StoreKit.framework in Frameworks */,
 				6F1084C71996A00600CF5E76 /* Social.framework in Frameworks */,
 				6F1084C519969FFE00CF5E76 /* MessageUI.framework in Frameworks */,
@@ -501,6 +504,7 @@
 		B77F1B3017B978D7009739AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F4BFA6F19B8BF3900A98BD4 /* Crashlytics.framework */,
 				6F1084CE1996A18300CF5E76 /* mgwuSDK.embeddedframework */,
 				6F1084CC1996A02300CF5E76 /* Twitter.framework */,
 				6F1084CA1996A01700CF5E76 /* SystemConfiguration.framework */,
@@ -556,6 +560,7 @@
 				B77F1B2A17B978D7009739AE /* Sources */,
 				B77F1B2B17B978D7009739AE /* Frameworks */,
 				B77F1B2C17B978D7009739AE /* Resources */,
+				6F4BFA7319B8C14300A98BD4 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -729,6 +734,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		6F4BFA7319B8C14300A98BD4 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run ded6406565981f8f4254da18dc7c5334f4c6a400 dc9f02465e868165b1f9c5ea94994f13d3d059beedf676d4f54ffde27a352b46";
+		};
 		D2E0167A18D782EC00927430 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -783,7 +801,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -815,7 +833,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
@@ -847,6 +865,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mgwuSDK.embeddedframework",
+					"$(PROJECT_DIR)",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -886,6 +905,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/mgwuSDK.embeddedframework",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Source/Prefix.pch;
