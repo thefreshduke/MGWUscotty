@@ -88,6 +88,8 @@
 		6F10855B1996A18300CF5E76 /* send-field-landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F1085151996A18300CF5E76 /* send-field-landscape.png */; };
 		6F346D0319950C5600ADEDE4 /* Explosion.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F346D0219950C5600ADEDE4 /* Explosion.m */; };
 		6F44C58C19CE7A0B005D41CD /* Drumroll.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6F44C58B19CE7A0B005D41CD /* Drumroll.caf */; };
+		6F44C58E19CE8116005D41CD /* Fizzle.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6F44C58D19CE8116005D41CD /* Fizzle.caf */; };
+		6F44C59019CE8219005D41CD /* Explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6F44C58F19CE8219005D41CD /* Explosion.caf */; };
 		6F4BFA7019B8BF3900A98BD4 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F4BFA6F19B8BF3900A98BD4 /* Crashlytics.framework */; };
 		6F6A478E199EA60300714330 /* appIcons in Resources */ = {isa = PBXBuildFile; fileRef = 6F6A478D199EA60300714330 /* appIcons */; };
 		6F7749A4199E9B9900DFD561 /* launchImages in Resources */ = {isa = PBXBuildFile; fileRef = 6F7749A3199E9B9900DFD561 /* launchImages */; };
@@ -100,11 +102,9 @@
 		6FD8EBDB199DABA500FA7509 /* Firework.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FD8EBDA199DABA500FA7509 /* Firework.caf */; };
 		6FEC9049199E44C00086AF12 /* Firecracker.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FEC9048199E44C00086AF12 /* Firecracker.caf */; };
 		6FEC904B199E52480086AF12 /* Buzzer.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FEC904A199E52480086AF12 /* Buzzer.caf */; };
-		6FEC9053199E5C560086AF12 /* Explosion.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FEC9052199E5C560086AF12 /* Explosion.caf */; };
 		6FEC9057199E63270086AF12 /* Winner.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FEC9056199E63270086AF12 /* Winner.caf */; };
 		6FEC9059199E6B410086AF12 /* Roll-In.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FEC9058199E6B410086AF12 /* Roll-In.caf */; };
 		6FEC905B199E6B460086AF12 /* Roll-Out.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FEC905A199E6B460086AF12 /* Roll-Out.caf */; };
-		6FEC9061199E76C60086AF12 /* Fizzle.caf in Resources */ = {isa = PBXBuildFile; fileRef = 6FEC9060199E76C60086AF12 /* Fizzle.caf */; };
 		8392007A18EE8E3300B6C429 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8392007918EE8E3300B6C429 /* GLKit.framework */; };
 		B71F5911188484E7003F4D28 /* iPad-old.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5907188484E7003F4D28 /* iPad-old.png */; };
 		B71F5912188484E7003F4D28 /* iPad-old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B71F5908188484E7003F4D28 /* iPad-old@2x.png */; };
@@ -239,6 +239,8 @@
 		6F346D0119950C5600ADEDE4 /* Explosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Explosion.h; path = Source/Explosion.h; sourceTree = "<group>"; };
 		6F346D0219950C5600ADEDE4 /* Explosion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Explosion.m; path = Source/Explosion.m; sourceTree = "<group>"; };
 		6F44C58B19CE7A0B005D41CD /* Drumroll.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Drumroll.caf; sourceTree = "<group>"; };
+		6F44C58D19CE8116005D41CD /* Fizzle.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fizzle.caf; sourceTree = "<group>"; };
+		6F44C58F19CE8219005D41CD /* Explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Explosion.caf; sourceTree = "<group>"; };
 		6F4BFA6F19B8BF3900A98BD4 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		6F6A478D199EA60300714330 /* appIcons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = appIcons; sourceTree = "<group>"; };
 		6F7749A3199E9B9900DFD561 /* launchImages */ = {isa = PBXFileReference; lastKnownFileType = folder; path = launchImages; sourceTree = "<group>"; };
@@ -253,11 +255,9 @@
 		6FD8EBDA199DABA500FA7509 /* Firework.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Firework.caf; sourceTree = "<group>"; };
 		6FEC9048199E44C00086AF12 /* Firecracker.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Firecracker.caf; sourceTree = "<group>"; };
 		6FEC904A199E52480086AF12 /* Buzzer.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Buzzer.caf; sourceTree = "<group>"; };
-		6FEC9052199E5C560086AF12 /* Explosion.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Explosion.caf; sourceTree = "<group>"; };
 		6FEC9056199E63270086AF12 /* Winner.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Winner.caf; sourceTree = "<group>"; };
 		6FEC9058199E6B410086AF12 /* Roll-In.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roll-In.caf"; sourceTree = "<group>"; };
 		6FEC905A199E6B460086AF12 /* Roll-Out.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roll-Out.caf"; sourceTree = "<group>"; };
-		6FEC9060199E76C60086AF12 /* Fizzle.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Fizzle.caf; sourceTree = "<group>"; };
 		8392007918EE8E3300B6C429 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		B71F5907188484E7003F4D28 /* iPad-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old.png"; path = "Icons/iPad-old.png"; sourceTree = "<group>"; };
 		B71F5908188484E7003F4D28 /* iPad-old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iPad-old@2x.png"; path = "Icons/iPad-old@2x.png"; sourceTree = "<group>"; };
@@ -475,10 +475,10 @@
 				6FEC904A199E52480086AF12 /* Buzzer.caf */,
 				6FD8EBD5199DA75C00FA7509 /* Cymbal.caf */,
 				6F44C58B19CE7A0B005D41CD /* Drumroll.caf */,
-				6FEC9052199E5C560086AF12 /* Explosion.caf */,
+				6F44C58F19CE8219005D41CD /* Explosion.caf */,
 				6FEC9048199E44C00086AF12 /* Firecracker.caf */,
 				6FD8EBDA199DABA500FA7509 /* Firework.caf */,
-				6FEC9060199E76C60086AF12 /* Fizzle.caf */,
+				6F44C58D19CE8116005D41CD /* Fizzle.caf */,
 				6F939321199C3D2000850342 /* Icon.png */,
 				6FEC9058199E6B410086AF12 /* Roll-In.caf */,
 				6FEC905A199E6B460086AF12 /* Roll-Out.caf */,
@@ -666,8 +666,8 @@
 				6F1085561996A18300CF5E76 /* operator.connecting.png in Resources */,
 				6F1085411996A18300CF5E76 /* MGWUBackgroundDark-Landscape~ipad.png in Resources */,
 				6F1085591996A18300CF5E76 /* send-button-inactive.png in Resources */,
+				6F44C58E19CE8116005D41CD /* Fizzle.caf in Resources */,
 				6F10854A1996A18300CF5E76 /* MGWUFacebookLoginLandscapeDark.nib in Resources */,
-				6FEC9061199E76C60086AF12 /* Fizzle.caf in Resources */,
 				6FEC904B199E52480086AF12 /* Buzzer.caf in Resources */,
 				6FD8EBD6199DA75C00FA7509 /* Cymbal.caf in Resources */,
 				6F939325199C3D5200850342 /* Images.xcassets in Resources */,
@@ -679,7 +679,6 @@
 				B71F591A188484E7003F4D28 /* Settings@2x.png in Resources */,
 				6F1085441996A18300CF5E76 /* MGWUBackgroundDark-Portrait@2x~iphone.png in Resources */,
 				6F1085581996A18300CF5E76 /* send-button-active.png in Resources */,
-				6FEC9053199E5C560086AF12 /* Explosion.caf in Resources */,
 				6F1085311996A18300CF5E76 /* MGWUAboutFooter-Landscape~ipad.png in Resources */,
 				6F10852F1996A18300CF5E76 /* MGWUAboutFooter-Landscape@2x~ipad.png in Resources */,
 				6F1085461996A18300CF5E76 /* MGWUBackgroundDark-Portrait~iphone.png in Resources */,
@@ -725,6 +724,7 @@
 				6F1085291996A18300CF5E76 /* hipmobsend_field@2x.png in Resources */,
 				6FEC9059199E6B410086AF12 /* Roll-In.caf in Resources */,
 				6F1085371996A18300CF5E76 /* MGWUBackground-Landscape@2x~ipad.png in Resources */,
+				6F44C59019CE8219005D41CD /* Explosion.caf in Resources */,
 				B71F5911188484E7003F4D28 /* iPad-old.png in Resources */,
 				6F1085191996A18300CF5E76 /* CrossPromoViewController.nib in Resources */,
 				6F1085281996A18300CF5E76 /* hipmobsend_field.png in Resources */,
