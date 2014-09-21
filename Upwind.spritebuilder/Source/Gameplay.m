@@ -311,7 +311,7 @@
                 [_scoreLabel removeFromParent];
                 [_marginLabel removeFromParent];
                 [_performanceLabel removeFromParent];
-                _deathLabel.string = [NSString stringWithFormat:@"Too far from the wall!"];
+                _deathLabel.string = [NSString stringWithFormat:@"You ran out of margin!"];
                 [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
                 CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
                 playerExplosion.position = ccp(_player.position.x - 20, _player.position.y + 20);
