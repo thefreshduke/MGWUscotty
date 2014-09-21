@@ -224,8 +224,8 @@
                 else {
                     _performanceLabel.string = [NSString stringWithFormat:@"GO FURTHER"];
                     _performanceLabel.color = [CCColor colorWithRed:255.0f/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0f];
-                    [_instructionLabel removeFromParent];
                     if (distance > 75) {
+                        [_instructionLabel removeFromParent];
                         [[OALSimpleAudio sharedInstance] playEffect:@"Buzzer.caf"];
                         if (_level < 3) {
                             _extraLabel.string = [NSString stringWithFormat:@"GO TO THE TARGET"];
@@ -328,7 +328,7 @@
 
 -(void)update:(CCTime)delta {
     
-    if ((_wall.position.x - _player.position.x) / 4 <= 16) {
+    if ((_wall.position.x - _player.position.x) / 4 <= 24) {
         if (!rollOut) {
             rollOut = true;
             [[OALSimpleAudio sharedInstance] stopBg];
