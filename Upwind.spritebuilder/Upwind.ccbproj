@@ -85,8 +85,6 @@
 		</dict>
 		<key>Assets</key>
 		<dict>
-			<key>isDirty</key>
-			<true/>
 			<key>isSmartSpriteSheet</key>
 			<true/>
 		</dict>
@@ -176,8 +174,8 @@
 		</dict>
 	</dict>
 	<key>versionStr</key>
-	<string>Version: 1.2.0
-GitHub: 603331c974
+	<string>Version: 1.2.1
+GitHub: dde98b0763
 </string>
 </dict>
 </plist>

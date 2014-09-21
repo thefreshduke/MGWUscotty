@@ -127,8 +127,6 @@
 						</array>
 					</dict>
 				</array>
-				<key>selected</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>
@@ -1503,9 +1501,9 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>_idiotLabel</string>
+				<string>_extraLabel</string>
 				<key>memberVarAssignmentName</key>
-				<string>_idiotLabel</string>
+				<string>_extraLabel</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -1728,9 +1726,9 @@
 				<key>customClass</key>
 				<string></string>
 				<key>displayName</key>
-				<string>_idiotInstructionLabel</string>
+				<string>_extraInstructionLabel</string>
 				<key>memberVarAssignmentName</key>
-				<string>_idiotInstructionLabel</string>
+				<string>_extraInstructionLabel</string>
 				<key>memberVarAssignmentType</key>
 				<integer>1</integer>
 				<key>properties</key>
@@ -1924,6 +1922,8 @@
 						</array>
 					</dict>
 				</array>
+				<key>selected</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>UUID</key>

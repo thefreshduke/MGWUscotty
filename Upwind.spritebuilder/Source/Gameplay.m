@@ -17,8 +17,8 @@
     Wall *_wall;
     CCPhysicsNode *_physicsNode;
     CCLabelTTF *_instructionLabel;
-    CCLabelTTF *_idiotLabel;
-    CCLabelTTF *_idiotInstructionLabel;
+    CCLabelTTF *_extraLabel;
+    CCLabelTTF *_extraInstructionLabel;
     CCLabelTTF *_obstacleLabel;
     CCLabelTTF *_infoLabel1;
     CCLabelTTF *_infoLabel2;
@@ -41,6 +41,7 @@
     BOOL jumpingWall; // currently unused
     BOOL backwardsConveyerBelt; // constant movement
     //    BOOL forwardsConveyerBelt; // constant movement
+    BOOL warningComplete;
     int perfectStreak;
 }
 
@@ -62,7 +63,7 @@
     _playerSpeed = 4;
     _oscillatingWallSpeed = -2; //might not need this line
     
-    _instructionLabel.string = [NSString stringWithFormat:@"Tap and hold to move"];
+    _instructionLabel.string = [NSString stringWithFormat:@"Touch screen and hold"];
     
     collision = false;
     highScore = false;
@@ -74,6 +75,7 @@
     closingWall = false;
     backwardsConveyerBelt = false;
     waiting = false;
+    //    warningComplete = false;
     perfectStreak = 0;
 }
 
@@ -98,7 +100,7 @@
     waiting = false;
     
     [[OALSimpleAudio sharedInstance] playBg:@"Drumroll.caf" loop:NO];
-//    [[OALSimpleAudio sharedInstance] playBg:@"Roll-In.caf" loop:YES];
+    //    [[OALSimpleAudio sharedInstance] playBg:@"Roll-In.caf" loop:YES];
     
     _instructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
     [self scheduleBlock:^(CCTimer *timer) {
@@ -124,29 +126,29 @@
         _errorMargin -= distance;
         
         // in case distance = -1 (aka player released just in time to explode, but register a distance not covered by the standard 0-100 situation
-//        if (distance < 0) {
-//            collision = true;
-//            self.userInteractionEnabled = false;
-//            [_idiotLabel removeFromParent];
-//            [_idiotInstructionLabel removeFromParent];
-//            [_obstacleLabel removeFromParent];
-//            [_infoLabel1 removeFromParent];
-//            [_infoLabel2 removeFromParent];
-//            [_infoLabel3 removeFromParent];
-//            [_scoreLabel removeFromParent];
-//            [_marginLabel removeFromParent];
-//            [_performanceLabel removeFromParent];
-//            _deathLabel.string = [NSString stringWithFormat:@"You ran into the wall!"];
-//            [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
-//            CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
-//            playerExplosion.position = ccp(_player.position.x - 20, _player.position.y + 20);
-//            [_player.parent addChild:playerExplosion];
-//            [_player removeFromParent];
-//            [_wall removeFromParent];
-//            float pause = 0.5;
-//            //    [playerExplosion removeFromParent];
-//            [self scheduleOnce:@selector(goToRecap) delay:pause];
-//        }
+        //        if (distance < 0) {
+        //            collision = true;
+        //            self.userInteractionEnabled = false;
+        //            [_extraLabel removeFromParent];
+        //            [_extraInstructionLabel removeFromParent];
+        //            [_obstacleLabel removeFromParent];
+        //            [_infoLabel1 removeFromParent];
+        //            [_infoLabel2 removeFromParent];
+        //            [_infoLabel3 removeFromParent];
+        //            [_scoreLabel removeFromParent];
+        //            [_marginLabel removeFromParent];
+        //            [_performanceLabel removeFromParent];
+        //            _deathLabel.string = [NSString stringWithFormat:@"You ran into the wall!"];
+        //            [[OALSimpleAudio sharedInstance] playEffect:@"Explosion.caf"];
+        //            CCSprite *playerExplosion = (CCSprite *)[CCBReader load:@"Explosion"];
+        //            playerExplosion.position = ccp(_player.position.x - 20, _player.position.y + 20);
+        //            [_player.parent addChild:playerExplosion];
+        //            [_player removeFromParent];
+        //            [_wall removeFromParent];
+        //            float pause = 0.5;
+        //            //    [playerExplosion removeFromParent];
+        //            [self scheduleOnce:@selector(goToRecap) delay:pause];
+        //        }
         
         if (_errorMargin > 0) {
             
@@ -226,20 +228,24 @@
                     if (distance > 75) {
                         [[OALSimpleAudio sharedInstance] playEffect:@"Buzzer.caf"];
                         if (_level < 3) {
-                            _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE TARGET"];
-                            _idiotInstructionLabel.string = [NSString stringWithFormat:@"Tap and hold to move"];
+                            _extraLabel.string = [NSString stringWithFormat:@"GO TO THE TARGET"];
                             _level--;
                             _score -= _errorMargin * _level;
                             _errorMargin += distance;
-                            [self scheduleBlock:^(CCTimer *timer) {
-                                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
+                            if (!warningComplete) {
+                                warningComplete = true;
+                                _extraInstructionLabel.string = [NSString stringWithFormat:@"Touch screen and hold"];
                                 [self scheduleBlock:^(CCTimer *timer) {
-                                    _idiotInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
+                                    _extraInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
                                     [self scheduleBlock:^(CCTimer *timer) {
-                                        _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
+                                        _extraInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
+                                        [self scheduleBlock:^(CCTimer *timer) {
+                                            _extraInstructionLabel.string = [NSString stringWithFormat:@" "];
+                                            warningComplete = false;
+                                        } delay:1.f];
                                     } delay:1.f];
                                 } delay:1.f];
-                            } delay:1.f];
+                            }
                         }
                     }
                     else {
@@ -276,23 +282,28 @@
                 [_instructionLabel removeFromParent];
             }
             if (_level < 2) {
-                _idiotLabel.string = [NSString stringWithFormat:@"GO TO THE TARGET"];
-                _idiotInstructionLabel.string = [NSString stringWithFormat:@"Tap and hold to move"];
+                _extraLabel.string = [NSString stringWithFormat:@"GO TO THE TARGET"];
                 _score -= _errorMargin * _level;
                 _errorMargin += distance;
-                [self scheduleBlock:^(CCTimer *timer) {
-                    _idiotInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
+                if (!warningComplete) {
+                    warningComplete = true;
+                    _extraInstructionLabel.string = [NSString stringWithFormat:@"Touch screen and hold"];
                     [self scheduleBlock:^(CCTimer *timer) {
-                        _idiotInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
+                        _extraInstructionLabel.string = [NSString stringWithFormat:@"Release to stop"];
                         [self scheduleBlock:^(CCTimer *timer) {
-                            _idiotInstructionLabel.string = [NSString stringWithFormat:@" "];
+                            _extraInstructionLabel.string = [NSString stringWithFormat:@"Don't hit the wall!"];
+                            [self scheduleBlock:^(CCTimer *timer) {
+                                _extraInstructionLabel.string = [NSString stringWithFormat:@" "];
+                                warningComplete = false;
+                            } delay:1.f];
                         } delay:1.f];
                     } delay:1.f];
-                } delay:1.f];
+                }
             }
             else {
-                [_idiotLabel removeFromParent];
-                [_idiotInstructionLabel removeFromParent];
+                self.userInteractionEnabled = false;
+                [_extraLabel removeFromParent];
+                [_extraInstructionLabel removeFromParent];
                 [_obstacleLabel removeFromParent];
                 [_infoLabel1 removeFromParent];
                 [_infoLabel2 removeFromParent];
@@ -326,7 +337,7 @@
     }
     
     if (_level == 2) {
-        [_idiotLabel removeFromParent];
+        [_extraLabel removeFromParent];
     }
     if (_level < 5) {
         oscillatingWall = false;
@@ -335,7 +346,7 @@
         backwardsConveyerBelt = false;
     }
     else if (_level < 9) {
-        [_idiotLabel removeFromParent];
+        [_extraLabel removeFromParent];
         oscillatingWall = false;
         headWind = false;
         closingWall = true;
@@ -414,10 +425,10 @@
         }
     }
     if (touching) {
-//        if (forwardsConveyerBelt) { // needs visuals...
-//            _playerSpeed = 4;
-//            _player.position = ccp(_player.position.x + 2, _player.position.y);
-//        }
+        //        if (forwardsConveyerBelt) { // needs visuals...
+        //            _playerSpeed = 4;
+        //            _player.position = ccp(_player.position.x + 2, _player.position.y);
+        //        }
         if (oscillatingWall) {
             if (_wall.position.x >= 420) {
                 _oscillatingWallSpeed = -2;
@@ -455,8 +466,8 @@
     if (_instructionLabel) {
         [_instructionLabel removeFromParent];
     }
-    [_idiotLabel removeFromParent];
-    [_idiotInstructionLabel removeFromParent];
+    [_extraLabel removeFromParent];
+    [_extraInstructionLabel removeFromParent];
     [_obstacleLabel removeFromParent];
     [_infoLabel1 removeFromParent];
     [_infoLabel2 removeFromParent];
